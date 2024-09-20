@@ -6,10 +6,12 @@
     "deploy": "wrangler deploy",
     "dev": "wrangler dev",
     "build": "wrangler build",
-    "cf-typegen": "wrangler types"
+    "cf-typegen": "wrangler types",
+    "format": "prettier --write ."
   },
   "devDependencies": {
     "@cloudflare/workers-types": "^4.20240919.0",
+    "prettier": "^3.3.3",
     "typescript": "^5.5.2",
     "wrangler": "^3.60.3"
   }
