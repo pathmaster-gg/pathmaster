@@ -1,0 +1,32 @@
+on:
+  push:
+    branches:
+      - "master"
+
+name: "Deploy"
+
+jobs:
+  deploy:
+    name: "Deploy API worker"
+    runs-on: "ubuntu-latest"
+
+    environment: "development"
+
+    steps:
+      - name: "Checkout source code"
+        uses: "actions/checkout@v4"
+
+      - name: "Install wrangler"
+        run: |
+          yarn global add wrangler@3.78.7
+
+      - name: "Publish worker"
+        run: |
+          export CLOUDFLARE_ACCOUNT_ID="${{ secrets.CLOUDFLARE_ACCOUNT_ID }}"
+          export CLOUDFLARE_API_TOKEN="${{ secrets.CLOUDFLARE_API_TOKEN }}"
+
+          cd ./api/
+
+          wrangler deploy \
+            --name "${{ vars.WORKER_NAME }}" \
+            --route "${{ vars.WORKER_ROUTE }}"
