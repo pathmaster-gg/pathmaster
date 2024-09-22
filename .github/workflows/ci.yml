@@ -1,0 +1,21 @@
+on:
+  push:
+
+name: "CI"
+
+jobs:
+  format:
+    name: "Check code format"
+    runs-on: "ubuntu-latest"
+
+    steps:
+      - name: "Checkout source code"
+        uses: "actions/checkout@v4"
+
+      - name: "Install prettier"
+        run: |
+          yarn global add prettier@3.3.3
+
+      - name: "Check style with prettier"
+        run: |
+          prettier --check .
