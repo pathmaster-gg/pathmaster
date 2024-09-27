@@ -1,18 +1,16 @@
-/**
- * Welcome to Cloudflare Workers! This is your first worker.
- *
- * - Run `npm run dev` in your terminal to start a development server
- * - Open a browser tab at http://localhost:8787/ to see your worker in action
- * - Run `npm run deploy` to publish your worker
- *
- * Bind resources to your worker in `wrangler.toml`. After adding bindings, a type definition for the
- * `Env` object can be regenerated with `npm run cf-typegen`.
- *
- * Learn more at https://developers.cloudflare.com/workers/
- */
+import { Router } from "itty-router";
+
+import { handleGoogle } from "./oauth";
 
 export default {
-  async fetch(request, env, ctx): Promise<Response> {
-    return new Response("Hello World!");
+  async fetch(request, env, _ctx): Promise<Response> {
+    const router = Router();
+
+    router.get("/api/oauth/google", (req) => handleGoogle(req, env));
+
+    // 404 fallback
+    router.all("*", () => new Response("404, not found!", { status: 404 }));
+
+    return router.fetch(request);
   },
 } satisfies ExportedHandler<Env>;

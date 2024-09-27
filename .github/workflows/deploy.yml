@@ -16,9 +16,28 @@ jobs:
       - name: "Checkout source code"
         uses: "actions/checkout@v4"
 
-      - name: "Install wrangler"
+      - name: "Install dependencies"
         run: |
-          yarn global add wrangler@3.78.7
+          cd ./api/
+          yarn install
+
+      - name: "Configure worker name"
+        run: |
+          cd ./api/
+
+          echo "" >> ./wrangler.toml
+          echo "[env.production]" >> ./wrangler.toml
+          echo "name = \"${{ vars.WORKER_NAME }}\"" >> ./wrangler.toml
+
+      - name: "Configure worker variables"
+        run: |
+          cd ./api/
+
+          echo "" >> ./wrangler.toml
+          echo "[env.production.vars]" >> ./wrangler.toml
+          echo "OAUTH_GOOGLE_CLIENT_ID = \"${{ vars.OAUTH_GOOGLE_CLIENT_ID }}\"" >> ./wrangler.toml
+          echo "OAUTH_GOOGLE_CLIENT_SECRET = \"${{ secrets.OAUTH_GOOGLE_CLIENT_SECRET }}\"" >> ./wrangler.toml
+          echo "OAUTH_GOOGLE_REDIRECT_URL = \"${{ vars.OAUTH_GOOGLE_REDIRECT_URL }}\"" >> ./wrangler.toml
 
       - name: "Publish worker"
         run: |
@@ -27,6 +46,6 @@ jobs:
 
           cd ./api/
 
-          wrangler deploy \
-            --name "${{ vars.WORKER_NAME }}" \
+          yarn wrangler deploy \
+            --env production \
             --route "${{ vars.WORKER_ROUTE }}"

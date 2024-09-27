@@ -9,6 +9,9 @@
     "cf-typegen": "wrangler types",
     "format": "prettier --write ."
   },
+  "dependencies": {
+    "itty-router": "^5.0.18"
+  },
   "devDependencies": {
     "@cloudflare/workers-types": "^4.20240919.0",
     "prettier": "^3.3.3",
