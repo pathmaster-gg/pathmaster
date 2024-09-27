@@ -55,3 +55,15 @@ jobs:
         run: |
           cd ./web/
           yarn build
+
+  docker-api:
+    name: "Build Docker image for api"
+    runs-on: "ubuntu-latest"
+
+    steps:
+      - name: "Checkout source code"
+        uses: "actions/checkout@v4"
+
+      - name: "Build Docker image"
+        run: |
+          docker build -f ./api/Dockerfile ./api/
