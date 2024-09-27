@@ -3,9 +3,10 @@ services:
     build:
       context: "./api/"
       dockerfile: "./Dockerfile"
-    tty: true
     ports:
       - "8787:8787"
+    volumes:
+      - "./api.dev.env:/app/.dev.vars"
 
   web:
     build:
