@@ -35,5 +35,7 @@ export async function handleGoogle(
   const userInfoBody = (await userInfoResponse.json()) as GoogleUserInfo;
 
   // Show Google user email for testing.
-  return new Response(userInfoBody.email);
+  return new Response(userInfoBody.email, {
+    headers: { "Access-Control-Allow-Origin": "*" },
+  });
 }
