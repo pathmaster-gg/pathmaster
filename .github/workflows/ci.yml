@@ -19,3 +19,39 @@ jobs:
       - name: "Check style with prettier"
         run: |
           prettier --check .
+
+  build-api:
+    name: "Build api"
+    runs-on: "ubuntu-latest"
+
+    steps:
+      - name: "Checkout source code"
+        uses: "actions/checkout@v4"
+
+      - name: "Install dependencies"
+        run: |
+          cd ./api/
+          yarn install
+
+      - name: "Build project"
+        run: |
+          cd ./api/
+          yarn build
+
+  build-web:
+    name: "Build web"
+    runs-on: "ubuntu-latest"
+
+    steps:
+      - name: "Checkout source code"
+        uses: "actions/checkout@v4"
+
+      - name: "Install dependencies"
+        run: |
+          cd ./web/
+          yarn install
+
+      - name: "Build project"
+        run: |
+          cd ./web/
+          yarn build
