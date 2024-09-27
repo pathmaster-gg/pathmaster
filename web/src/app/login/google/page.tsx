@@ -21,7 +21,7 @@ export default function Google() {
 
   useEffect(() => {
     handleLogin();
-  }, [handleLogin]);
+  }, []);
 
   return (
     <div>
