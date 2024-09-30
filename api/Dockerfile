@@ -17,7 +17,8 @@ FROM node:22
 COPY --from=build /app /app
 WORKDIR /app
 
+COPY ./docker/entrypoint.sh /entrypoint.sh
+
 EXPOSE 8787
 
-ENTRYPOINT ["/app/node_modules/.bin/wrangler"]
-CMD ["dev", "--ip", "0.0.0.0"]
+ENTRYPOINT ["/entrypoint.sh"]

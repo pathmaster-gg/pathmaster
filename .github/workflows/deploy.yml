@@ -49,6 +49,19 @@ jobs:
           echo "database_name = \"pathmaster-dev\"" >> ./wrangler.toml
           echo "database_id = \"${{ vars.WORKER_D1_ID }}\"" >> ./wrangler.toml
 
+      - name: "Execute SQL initialization script"
+        run: |
+          export CLOUDFLARE_ACCOUNT_ID="${{ secrets.CLOUDFLARE_ACCOUNT_ID }}"
+          export CLOUDFLARE_API_TOKEN="${{ secrets.CLOUDFLARE_API_TOKEN }}"
+
+          cd ./api/
+
+          yarn wrangler d1 execute \
+            --env production \
+            --remote \
+            --file ./db/initialize.sql \
+            pathmaster-dev
+
       - name: "Publish worker"
         run: |
           export CLOUDFLARE_ACCOUNT_ID="${{ secrets.CLOUDFLARE_ACCOUNT_ID }}"
