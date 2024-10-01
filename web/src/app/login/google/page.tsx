@@ -27,7 +27,7 @@ export default function Google() {
 
       router.push("/onboarding");
     } else {
-      throw new Error("not yet implemented");
+      router.push("/");
     }
   };
 

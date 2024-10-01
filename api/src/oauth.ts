@@ -1,8 +1,11 @@
 import { IRequest } from "itty-router";
 
-import { ONBOARDING_SESSION_DURATION } from "./constants";
+import {
+  NORMAL_SESSION_DURATION,
+  ONBOARDING_SESSION_DURATION,
+} from "./constants";
 import { SessionType as DbSessionType } from "./entities";
-import { SessionType } from "./models";
+import { Session, SessionType } from "./models";
 
 interface GoogleOAuthTokenResponse {
   access_token: string;
@@ -44,19 +47,38 @@ export async function handleGoogle(
     .bind(userInfoBody.email.toLowerCase())
     .first();
 
+  const currentTime = Math.floor(new Date().getTime() / 1000);
+
+  let session: Session;
+
   if (account) {
     // An account with this email already exists
-    throw new Error("not yet implemented");
+
+    // Generate a normal session.
+    session = {
+      type: SessionType.Normal,
+      token: crypto.randomUUID(),
+    };
+
+    await env.DB.prepare(
+      "INSERT INTO session (type, token, create_time, expiration, account_id) VALUES (?, ?, ?, ?, ?)",
+    )
+      .bind(
+        DbSessionType.Normal,
+        session.token,
+        currentTime,
+        currentTime + NORMAL_SESSION_DURATION,
+        account["account_id"],
+      )
+      .run();
   } else {
     // This account is not seen before. Instruct the client to start the onboarding process.
 
     // Generate an onboarding session.
-    const session = {
+    session = {
       type: SessionType.Onboarding,
       token: crypto.randomUUID(),
     };
-
-    const currentTime = Math.floor(new Date().getTime() / 1000);
 
     await env.DB.prepare(
       "INSERT INTO session (type, token, create_time, expiration, email) VALUES (?, ?, ?, ?, ?)",
@@ -69,12 +91,12 @@ export async function handleGoogle(
         userInfoBody.email.toLowerCase(),
       )
       .run();
-
-    return new Response(JSON.stringify(session), {
-      headers: {
-        "Access-Control-Allow-Origin": "*",
-        "Content-Type": "application/json",
-      },
-    });
   }
+
+  return new Response(JSON.stringify(session), {
+    headers: {
+      "Access-Control-Allow-Origin": "*",
+      "Content-Type": "application/json",
+    },
+  });
 }
