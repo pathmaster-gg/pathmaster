@@ -1,22 +1,34 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { useSearchParams } from "next/navigation";
+import { useContext, useEffect } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
 
 import { getServerUrl } from "@/lib/constants/env";
+import { Session, SessionType } from "@/lib/models";
+import { IdentityContext } from "@/app/lib/context/identity";
 
 export default function Google() {
-  const searchParams = useSearchParams();
+  const router = useRouter();
 
-  const [email, setEmail] = useState<string | undefined>(undefined);
+  const identity = useContext(IdentityContext);
+
+  const searchParams = useSearchParams();
 
   const handleLogin = async () => {
     const code = searchParams.get("code");
     const loginResponse = await fetch(
       getServerUrl(`/api/oauth/google?code=${encodeURIComponent(code!)}`),
     );
-    const email = await loginResponse.text();
-    setEmail(email);
+    const session = (await loginResponse.json()) as Session;
+
+    if (session.type === SessionType.Onboarding) {
+      // User logging in for the first time
+      identity.setSession(session);
+
+      router.push("/onboarding");
+    } else {
+      throw new Error("not yet implemented");
+    }
   };
 
   useEffect(() => {
@@ -25,7 +37,7 @@ export default function Google() {
 
   return (
     <div>
-      {email ? <p>Google Email: {email}</p> : <p>Logging in with Google</p>}
+      <p>Logging in with Google</p>
     </div>
   );
 }

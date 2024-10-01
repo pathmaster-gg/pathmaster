@@ -1,5 +1,9 @@
 import { IRequest } from "itty-router";
 
+import { ONBOARDING_SESSION_DURATION } from "./constants";
+import { SessionType as DbSessionType } from "./entities";
+import { SessionType } from "./models";
+
 interface GoogleOAuthTokenResponse {
   access_token: string;
 }
@@ -34,8 +38,43 @@ export async function handleGoogle(
   );
   const userInfoBody = (await userInfoResponse.json()) as GoogleUserInfo;
 
-  // Show Google user email for testing.
-  return new Response(userInfoBody.email, {
-    headers: { "Access-Control-Allow-Origin": "*" },
-  });
+  const account = await env.DB.prepare(
+    "SELECT account_id FROM account WHERE email = ?",
+  )
+    .bind(userInfoBody.email.toLowerCase())
+    .first();
+
+  if (account) {
+    // An account with this email already exists
+    throw new Error("not yet implemented");
+  } else {
+    // This account is not seen before. Instruct the client to start the onboarding process.
+
+    // Generate an onboarding session.
+    const session = {
+      type: SessionType.Onboarding,
+      token: crypto.randomUUID(),
+    };
+
+    const currentTime = Math.floor(new Date().getTime() / 1000);
+
+    await env.DB.prepare(
+      "INSERT INTO session (type, token, create_time, expiration, email) VALUES (?, ?, ?, ?, ?)",
+    )
+      .bind(
+        DbSessionType.Onboarding,
+        session.token,
+        currentTime,
+        currentTime + ONBOARDING_SESSION_DURATION,
+        userInfoBody.email.toLowerCase(),
+      )
+      .run();
+
+    return new Response(JSON.stringify(session), {
+      headers: {
+        "Access-Control-Allow-Origin": "*",
+        "Content-Type": "application/json",
+      },
+    });
+  }
 }
