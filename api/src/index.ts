@@ -1,6 +1,6 @@
 import { Router } from "itty-router";
 
-import { handleOnboard } from "./account";
+import { handleGetInfo, handleOnboard } from "./account";
 import { handleGoogle } from "./oauth";
 
 export default {
@@ -20,6 +20,7 @@ export default {
     );
 
     router.get("/api/oauth/google", (req) => handleGoogle(req, env));
+    router.get("/api/account", (req) => handleGetInfo(req, env));
     router.post("/api/account/onboard", (req) => handleOnboard(req, env));
 
     // 404 fallback

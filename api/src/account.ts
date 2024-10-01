@@ -1,11 +1,9 @@
 import { IRequest } from "itty-router";
 
-import {
-  NORMAL_SESSION_DURATION,
-  ONBOARDING_SESSION_DURATION,
-} from "./constants";
+import { NORMAL_SESSION_DURATION } from "./constants";
 import { SessionType as DbSessionType } from "./entities";
 import { SessionType } from "./models";
+import { AuthError, assertNormal, assertOnboarding } from "./utils/auth";
 
 interface OnboardReqeust {
   username: string;
@@ -15,51 +13,11 @@ export async function handleOnboard(
   request: IRequest,
   env: Env,
 ): Promise<Response> {
-  const authHeader = request.headers.get("Authorization");
-  if (!authHeader || !authHeader.startsWith("Bearer ")) {
-    return new Response("missing/invalid auth header", {
-      headers: {
-        "Access-Control-Allow-Origin": "*",
-      },
-      status: 401,
-    });
-  }
-
-  const token = authHeader.substring("Bearer ".length);
-  const session = await env.DB.prepare(
-    "SELECT type, expiration, email FROM session WHERE token = ?",
-  )
-    .bind(token)
-    .first();
-  if (!session) {
-    return new Response("session expired", {
-      headers: {
-        "Access-Control-Allow-Origin": "*",
-      },
-      status: 401,
-    });
-  }
-
-  const expiration = session["expiration"] as number;
-  const currentTime = Math.floor(new Date().getTime() / 1000);
-
-  if (currentTime > expiration) {
-    return new Response("session expired", {
-      headers: {
-        "Access-Control-Allow-Origin": "*",
-      },
-      status: 401,
-    });
-  }
-
-  const sessionType = session["type"] as number;
-  if (sessionType !== DbSessionType.Onboarding) {
-    return new Response("unexpected session type", {
-      headers: {
-        "Access-Control-Allow-Origin": "*",
-      },
-      status: 403,
-    });
+  let email: string;
+  try {
+    email = await assertOnboarding(request, env);
+  } catch (ex) {
+    return (ex as AuthError).response;
   }
 
   const body = (await request.json()) as OnboardReqeust;
@@ -67,7 +25,7 @@ export async function handleOnboard(
   const newAccount = await env.DB.prepare(
     "INSERT INTO account (username, email) VALUES (?, ?) RETURNING account_id",
   )
-    .bind(body.username, session["email"])
+    .bind(body.username, email)
     .first();
   if (!newAccount) {
     // TODO: add error handling here: this is likely caused by duplicate email/username.
@@ -80,11 +38,13 @@ export async function handleOnboard(
     token: crypto.randomUUID(),
   };
 
+  const currentTime = Math.floor(new Date().getTime() / 1000);
+
   await env.DB.prepare(
     "INSERT INTO session (type, token, create_time, expiration, account_id) VALUES (?, ?, ?, ?, ?)",
   )
     .bind(
-      DbSessionType.Onboarding,
+      DbSessionType.Normal,
       newSession.token,
       currentTime,
       currentTime + NORMAL_SESSION_DURATION,
@@ -98,4 +58,37 @@ export async function handleOnboard(
       "Content-Type": "application/json",
     },
   });
+}
+
+export async function handleGetInfo(
+  request: IRequest,
+  env: Env,
+): Promise<Response> {
+  let accountId: number;
+  try {
+    accountId = await assertNormal(request, env);
+  } catch (ex) {
+    return (ex as AuthError).response;
+  }
+
+  const account = await env.DB.prepare(
+    "SELECT username FROM account WHERE account_id = ?",
+  )
+    .bind(accountId)
+    .first();
+  if (!account) {
+    throw new Error("internal server error: account not found");
+  }
+
+  return new Response(
+    JSON.stringify({
+      username: account["username"],
+    }),
+    {
+      headers: {
+        "Access-Control-Allow-Origin": "*",
+        "Content-Type": "application/json",
+      },
+    },
+  );
 }

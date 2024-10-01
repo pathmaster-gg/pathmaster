@@ -21,10 +21,10 @@ export default function Google() {
     );
     const session = (await loginResponse.json()) as Session;
 
+    identity.setSession(session);
+
     if (session.type === SessionType.Onboarding) {
       // User logging in for the first time
-      identity.setSession(session);
-
       router.push("/onboarding");
     } else {
       router.push("/");
