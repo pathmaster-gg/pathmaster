@@ -22,6 +22,16 @@ export async function handleOnboard(
 
   const body = (await request.json()) as OnboardReqeust;
 
+  // Username format: 3-20 numbers, lowercase letters or hyhpen; must not start or end with hyhpen.
+  if (!body.username.match("^[a-z\\d][a-z\\d\\-]{1,18}[a-z\\d]$")) {
+    return new Response("invalid username", {
+      headers: {
+        "Access-Control-Allow-Origin": "*",
+      },
+      status: 400,
+    });
+  }
+
   const newAccount = await env.DB.prepare(
     "INSERT INTO account (username, email) VALUES (?, ?) RETURNING account_id",
   )
