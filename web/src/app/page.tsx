@@ -1,14 +1,12 @@
 "use client";
 
-import { useContext } from "react";
 import Image from "next/image";
 
-import { IdentityContext } from "./lib/context/identity";
-import SignWithGoogleButton from "@/components/sign-in-with-google-button";
 import LogoHero from "@/components/logo-hero";
 import Dividor from "@/components/divider";
 import LinkButton from "@/components/link-button";
 import SocialButton from "@/components/social-button";
+import WelcomeHeader from "@/components/welcome-header";
 
 import LogoPf2e from "@/images/logo_pf2e.png";
 import JournalSvg from "@/images/icons/journals.svg";
@@ -19,20 +17,11 @@ import TwitterSvg from "@/images/icons/twitter.svg";
 import GithubSvg from "@/images/icons/github.svg";
 
 export default function Home() {
-  const identity = useContext(IdentityContext);
-
   return (
     <div className="flex-col px-12 py-8">
-      <div className="flex items-center justify-between mb-12">
-        <span className="text-xl">ver. 0.1.0</span>
-        {identity.accountInfo ? (
-          <p>Welcome back, {identity.accountInfo.username}</p>
-        ) : (
-          <SignWithGoogleButton />
-        )}
-      </div>
+      <WelcomeHeader button={true} />
       <div className="flex flex-col items-center">
-        <LogoHero />
+        <LogoHero width={600} />
         <Dividor />
         <p className="text-xl">Your trusted companion app for managing</p>
         <Image priority src={LogoPf2e} width={430} alt="Pathfinder 2e logo" />
