@@ -9,6 +9,11 @@ import { Session } from "@/lib/models";
 import WelcomeHeader from "@/components/welcome-header";
 import LogoHero from "@/components/logo-hero";
 import Dividor from "@/components/divider";
+import Box from "@/components/box";
+import ValidationCheckbox, {
+  CheckboxStatus,
+} from "@/components/validation-checkbox";
+import Button from "@/components/button";
 
 export default function Onboarding() {
   const router = useRouter();
@@ -41,15 +46,40 @@ export default function Onboarding() {
       <div className="flex flex-col items-center">
         <LogoHero width={300} />
         <Dividor />
-        <p>Welcome new user!</p>
-        <form>
-          <input
-            type="text"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
-          />
-          <input type="submit" value="Continue" onClick={handleSubmit} />
-        </form>
+        <div className="w-156">
+          <Box>
+            <div className="flex flex-col p-8">
+              <h2 className="text-xl mb-8">
+                Welcome to PathMaster, Game Master!
+              </h2>
+              <p className="text-sm mb-8">
+                We need to set up your GM identity to help you save your game
+                sessions and adventures.
+              </p>
+              <input
+                className="mb-8 px-3 py-2 rounded text-black text-base"
+                type="text"
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
+                placeholder="Please tell us your name"
+              />
+              <ValidationCheckbox
+                status={CheckboxStatus.Default}
+                text="Must be 3-20 characters"
+              />
+              <ValidationCheckbox
+                status={CheckboxStatus.Checked}
+                text="Lowercase letters, numbers, and hyphens only"
+              />
+              <ValidationCheckbox
+                status={CheckboxStatus.Error}
+                text="Must not start or end with special characters"
+              />
+            </div>
+          </Box>
+        </div>
+        <Dividor />
+        <Button text="Continue" onClick={handleSubmit} enabled={false} />
       </div>
     </div>
   );

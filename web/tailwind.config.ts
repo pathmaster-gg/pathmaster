@@ -12,9 +12,13 @@ const config: Config = {
         background: "var(--background)",
         foreground: "var(--foreground)",
         highlight: "#f5c35f",
+        disabled: "#666666",
+        "grayscale-500": "#878787",
+        "grayscale-900": "#3d3d3d",
       },
       width: {
         "68": "17rem",
+        "156": "39rem",
       },
     },
   },
