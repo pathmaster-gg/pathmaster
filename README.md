@@ -1,4 +1,5 @@
 <p align="center">
+  <img src="./images/logo.svg" alt="Logo" width="200" />
   <h1 align="center">PathMaster</h1>
 </p>
 
