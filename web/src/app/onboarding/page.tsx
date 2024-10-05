@@ -1,6 +1,6 @@
 "use client";
 
-import { useContext, useState, MouseEvent } from "react";
+import { useContext, useState } from "react";
 import { useRouter } from "next/navigation";
 
 import { IdentityContext } from "../lib/context/identity";
@@ -20,11 +20,9 @@ export default function Onboarding() {
 
   const identity = useContext(IdentityContext);
 
-  const [username, setUsername] = useState<string>("");
+  const [username, setUsername] = useState<string | undefined>();
 
-  const handleSubmit = async (e: MouseEvent) => {
-    e.preventDefault();
-
+  const handleSubmit = async () => {
     const onboardResponse = await fetch(getServerUrl("/api/account/onboard"), {
       method: "POST",
       headers: {
@@ -39,6 +37,30 @@ export default function Onboarding() {
     identity.setSession(session);
     router.push("/");
   };
+
+  let lengthStatus = CheckboxStatus.Default;
+  let compositionStatus = CheckboxStatus.Default;
+  let endStatus = CheckboxStatus.Default;
+
+  if (username !== undefined) {
+    lengthStatus =
+      username.length >= 3 && username.length <= 20
+        ? CheckboxStatus.Checked
+        : CheckboxStatus.Error;
+
+    if (username === "") {
+      compositionStatus = CheckboxStatus.Default;
+      endStatus = CheckboxStatus.Default;
+    } else {
+      compositionStatus = username.match("^[a-z\\d\\-]*$")
+        ? CheckboxStatus.Checked
+        : CheckboxStatus.Error;
+      endStatus =
+        username.startsWith("-") || username.endsWith("-")
+          ? CheckboxStatus.Error
+          : CheckboxStatus.Checked;
+    }
+  }
 
   return (
     <div className="flex-col px-12 py-8">
@@ -64,22 +86,30 @@ export default function Onboarding() {
                 placeholder="Please tell us your name"
               />
               <ValidationCheckbox
-                status={CheckboxStatus.Default}
+                status={lengthStatus}
                 text="Must be 3-20 characters"
               />
               <ValidationCheckbox
-                status={CheckboxStatus.Checked}
+                status={compositionStatus}
                 text="Lowercase letters, numbers, and hyphens only"
               />
               <ValidationCheckbox
-                status={CheckboxStatus.Error}
+                status={endStatus}
                 text="Must not start or end with special characters"
               />
             </div>
           </Box>
         </div>
         <Dividor />
-        <Button text="Continue" onClick={handleSubmit} enabled={false} />
+        <Button
+          text="Continue"
+          onClick={handleSubmit}
+          enabled={
+            lengthStatus === CheckboxStatus.Checked &&
+            compositionStatus === CheckboxStatus.Checked &&
+            endStatus === CheckboxStatus.Checked
+          }
+        />
       </div>
     </div>
   );
