@@ -39,6 +39,18 @@ export default function Onboarding() {
     router.push("/");
   };
 
+  const handleDice = () => {
+    const presetNames = [
+      "ravenshallow",
+      "kaelin-stormrider",
+      "voren-bloodfang",
+      "elira-moonwhisper",
+      "dorin-ironfist",
+    ];
+
+    setUsername(presetNames[Math.floor(Math.random() * presetNames.length)]);
+  };
+
   let lengthStatus = CheckboxStatus.Default;
   let compositionStatus = CheckboxStatus.Default;
   let endStatus = CheckboxStatus.Default;
@@ -87,7 +99,7 @@ export default function Onboarding() {
                   onChange={(e) => setUsername(e.target.value)}
                   placeholder="Please tell us your name"
                 />
-                <DiceButton />
+                <DiceButton onClick={handleDice} />
               </div>
               <ValidationCheckbox
                 status={lengthStatus}
