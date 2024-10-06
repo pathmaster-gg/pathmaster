@@ -32,7 +32,9 @@ export default function ValidationCheckbox(props: IProps) {
   return (
     <div className="flex gap-4 items-center py-1.5">
       <Image priority src={icon} alt="Checkbox status" width={28} />
-      <p>{props.text}</p>
+      <p className={props.status === CheckboxStatus.Error ? "text-error" : ""}>
+        {props.text}
+      </p>
     </div>
   );
 }

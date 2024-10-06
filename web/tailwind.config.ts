@@ -13,6 +13,7 @@ const config: Config = {
         foreground: "var(--foreground)",
         highlight: "#f5c35f",
         disabled: "#666666",
+        error: "#df2e2e",
         "grayscale-500": "#878787",
         "grayscale-900": "#3d3d3d",
       },
