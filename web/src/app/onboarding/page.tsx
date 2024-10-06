@@ -14,6 +14,7 @@ import ValidationCheckbox, {
   CheckboxStatus,
 } from "@/components/validation-checkbox";
 import Button from "@/components/button";
+import DiceButton from "@/components/dice-button";
 
 export default function Onboarding() {
   const router = useRouter();
@@ -78,13 +79,16 @@ export default function Onboarding() {
                 We need to set up your GM identity to help you save your game
                 sessions and adventures.
               </p>
-              <input
-                className="mb-8 px-3 py-2 rounded text-black text-base"
-                type="text"
-                value={username}
-                onChange={(e) => setUsername(e.target.value)}
-                placeholder="Please tell us your name"
-              />
+              <div className="flex items-center mb-8 gap-4">
+                <input
+                  className="flex-grow px-3 py-2 rounded text-black text-base"
+                  type="text"
+                  value={username}
+                  onChange={(e) => setUsername(e.target.value)}
+                  placeholder="Please tell us your name"
+                />
+                <DiceButton />
+              </div>
               <ValidationCheckbox
                 status={lengthStatus}
                 text="Must be 3-20 characters"
