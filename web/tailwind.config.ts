@@ -16,6 +16,7 @@ const config: Config = {
         error: "#df2e2e",
         "grayscale-500": "#878787",
         "grayscale-900": "#3d3d3d",
+        "grayscale-999": "#161616",
       },
       width: {
         "68": "17rem",

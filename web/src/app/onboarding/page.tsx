@@ -36,7 +36,7 @@ export default function Onboarding() {
     const session = (await onboardResponse.json()) as Session;
 
     identity.setSession(session);
-    router.push("/");
+    router.push("/dashboard");
   };
 
   const handleDice = () => {

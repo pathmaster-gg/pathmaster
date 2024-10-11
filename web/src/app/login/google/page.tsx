@@ -27,7 +27,7 @@ export default function Google() {
       // User logging in for the first time
       router.push("/onboarding");
     } else {
-      router.push("/");
+      router.push("/dashboard");
     }
   };
 
