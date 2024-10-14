@@ -11,3 +11,8 @@ export interface Session {
 export interface AccountInfo {
   username: string;
 }
+
+export interface AdventureMetadata {
+  id: number;
+  name: string;
+}
