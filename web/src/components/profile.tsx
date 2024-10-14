@@ -11,7 +11,11 @@ export default function Profile(props: IProps) {
     <div className="flex items-center px-8 gap-4 cursor-pointer hover:bg-background">
       <div
         className="w-10 h-10 border border-highlight rounded-full"
-        style={{ backgroundImage: `url(${ExampleAvatar.src})` }}
+        style={{
+          backgroundImage: `url(${ExampleAvatar.src})`,
+          backgroundRepeat: "no-repeat",
+          backgroundSize: "cover",
+        }}
       ></div>
       <span className="text-sm">{props.account.username}</span>
     </div>

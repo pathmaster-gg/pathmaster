@@ -16,7 +16,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" className="h-full">
       <head>
         <style>
           @import
@@ -24,7 +24,7 @@ export default function RootLayout({
         </style>
       </head>
       <body
-        className="inknut-antiqua-regular antialiased"
+        className="inknut-antiqua-regular antialiased h-full"
         style={{
           backgroundImage: `url(${Background.src})`,
           backgroundRepeat: "no-repeat",

@@ -82,7 +82,7 @@ export default function Onboarding() {
         <LogoHero width={300} />
         <Dividor />
         <div className="w-156">
-          <Box>
+          <Box extraMargin>
             <div className="flex flex-col p-8">
               <h2 className="text-xl mb-8">
                 Welcome to PathMaster, Game Master!
@@ -120,10 +120,12 @@ export default function Onboarding() {
         <Button
           text="Continue"
           onClick={handleSubmit}
-          enabled={
-            lengthStatus === CheckboxStatus.Checked &&
-            compositionStatus === CheckboxStatus.Checked &&
-            endStatus === CheckboxStatus.Checked
+          disabled={
+            !(
+              lengthStatus === CheckboxStatus.Checked &&
+              compositionStatus === CheckboxStatus.Checked &&
+              endStatus === CheckboxStatus.Checked
+            )
           }
         />
       </div>

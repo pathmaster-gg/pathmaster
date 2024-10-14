@@ -13,10 +13,12 @@ const config: Config = {
         foreground: "var(--foreground)",
         highlight: "#f5c35f",
         disabled: "#666666",
+        button: "#5e0000",
         error: "#df2e2e",
         "grayscale-500": "#878787",
         "grayscale-900": "#3d3d3d",
         "grayscale-999": "#161616",
+        "mask-background": "rgba(32, 32, 32, 0.80)",
       },
       width: {
         "68": "17rem",

@@ -1,5 +1,5 @@
 interface IProps {
-  enabled: boolean;
+  disabled?: boolean;
   text: string;
   onClick: Function;
 }
@@ -7,13 +7,13 @@ interface IProps {
 export default function Button(props: IProps) {
   return (
     <div
-      className={`flex w-44 h-12 bg-background items-center justify-center border select-none ${
-        props.enabled
-          ? "hover:bg-grayscale-900 border-highlight cursor-pointer"
-          : "border-grayscale-500 cursor-not-allowed text-disabled"
+      className={`flex w-44 h-12 bg-button items-center justify-center border select-none ${
+        props.disabled
+          ? "border-grayscale-500 cursor-not-allowed text-disabled"
+          : "hover:bg-grayscale-900 border-highlight cursor-pointer"
       }`}
       onClick={() => {
-        if (props.enabled) {
+        if (!props.disabled) {
           props.onClick();
         }
       }}
