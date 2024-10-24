@@ -22,6 +22,12 @@ export interface AdventureMetadata {
   cover_image: number;
 }
 
+export interface GameSessionMetadata {
+  id: number;
+  name: string;
+  adventure: AdventureMetadata;
+}
+
 export interface NewImage {
   id: number;
 }

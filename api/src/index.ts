@@ -4,6 +4,7 @@ import { handleGetInfo, handleOnboard } from "./account";
 import { handleGoogle } from "./oauth";
 import { handleCreateAdventure, handleGetMyAdventures } from "./adventure";
 import { handleGetImage, handleUploadImage } from "./image";
+import { handleCreateGameSession, handleGetMyGameSessions } from "./session";
 
 export default {
   async fetch(request, env, _ctx): Promise<Response> {
@@ -26,6 +27,8 @@ export default {
     router.post("/api/account/onboard", (req) => handleOnboard(req, env));
     router.post("/api/adventure", (req) => handleCreateAdventure(req, env));
     router.get("/api/adventure/mine", (req) => handleGetMyAdventures(req, env));
+    router.post("/api/session", (req) => handleCreateGameSession(req, env));
+    router.get("/api/session/mine", (req) => handleGetMyGameSessions(req, env));
     router.post("/api/image/:type", (req) => handleUploadImage(req, env));
     router.get("/api/image/:id", (req) => handleGetImage(req, env));
 

@@ -3,6 +3,7 @@
 -- https://developers.cloudflare.com/d1/reference/migrations/
 
 DROP TABLE IF EXISTS session;
+DROP TABLE IF EXISTS game_session;
 DROP TABLE IF EXISTS adventure;
 DROP TABLE IF EXISTS image;
 DROP TABLE IF EXISTS account;
@@ -42,4 +43,14 @@ CREATE TABLE adventure (
   cover INTEGER NOT NULL,
   FOREIGN KEY(creator) REFERENCES account(account_id),
   FOREIGN KEY(cover) REFERENCES image(image_id)
+);
+
+CREATE TABLE game_session (
+  session_id INTEGER PRIMARY KEY,
+  name TEXT NOT NULL,
+  create_time INTEGER NOT NULL,
+  creator INTEGER NOT NULL,
+  adventure INTEGER NOT NULL,
+  FOREIGN KEY(creator) REFERENCES account(account_id),
+  FOREIGN KEY(adventure) REFERENCES adventure(adventure_id)
 );
