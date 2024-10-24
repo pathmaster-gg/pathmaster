@@ -19,6 +19,7 @@ export interface AccountInfo {
 export interface AdventureMetadata {
   id: number;
   name: string;
+  cover_image: number;
 }
 
 export interface NewImage {
