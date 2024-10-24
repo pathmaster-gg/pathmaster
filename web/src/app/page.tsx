@@ -3,7 +3,7 @@
 import Image from "next/image";
 
 import LogoHero from "@/components/logo-hero";
-import Dividor from "@/components/divider";
+import Divider from "@/components/divider";
 import LinkButton from "@/components/link-button";
 import SocialButton from "@/components/social-button";
 import WelcomeHeader from "@/components/welcome-header";
@@ -22,7 +22,7 @@ export default function Home() {
       <WelcomeHeader button={true} />
       <div className="flex flex-col items-center">
         <LogoHero width={600} />
-        <Dividor />
+        <Divider />
         <p className="text-xl">Your trusted companion app for managing</p>
         <Image priority src={LogoPf2e} width={430} alt="Pathfinder 2e logo" />
         <div className="flex mt-16 gap-x-16">

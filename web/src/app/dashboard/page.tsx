@@ -13,6 +13,7 @@ import AdventureCover from "@/components/adventure-cover";
 import AddButton from "@/components/add-button";
 
 import ExampleAvatar from "@/images/example_avatar.png";
+import Divider from "@/components/divider";
 
 export default function Dashboard() {
   const identity = useContext(IdentityContext);
@@ -58,7 +59,7 @@ export default function Dashboard() {
       <div className="flex justify-center">
         <div className="flex grow items-start gap-6 max-w-screen-xl">
           <Box className="w-72">
-            <div className="flex flex-col gap-8 p-5">
+            <div className="flex flex-col gap-6 p-5">
               <h2 className="text-2xl">About</h2>
               <div className="flex flex-col items-center gap-3">
                 <div
@@ -71,6 +72,7 @@ export default function Dashboard() {
                 ></div>
                 <p className="text-sm">{identity.accountInfo?.username}</p>
               </div>
+              <Divider />
               <div className="flex flex-col items-stretch gap-3">
                 <ProfileRow
                   label="Adventures"

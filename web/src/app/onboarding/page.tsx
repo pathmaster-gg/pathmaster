@@ -8,7 +8,7 @@ import { getServerUrl } from "@/lib/constants/env";
 import { Session } from "@/lib/models";
 import WelcomeHeader from "@/components/welcome-header";
 import LogoHero from "@/components/logo-hero";
-import Dividor from "@/components/divider";
+import Divider from "@/components/divider";
 import Box from "@/components/box";
 import ValidationCheckbox, {
   CheckboxStatus,
@@ -80,8 +80,8 @@ export default function Onboarding() {
       <WelcomeHeader button={false} />
       <div className="flex flex-col items-center">
         <LogoHero width={300} />
-        <Dividor />
-        <div className="w-156">
+        <div className="flex flex-col gap-8 w-156 my-8">
+          <Divider />
           <Box extraMargin>
             <div className="flex flex-col p-8">
               <h2 className="text-xl mb-8">
@@ -115,8 +115,8 @@ export default function Onboarding() {
               />
             </div>
           </Box>
+          <Divider />
         </div>
-        <Dividor />
         <Button
           text="Continue"
           onClick={handleSubmit}

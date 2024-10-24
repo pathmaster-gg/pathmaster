@@ -1,15 +1,8 @@
-import Image from "next/image";
-
-import DividorSvg from "@/images/divider.svg";
-
-export default function Dividor() {
+export default function Divider() {
   return (
-    <Image
-      priority
-      src={DividorSvg}
-      alt="Horizontal divider"
-      className="py-7"
-      width={640}
-    />
+    <div className="relative w-full flex flex-col items-center justify-center">
+      <div className="absolute w-full h-px bg-highlight"></div>
+      <div className="absolute w-2 h-2 bg-highlight rotate-45"></div>
+    </div>
   );
 }
