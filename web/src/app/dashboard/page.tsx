@@ -10,6 +10,7 @@ import Header from "@/components/header";
 import ProfileRow from "@/components/profile-row";
 import SessionRow from "@/components/session-row";
 import AdventureCover from "@/components/adventure-cover";
+import AddButton from "@/components/add-button";
 
 import ExampleAvatar from "@/images/example_avatar.png";
 
@@ -100,7 +101,10 @@ export default function Dashboard() {
             </Box>
             <Box>
               <div className="p-5">
-                <h2 className="text-2xl">Adventures</h2>
+                <div className="flex items-center justify-between">
+                  <h2 className="text-2xl">Adventures</h2>
+                  <AddButton />
+                </div>
                 <div className="grid grid-cols-3 gap-y-10 mt-10">
                   {adventures &&
                     adventures.map((adventure) => (
