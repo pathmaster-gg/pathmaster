@@ -4,6 +4,7 @@
 
 DROP TABLE IF EXISTS session;
 DROP TABLE IF EXISTS adventure;
+DROP TABLE IF EXISTS image;
 DROP TABLE IF EXISTS account;
 
 CREATE TABLE account (
@@ -25,10 +26,20 @@ CREATE TABLE session (
   FOREIGN KEY(account_id) REFERENCES account(account_id)
 );
 
+CREATE TABLE image (
+  image_id INTEGER PRIMARY KEY,
+  owner INTEGER NOT NULL,
+  type INTEGER NOT NULL,
+  data BLOB NOT NULL,
+  FOREIGN KEY(owner) REFERENCES account(account_id)
+);
+
 CREATE TABLE adventure (
   adventure_id INTEGER PRIMARY KEY,
   name TEXT NOT NULL,
   create_time INTEGER NOT NULL,
-  creator INTEGER,
-  FOREIGN KEY(creator) REFERENCES account(account_id)
+  creator INTEGER NOT NULL,
+  cover INTEGER NOT NULL,
+  FOREIGN KEY(creator) REFERENCES account(account_id),
+  FOREIGN KEY(cover) REFERENCES image(image_id)
 );

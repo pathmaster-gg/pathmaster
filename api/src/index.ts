@@ -3,6 +3,7 @@ import { Router } from "itty-router";
 import { handleGetInfo, handleOnboard } from "./account";
 import { handleGoogle } from "./oauth";
 import { handleGetFromAuthor } from "./adventure";
+import { handleGetImage, handleUploadImage } from "./image";
 
 export default {
   async fetch(request, env, _ctx): Promise<Response> {
@@ -26,6 +27,8 @@ export default {
     router.get("/api/adventure/owner/:owner", (req) =>
       handleGetFromAuthor(req, env),
     );
+    router.put("/api/image/:type", (req) => handleUploadImage(req, env));
+    router.get("/api/image/:id", (req) => handleGetImage(req, env));
 
     // 404 fallback
     router.all("*", () => new Response("404, not found!", { status: 404 }));

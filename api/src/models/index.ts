@@ -3,6 +3,10 @@ export enum SessionType {
   Normal = "normal",
 }
 
+export enum ImageType {
+  AdventureCover = "adventure_cover",
+}
+
 export interface Session {
   type: SessionType;
   token: string;
@@ -15,4 +19,8 @@ export interface AccountInfo {
 export interface AdventureMetadata {
   id: number;
   name: string;
+}
+
+export interface NewImage {
+  id: number;
 }
