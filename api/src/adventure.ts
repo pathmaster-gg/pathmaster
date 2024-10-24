@@ -54,24 +54,21 @@ export async function handleCreateAdventure(
   );
 }
 
-export async function handleGetFromAuthor(
+export async function handleGetMyAdventures(
   request: IRequest,
   env: Env,
 ): Promise<Response> {
-  if (!request.params.owner || !parseInt(request.params.owner)) {
-    return new Response("missing `owner`", {
-      headers: {
-        "Access-Control-Allow-Origin": "*",
-      },
-      status: 400,
-    });
+  let accountId: number;
+  try {
+    accountId = await assertNormal(request, env);
+  } catch (ex) {
+    return (ex as AuthError).response;
   }
 
-  const ownerId = parseInt(request.params.owner);
   const session = await env.DB.prepare(
     `SELECT adventure_id, name, cover FROM adventure WHERE creator = ?`,
   )
-    .bind(ownerId)
+    .bind(accountId)
     .all();
 
   return new Response(
