@@ -22,7 +22,9 @@ export default function Home() {
       <WelcomeHeader button={true} />
       <div className="flex flex-col items-center">
         <LogoHero width={600} />
-        <Divider />
+        <div className="flex flex-col items-stretch w-156 my-9">
+          <Divider />
+        </div>
         <p className="text-xl">Your trusted companion app for managing</p>
         <Image priority src={LogoPf2e} width={430} alt="Pathfinder 2e logo" />
         <div className="flex mt-16 gap-x-16">
