@@ -1,10 +1,10 @@
-import Image, { StaticImageData } from "next/image";
+import Image from "next/image";
 
 import Box from "./box";
 
 interface IProps {
   name: string;
-  image: StaticImageData;
+  image: string;
 }
 
 export default function AdventureCover(props: IProps) {
@@ -16,6 +16,7 @@ export default function AdventureCover(props: IProps) {
         alt="Adventure cover image"
         className="border-t border-l border-r border-highlight"
         width={200}
+        height={200}
       />
       <Box className="w-64">
         <div className="flex justify-center p-2">

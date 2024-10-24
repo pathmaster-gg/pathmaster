@@ -11,3 +11,15 @@ export interface Session {
 export interface AccountInfo {
   username: string;
 }
+
+export interface AdventureMetadata {
+  id: number;
+  name: string;
+  cover_image: number;
+}
+
+export interface GameSessionMetadata {
+  id: number;
+  name: string;
+  adventure: AdventureMetadata;
+}
