@@ -15,6 +15,7 @@ export interface AccountInfo {
 export interface AdventureMetadata {
   id: number;
   name: string;
+  description: string | null;
   cover_image: number;
 }
 

@@ -2,9 +2,18 @@ import { Router } from "itty-router";
 
 import { handleGetInfo, handleOnboard } from "./account";
 import { handleGoogle } from "./oauth";
-import { handleCreateAdventure, handleGetMyAdventures } from "./adventure";
+import {
+  handleCreateAdventure,
+  handleGetAdventure,
+  handleGetMyAdventures,
+  handleUpdateAdventure,
+} from "./adventure";
 import { handleGetImage, handleUploadImage } from "./image";
 import { handleCreateGameSession, handleGetMyGameSessions } from "./session";
+import { handleCreateQuest } from "./quest";
+import { handleCreateNpc } from "./npc";
+import { handleCreateCreature } from "./creature";
+import { handleCreateItem } from "./item";
 
 export default {
   async fetch(request, env, _ctx): Promise<Response> {
@@ -27,6 +36,14 @@ export default {
     router.post("/api/account/onboard", (req) => handleOnboard(req, env));
     router.post("/api/adventure", (req) => handleCreateAdventure(req, env));
     router.get("/api/adventure/mine", (req) => handleGetMyAdventures(req, env));
+    router.get("/api/adventure/:id", (req) => handleGetAdventure(req, env));
+    router.patch("/api/adventure/:id", (req) =>
+      handleUpdateAdventure(req, env),
+    );
+    router.post("/api/quest", (req) => handleCreateQuest(req, env));
+    router.post("/api/npc", (req) => handleCreateNpc(req, env));
+    router.post("/api/creature", (req) => handleCreateCreature(req, env));
+    router.post("/api/item", (req) => handleCreateItem(req, env));
     router.post("/api/session", (req) => handleCreateGameSession(req, env));
     router.get("/api/session/mine", (req) => handleGetMyGameSessions(req, env));
     router.post("/api/image/:type", (req) => handleUploadImage(req, env));

@@ -66,7 +66,7 @@ export async function handleGetMyGameSessions(
   }
 
   const session = await env.DB.prepare(
-    `SELECT session_id, game_session.name AS session_name, adventure, adventure.name AS adventure_name, cover FROM game_session JOIN adventure ON (game_session.adventure = adventure.adventure_id) WHERE game_session.creator = ?`,
+    `SELECT session_id, game_session.name AS session_name, adventure, adventure.name AS adventure_name, cover, description FROM game_session JOIN adventure ON (game_session.adventure = adventure.adventure_id) WHERE game_session.creator = ?`,
   )
     .bind(accountId)
     .all();
@@ -80,6 +80,7 @@ export async function handleGetMyGameSessions(
           adventure: {
             id: row["adventure"],
             name: row["adventure_name"],
+            description: row["description"],
             cover_image: row["cover"],
           },
         };

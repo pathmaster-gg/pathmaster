@@ -4,6 +4,10 @@
 
 DROP TABLE IF EXISTS session;
 DROP TABLE IF EXISTS game_session;
+DROP TABLE IF EXISTS quest;
+DROP TABLE IF EXISTS npc;
+DROP TABLE IF EXISTS creature;
+DROP TABLE IF EXISTS item;
 DROP TABLE IF EXISTS adventure;
 DROP TABLE IF EXISTS image;
 DROP TABLE IF EXISTS account;
@@ -41,8 +45,43 @@ CREATE TABLE adventure (
   create_time INTEGER NOT NULL,
   creator INTEGER NOT NULL,
   cover INTEGER NOT NULL,
+  description TEXT,
+  background TEXT,
   FOREIGN KEY(creator) REFERENCES account(account_id),
   FOREIGN KEY(cover) REFERENCES image(image_id)
+);
+
+CREATE TABLE quest (
+  quest_id INTEGER PRIMARY KEY,
+  adventure_id INTEGER NOT NULL,
+  title TEXT NOT NULL,
+  create_time INTEGER NOT NULL,
+  description TEXT NOT NULL,
+  FOREIGN KEY(adventure_id) REFERENCES adventure(adventure_id)
+);
+
+CREATE TABLE npc (
+  npc_id INTEGER PRIMARY KEY,
+  adventure_id INTEGER NOT NULL,
+  name TEXT NOT NULL,
+  create_time INTEGER NOT NULL,
+  FOREIGN KEY(adventure_id) REFERENCES adventure(adventure_id)
+);
+
+CREATE TABLE creature (
+  creature_id INTEGER PRIMARY KEY,
+  adventure_id INTEGER NOT NULL,
+  name TEXT NOT NULL,
+  create_time INTEGER NOT NULL,
+  FOREIGN KEY(adventure_id) REFERENCES adventure(adventure_id)
+);
+
+CREATE TABLE item (
+  item_id INTEGER PRIMARY KEY,
+  adventure_id INTEGER NOT NULL,
+  name TEXT NOT NULL,
+  create_time INTEGER NOT NULL,
+  FOREIGN KEY(adventure_id) REFERENCES adventure(adventure_id)
 );
 
 CREATE TABLE game_session (
