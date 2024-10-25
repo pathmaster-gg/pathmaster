@@ -29,7 +29,11 @@ export default function Home() {
         <Image priority src={LogoPf2e} width={430} alt="Pathfinder 2e logo" />
         <div className="flex mt-16 gap-x-16">
           <LinkButton href="/wiki" icon={JournalSvg} text="Rules & Guides" />
-          <LinkButton href="/modules" icon={BoxesSvg} text="Adventure Hub" />
+          <LinkButton
+            href="/adventure/hub"
+            icon={BoxesSvg}
+            text="Adventure Hub"
+          />
         </div>
         <div className="flex mt-12 gap-x-8">
           <SocialButton href="https://discord.com/" icon={DiscordSvg} />
