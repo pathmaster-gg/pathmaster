@@ -2,6 +2,7 @@
 
 import AdventureCover from "@/components/adventure-cover";
 import Carousel from "@/components/carousel";
+import CarouselAdventure from "@/components/carousel-adventure";
 import Divider from "@/components/divider";
 import Header from "@/components/header";
 
@@ -19,7 +20,13 @@ export default function AdventureHub() {
           </div>
           <Divider />
           <div className="flex h-120">
-            <Carousel />
+            <Carousel
+              items={[
+                <CarouselAdventure key="0" />,
+                <CarouselAdventure key="1" />,
+                <CarouselAdventure key="2" />,
+              ]}
+            />
           </div>
           <div className="flex flex-col gap-16">
             <Divider />
