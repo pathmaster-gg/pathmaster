@@ -23,3 +23,7 @@ export interface GameSessionMetadata {
   name: string;
   adventure: AdventureMetadata;
 }
+
+export interface NewImage {
+  id: number;
+}
