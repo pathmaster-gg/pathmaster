@@ -1,12 +1,40 @@
 "use client";
 
+import { useContext, useState } from "react";
+import { useRouter } from "next/navigation";
+
+import { IdentityContext } from "@/app/lib/context/identity";
+import { getServerUrl } from "@/lib/constants/env";
 import Box from "@/components/box";
 import Button from "@/components/button";
 import Divider from "@/components/divider";
 import Header from "@/components/header";
 import ImageUploader from "@/components/image-uploader";
+import { AdventureMetadata } from "@/lib/models";
 
 export default function NewAdventure() {
+  const router = useRouter();
+
+  const identity = useContext(IdentityContext);
+
+  const [name, setName] = useState<string>("");
+  const [coverImageId, setCoverImageId] = useState<number | undefined>();
+
+  const handleCreate = async () => {
+    if (identity.session) {
+      const createResponse = await fetch(getServerUrl("/api/adventure"), {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${identity.session.token}`,
+        },
+        body: JSON.stringify({ name, cover_image_id: coverImageId }),
+      });
+      const createBody = (await createResponse.json()) as AdventureMetadata;
+
+      router.push(`/adventure/${createBody.id}`);
+    }
+  };
+
   return (
     <div className="flex flex-col gap-8 pb-8">
       <Header pageName="New Adventure" />
@@ -24,12 +52,14 @@ export default function NewAdventure() {
                     className="flex-grow px-3 py-2 rounded text-black text-base"
                     type="text"
                     placeholder="Name of the new adventure"
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
                   />
                 </div>
                 <div className="flex flex-col gap-6">
                   <p className="text-sm">Cover Image</p>
                   <div className="flex justify-center">
-                    <ImageUploader onImageIdChange={() => {}} />
+                    <ImageUploader onImageIdChange={setCoverImageId} />
                   </div>
                 </div>
               </div>
@@ -37,7 +67,11 @@ export default function NewAdventure() {
           </Box>
           <Divider />
         </div>
-        <Button text="Create" onClick={() => {}} />
+        <Button
+          text="Create"
+          disabled={!name || !coverImageId}
+          onClick={handleCreate}
+        />
       </div>
     </div>
   );

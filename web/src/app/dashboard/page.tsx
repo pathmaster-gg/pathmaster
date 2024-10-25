@@ -105,7 +105,7 @@ export default function Dashboard() {
               <div className="p-5">
                 <div className="flex items-center justify-between">
                   <h2 className="text-2xl">Adventures</h2>
-                  <AddButton />
+                  <AddButton link="/adventure/new" />
                 </div>
                 <div className="grid grid-cols-3 gap-y-10 mt-10">
                   {adventures &&
