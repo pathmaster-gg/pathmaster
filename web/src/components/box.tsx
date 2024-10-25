@@ -11,8 +11,8 @@ export default function Box(props: IProps) {
     <div
       className={`${props.extraMargin && "p-4 bg-background"} ${props.className}`}
     >
-      <div className="p-1.5 border border-highlight">
-        <div className="bg-background border border-highlight">
+      <div className="h-full p-1.5 border border-highlight">
+        <div className="h-full bg-background border border-highlight">
           {props.children}
         </div>
       </div>

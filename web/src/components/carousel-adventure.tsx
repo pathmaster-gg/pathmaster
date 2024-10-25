@@ -1,3 +1,5 @@
+"use client";
+
 import Image from "next/image";
 
 import ExampleCover from "@/images/cover_kingmaker.jpg";
