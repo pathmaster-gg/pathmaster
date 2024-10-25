@@ -1,10 +1,11 @@
 import Image from "next/image";
+import { StaticImport } from "next/dist/shared/lib/get-img-props";
 
 import Box from "./box";
 
 interface IProps {
   name: string;
-  image: string;
+  image: string | StaticImport;
 }
 
 export default function AdventureCover(props: IProps) {

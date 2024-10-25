@@ -1,5 +1,6 @@
 import Image from "next/image";
 import { StaticImport } from "next/dist/shared/lib/get-img-props";
+import Link from "next/link";
 
 interface IProps {
   href: string;
@@ -9,7 +10,7 @@ interface IProps {
 
 export default function LinkButton(props: IProps) {
   return (
-    <a href={props.href} rel="noopener noreferrer">
+    <Link href={props.href} rel="noopener noreferrer">
       <div className="p-2 bg-background hover:bg-grayscale-900">
         <div className="p-1 border border-highlight">
           <div className="flex w-68 h-16 gap-x-4 items-center justify-center border border-highlight">
@@ -18,6 +19,6 @@ export default function LinkButton(props: IProps) {
           </div>
         </div>
       </div>
-    </a>
+    </Link>
   );
 }

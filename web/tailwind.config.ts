@@ -20,7 +20,8 @@ const config: Config = {
         "grayscale-999": "#161616",
         "mask-background": "rgba(32, 32, 32, 0.80)",
       },
-      width: {
+      spacing: {
+        "5.4": "1.35rem",
         "68": "17rem",
         "156": "39rem",
       },
