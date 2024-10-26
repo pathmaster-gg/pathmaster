@@ -1,7 +1,7 @@
 import { ReactNode } from "react";
 
 interface IProps {
-  children: ReactNode[];
+  children?: ReactNode[];
 }
 
 export default function List(props: IProps) {

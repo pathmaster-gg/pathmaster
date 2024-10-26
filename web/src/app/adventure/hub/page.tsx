@@ -22,9 +22,24 @@ export default function AdventureHub() {
           <div className="flex h-120">
             <Carousel
               items={[
-                <CarouselAdventure key="0" />,
-                <CarouselAdventure key="1" />,
-                <CarouselAdventure key="2" />,
+                <CarouselAdventure
+                  key="0"
+                  name="Kingmaker"
+                  cover={ExampleCover}
+                  detailsLink="/adventure?id=1"
+                />,
+                <CarouselAdventure
+                  key="1"
+                  name="Hellknight Hill"
+                  cover={ExampleCover}
+                  detailsLink="/adventure?id=2"
+                />,
+                <CarouselAdventure
+                  key="2"
+                  name="Prey for Death"
+                  cover={ExampleCover}
+                  detailsLink="/adventure?id=3"
+                />,
               ]}
             />
           </div>

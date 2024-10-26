@@ -1,11 +1,54 @@
+"use client";
+
+import { useContext, useEffect, useState } from "react";
+import { useSearchParams } from "next/navigation";
+
 import AdventurePartCard from "@/components/adventure-part-card";
 import Box from "@/components/box";
 import CarouselAdventure from "@/components/carousel-adventure";
 import Header from "@/components/header";
 import List from "@/components/list";
 import ListItem from "@/components/list-item";
+import { Adventure } from "@/lib/models";
+import { IdentityContext } from "../lib/context/identity";
+import { getServerUrl } from "@/lib/constants/env";
 
 export default function AdventureDetails() {
+  const identity = useContext(IdentityContext);
+
+  const searchParams = useSearchParams();
+
+  const id = parseInt(searchParams.get("id") as string);
+
+  const [adventure, setAdventure] = useState<Adventure | undefined>(undefined);
+
+  const isOwner = adventure ? adventure.is_owner : false;
+
+  const backgroundPars: string[] | undefined = adventure
+    ? adventure.background
+      ? adventure.background.split("\n")
+      : []
+    : undefined;
+
+  const loadAdventure = async () => {
+    const adventureResponse = await fetch(
+      getServerUrl(`/api/adventure/${id}`),
+      {
+        headers: identity.session
+          ? {
+              Authorization: `Bearer ${identity.session.token}`,
+            }
+          : {},
+      },
+    );
+    const adventureBody = await adventureResponse.json();
+    setAdventure(adventureBody);
+  };
+
+  useEffect(() => {
+    loadAdventure();
+  }, [identity.session]);
+
   return (
     <div className="flex flex-col gap-8 pb-16">
       <Header pageName="Adventure" />
@@ -13,51 +56,76 @@ export default function AdventureDetails() {
         <div className="flex flex-col grow max-w-screen-xl gap-6">
           <Box>
             <div className="p-8">
-              <CarouselAdventure />
+              <CarouselAdventure
+                name={adventure?.name ?? ""}
+                cover={
+                  adventure
+                    ? getServerUrl(`/api/image/${adventure.cover_image}`)
+                    : ""
+                }
+                description={adventure?.description}
+                edit={isOwner}
+              />
             </div>
           </Box>
           <div className="grid grid-cols-2 gap-x-6">
-            <AdventurePartCard title="Background" large edit>
-              <p className="px-6">
-                When the mysterious Gauntlight, an eerie landlocked lighthouse,
-                glows with baleful light, the people of Otari know something
-                terrible is beginning. The town&apos;s newest heroes must
-                venture into the ruins around the lighthouse and delve the
-                dungeon levels far beneath it to discover the evil the
-                Gauntlight heralds. Hideous monsters, deadly traps, and
-                mysterious ghosts all await the heroes who dare to enter the
-                sprawling megadungeon called the Abomination Vaults!
-              </p>
+            <AdventurePartCard
+              title="Background"
+              large
+              button={isOwner ? "edit" : undefined}
+            >
+              {backgroundPars &&
+                backgroundPars.map((p) => (
+                  <p key={p} className="px-6">
+                    {p}
+                  </p>
+                ))}
             </AdventurePartCard>
-            <AdventurePartCard title="Quests" large edit>
+            <AdventurePartCard
+              title="Quests"
+              large
+              button={isOwner ? "add" : undefined}
+            >
               <List>
-                <ListItem content="Investigate the strange lights and magical disturbances emanating from the Gauntlight lighthouse." />
-                <ListItem content="Find out why undead are emerging from the Gauntlight." />
+                {adventure &&
+                  adventure.quests.map((quest) => (
+                    <ListItem key={quest.id} content={quest.title} />
+                  ))}
               </List>
             </AdventurePartCard>
           </div>
           <div className="grid grid-cols-3 gap-x-6">
-            <AdventurePartCard title="NPCs" edit>
+            <AdventurePartCard
+              title="NPCs"
+              button={isOwner ? "add" : undefined}
+            >
               <List>
-                <ListItem content="Otari Ilvashti" />
-                <ListItem content="Wrin Sivinxi" />
-                <ListItem content="Mayor Oseph Menhemes" />
-                <ListItem content="Morlibint" />
+                {adventure &&
+                  adventure.npcs.map((npc) => (
+                    <ListItem key={npc.id} content={npc.name} />
+                  ))}
               </List>
             </AdventurePartCard>
-            <AdventurePartCard title="Creatures" edit>
+            <AdventurePartCard
+              title="Creatures"
+              button={isOwner ? "add" : undefined}
+            >
               <List>
-                <ListItem content="Corpselight" />
-                <ListItem content="Flickerwisp" />
-                <ListItem content="Morlock Scavenger" />
-                <ListItem content="Morlock Engineer" />
+                {adventure &&
+                  adventure.creatures.map((creature) => (
+                    <ListItem key={creature.id} content={creature.name} />
+                  ))}
               </List>
             </AdventurePartCard>
-            <AdventurePartCard title="Items" edit>
+            <AdventurePartCard
+              title="Items"
+              button={isOwner ? "add" : undefined}
+            >
               <List>
-                <ListItem content="Mysterious Relic" />
-                <ListItem content="Healing potion" />
-                <ListItem content="Gold" />
+                {adventure &&
+                  adventure.items.map((item) => (
+                    <ListItem key={item.id} content={item.name} />
+                  ))}
               </List>
             </AdventurePartCard>
           </div>
