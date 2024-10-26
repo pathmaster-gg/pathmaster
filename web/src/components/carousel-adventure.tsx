@@ -43,7 +43,7 @@ export default function CarouselAdventure(props: IProps) {
         <div className="flex gap-6">
           <Button text="Start Adventure" onClick={() => {}} />
           {props.detailsLink && (
-            <Button text="View Details" onClick={() => {}} />
+            <Button text="View Details" link={props.detailsLink} />
           )}
         </div>
       </div>

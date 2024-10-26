@@ -1,11 +1,14 @@
+import Link from "next/link";
+
 interface IProps {
   disabled?: boolean;
   text: string;
-  onClick: Function;
+  onClick?: Function;
+  link?: string;
 }
 
 export default function Button(props: IProps) {
-  return (
+  const button = (
     <div
       className={`flex min-w-44 h-12 px-5 bg-button items-center justify-center border select-none ${
         props.disabled
@@ -13,7 +16,7 @@ export default function Button(props: IProps) {
           : "hover:bg-grayscale-900 border-highlight cursor-pointer"
       }`}
       onClick={() => {
-        if (!props.disabled) {
+        if (!props.disabled && props.onClick) {
           props.onClick();
         }
       }}
@@ -21,4 +24,10 @@ export default function Button(props: IProps) {
       <span className="text-lg">{props.text}</span>
     </div>
   );
+
+  if (props.link) {
+    return <Link href={props.link}>{button}</Link>;
+  } else {
+    return button;
+  }
 }

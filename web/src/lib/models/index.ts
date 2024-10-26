@@ -58,3 +58,9 @@ export interface AdventureItem {
   id: number;
   name: string;
 }
+
+export interface AdventureHub {
+  featured: AdventureMetadata[];
+  popular: AdventureMetadata[];
+  latest: AdventureMetadata[];
+}

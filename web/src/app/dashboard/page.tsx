@@ -116,6 +116,7 @@ export default function Dashboard() {
                         image={getServerUrl(
                           `/api/image/${adventure.cover_image}`,
                         )}
+                        link={`/adventure?id=${adventure.id}`}
                       />
                     ))}
                 </div>

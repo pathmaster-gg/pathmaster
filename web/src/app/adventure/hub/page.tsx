@@ -1,14 +1,29 @@
 "use client";
 
+import { useEffect, useState } from "react";
+
 import AdventureCover from "@/components/adventure-cover";
 import Carousel from "@/components/carousel";
 import CarouselAdventure from "@/components/carousel-adventure";
 import Divider from "@/components/divider";
 import Header from "@/components/header";
-
-import ExampleCover from "@/images/cover_kingmaker.jpg";
+import { AdventureHub as AdventureHubModel } from "@/lib/models";
+import { getServerUrl } from "@/lib/constants/env";
 
 export default function AdventureHub() {
+  const [hub, setHub] = useState<AdventureHubModel | undefined>();
+
+  const loadHub = async () => {
+    const hubResponse = await fetch(getServerUrl("/api/adventure/hub"));
+    const hubBody = (await hubResponse.json()) as AdventureHubModel;
+
+    setHub(hubBody);
+  };
+
+  useEffect(() => {
+    loadHub();
+  }, []);
+
   return (
     <div className="flex flex-col gap-8 pb-16">
       <Header pageName="Adventure Hub" />
@@ -21,26 +36,19 @@ export default function AdventureHub() {
           <Divider />
           <div className="flex h-120">
             <Carousel
-              items={[
-                <CarouselAdventure
-                  key="0"
-                  name="Kingmaker"
-                  cover={ExampleCover}
-                  detailsLink="/adventure?id=1"
-                />,
-                <CarouselAdventure
-                  key="1"
-                  name="Hellknight Hill"
-                  cover={ExampleCover}
-                  detailsLink="/adventure?id=2"
-                />,
-                <CarouselAdventure
-                  key="2"
-                  name="Prey for Death"
-                  cover={ExampleCover}
-                  detailsLink="/adventure?id=3"
-                />,
-              ]}
+              items={
+                hub
+                  ? hub.featured.map((item) => (
+                      <CarouselAdventure
+                        key={item.id}
+                        name={item.name}
+                        cover={getServerUrl(`/api/image/${item.cover_image}`)}
+                        description={item.description}
+                        detailsLink={`/adventure?id=${item.id}`}
+                      />
+                    ))
+                  : []
+              }
             />
           </div>
           <div className="flex flex-col gap-16">
@@ -48,32 +56,28 @@ export default function AdventureHub() {
             <div className="flex flex-col gap-12 px-6">
               <h2 className="text-3xl">Most Popular</h2>
               <div className="grid grid-cols-4">
-                <AdventureCover name="Kingmaker" image={ExampleCover} />
-                <AdventureCover
-                  name="The Great Toy Heist"
-                  image={ExampleCover}
-                />
-                <AdventureCover name="Prey for Death" image={ExampleCover} />
-                <AdventureCover
-                  name="Abomination Vaults"
-                  image={ExampleCover}
-                />
+                {hub?.popular.map((item) => (
+                  <AdventureCover
+                    key={item.id}
+                    name={item.name}
+                    image={getServerUrl(`/api/image/${item.cover_image}`)}
+                    link={`/adventure?id=${item.id}`}
+                  />
+                ))}
               </div>
             </div>
             <Divider />
             <div className="flex flex-col gap-12 px-6">
               <h2 className="text-3xl">Recently Added</h2>
               <div className="grid grid-cols-4">
-                <AdventureCover name="Kingmaker" image={ExampleCover} />
-                <AdventureCover
-                  name="The Great Toy Heist"
-                  image={ExampleCover}
-                />
-                <AdventureCover name="Prey for Death" image={ExampleCover} />
-                <AdventureCover
-                  name="Abomination Vaults"
-                  image={ExampleCover}
-                />
+                {hub?.latest.map((item) => (
+                  <AdventureCover
+                    key={item.id}
+                    name={item.name}
+                    image={getServerUrl(`/api/image/${item.cover_image}`)}
+                    link={`/adventure?id=${item.id}`}
+                  />
+                ))}
               </div>
             </div>
           </div>
