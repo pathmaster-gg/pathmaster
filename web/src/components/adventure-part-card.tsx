@@ -10,6 +10,7 @@ interface IProps {
   large?: boolean;
   button?: "edit" | "add";
   children: ReactNode | ReactNode[];
+  onEdit?: Function;
 }
 
 export default function AdventurePartCard(props: IProps) {
@@ -18,7 +19,7 @@ export default function AdventurePartCard(props: IProps) {
       <div className="flex flex-col h-full gap-4">
         <div className="flex items-center justify-between pt-4 px-6">
           <h3 className="text-2xl">{props.title}</h3>
-          {props.button === "edit" && <EditButton />}
+          {props.button === "edit" && <EditButton onClick={props.onEdit} />}
           {props.button === "add" && <AddButton />}
         </div>
         <Divider />

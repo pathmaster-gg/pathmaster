@@ -22,8 +22,42 @@ export default function AdventureDetails() {
   const id = parseInt(searchParams.get("id") as string);
 
   const [adventure, setAdventure] = useState<Adventure | undefined>(undefined);
+  const [editingDescription, setEditingDescription] = useState<boolean>(false);
+  const [editingBackground, setEditingBackground] = useState<boolean>(false);
 
   const isOwner = adventure ? adventure.is_owner : false;
+
+  const handleDescriptionEdit = async (value: string) => {
+    await fetch(getServerUrl(`/api/adventure/${id}`), {
+      method: "PATCH",
+      headers: {
+        Authorization: `Bearer ${identity.session!.token}`,
+      },
+      body: JSON.stringify({
+        description: value,
+      }),
+    });
+
+    setEditingDescription(false);
+
+    await loadAdventure();
+  };
+
+  const handleBackgroundEdit = async (value: string) => {
+    await fetch(getServerUrl(`/api/adventure/${id}`), {
+      method: "PATCH",
+      headers: {
+        Authorization: `Bearer ${identity.session!.token}`,
+      },
+      body: JSON.stringify({
+        background: value,
+      }),
+    });
+
+    setEditingBackground(false);
+
+    await loadAdventure();
+  };
 
   const backgroundPars: string[] | undefined = adventure
     ? adventure.background
@@ -65,7 +99,7 @@ export default function AdventureDetails() {
                     : ""
                 }
                 description={adventure?.description}
-                edit={isOwner}
+                onEdit={isOwner ? () => setEditingDescription(true) : undefined}
               />
             </div>
           </Box>
@@ -74,6 +108,7 @@ export default function AdventureDetails() {
               title="Background"
               large
               button={isOwner ? "edit" : undefined}
+              onEdit={() => setEditingBackground(true)}
             >
               {backgroundPars &&
                 backgroundPars.map((p) => (
@@ -132,7 +167,24 @@ export default function AdventureDetails() {
           </div>
         </div>
       </div>
-      <TextEditPopup />
+      {adventure && editingDescription && (
+        <TextEditPopup
+          title="Edit Description"
+          prompt="Set a new description for your adventure:"
+          onClose={() => setEditingDescription(false)}
+          initValue={adventure.description ?? ""}
+          onSubmit={handleDescriptionEdit}
+        />
+      )}
+      {adventure && editingBackground && (
+        <TextEditPopup
+          title="Edit Background"
+          prompt="Set a new background story for your adventure:"
+          onClose={() => setEditingBackground(false)}
+          initValue={adventure.background ?? ""}
+          onSubmit={handleBackgroundEdit}
+        />
+      )}
     </div>
   );
 }

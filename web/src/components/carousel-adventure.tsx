@@ -11,7 +11,7 @@ interface IProps {
   cover: string | StaticImport;
   description?: string | null;
   detailsLink?: string;
-  edit?: boolean;
+  onEdit?: Function;
 }
 
 export default function CarouselAdventure(props: IProps) {
@@ -26,11 +26,11 @@ export default function CarouselAdventure(props: IProps) {
         height={400}
         alt="Adventure cover"
       />
-      <div className="flex flex-col gap-6">
+      <div className="flex flex-col grow gap-6">
         <div className="flex flex-col gap-4">
           <div className="flex items-center justify-between">
             <h3 className="text-3xl">{props.name}</h3>
-            {props.edit && <EditButton />}
+            {props.onEdit && <EditButton onClick={props.onEdit} />}
           </div>
           <div className="flex flex-col gap-3">
             {pars.map((p) => (
