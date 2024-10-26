@@ -28,6 +28,7 @@ export default {
           headers: {
             "Access-Control-Allow-Origin": "*",
             "Access-Control-Allow-Headers": "Authorization",
+            "Access-Control-Allow-Methods": "POST,PATCH",
           },
         }),
     );
