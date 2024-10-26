@@ -13,6 +13,7 @@ import { Adventure } from "@/lib/models";
 import { IdentityContext } from "../lib/context/identity";
 import { getServerUrl } from "@/lib/constants/env";
 import TextEditPopup from "@/components/text-edit-popup";
+import QuestPopup from "@/components/quest-popup";
 
 export default function AdventureDetails() {
   const identity = useContext(IdentityContext);
@@ -185,6 +186,7 @@ export default function AdventureDetails() {
           onSubmit={handleBackgroundEdit}
         />
       )}
+      <QuestPopup />
     </div>
   );
 }
