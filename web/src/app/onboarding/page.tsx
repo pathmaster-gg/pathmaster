@@ -93,7 +93,7 @@ export default function Onboarding() {
               </p>
               <div className="flex items-center mb-8 gap-4">
                 <input
-                  className="flex-grow px-3 py-2 rounded text-black text-base"
+                  className="flex-grow px-3 py-2 rounded text-black text-base bg-grayscale-200"
                   type="text"
                   value={username}
                   onChange={(e) => setUsername(e.target.value)}
