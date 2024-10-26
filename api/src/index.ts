@@ -5,6 +5,7 @@ import { handleGoogle } from "./oauth";
 import {
   handleCreateAdventure,
   handleGetAdventure,
+  handleGetAdventureHub,
   handleGetMyAdventures,
   handleUpdateAdventure,
 } from "./adventure";
@@ -36,6 +37,7 @@ export default {
     router.post("/api/account/onboard", (req) => handleOnboard(req, env));
     router.post("/api/adventure", (req) => handleCreateAdventure(req, env));
     router.get("/api/adventure/mine", (req) => handleGetMyAdventures(req, env));
+    router.get("/api/adventure/hub", (req) => handleGetAdventureHub(req, env));
     router.get("/api/adventure/:id", (req) => handleGetAdventure(req, env));
     router.patch("/api/adventure/:id", (req) =>
       handleUpdateAdventure(req, env),

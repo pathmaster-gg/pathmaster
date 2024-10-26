@@ -161,6 +161,61 @@ export async function handleGetMyAdventures(
   );
 }
 
+export async function handleGetAdventureHub(
+  _: IRequest,
+  env: Env,
+): Promise<Response> {
+  // Temporary hard-coded featured adventures
+  // TODO: add admin API for setting featured adventures
+  const featured = await env.DB.prepare(
+    "SELECT adventure_id, name, cover, description FROM adventure LIMIT 4",
+  ).all();
+
+  // Ranked by game session count
+  const popular = await env.DB.prepare(
+    "SELECT id, name, cover, description FROM (SELECT adventure_id AS id FROM adventure JOIN game_session ON (adventure_id = adventure) GROUP BY adventure_id ORDER BY COUNT(*) DESC, adventure_id ASC LIMIT 4) JOIN adventure ON (id=adventure_id)",
+  ).all();
+
+  const latest = await env.DB.prepare(
+    "SELECT adventure_id, name, cover, description FROM adventure ORDER BY create_time DESC, adventure_id DESC LIMIT 4",
+  ).all();
+
+  return new Response(
+    JSON.stringify({
+      featured: featured.results.map((row) => {
+        return {
+          id: row["adventure_id"],
+          name: row["name"],
+          description: row["description"],
+          cover_image: row["cover"],
+        };
+      }),
+      popular: popular.results.map((row) => {
+        return {
+          id: row["id"],
+          name: row["name"],
+          description: row["description"],
+          cover_image: row["cover"],
+        };
+      }),
+      latest: latest.results.map((row) => {
+        return {
+          id: row["adventure_id"],
+          name: row["name"],
+          description: row["description"],
+          cover_image: row["cover"],
+        };
+      }),
+    }),
+    {
+      headers: {
+        "Access-Control-Allow-Origin": "*",
+        "Content-Type": "application/json",
+      },
+    },
+  );
+}
+
 export async function handleGetAdventure(
   request: IRequest,
   env: Env,
