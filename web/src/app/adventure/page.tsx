@@ -25,6 +25,7 @@ export default function AdventureDetails() {
   const [adventure, setAdventure] = useState<Adventure | undefined>(undefined);
   const [editingDescription, setEditingDescription] = useState<boolean>(false);
   const [editingBackground, setEditingBackground] = useState<boolean>(false);
+  const [creatingQuest, setCreatingQuest] = useState<boolean>(false);
 
   const isOwner = adventure ? adventure.is_owner : false;
 
@@ -56,6 +57,24 @@ export default function AdventureDetails() {
     });
 
     setEditingBackground(false);
+
+    await loadAdventure();
+  };
+
+  const handleCreateQuest = async (title: string, description: string) => {
+    await fetch(getServerUrl(`/api/quest`), {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${identity.session!.token}`,
+      },
+      body: JSON.stringify({
+        adventure_id: id,
+        title,
+        description,
+      }),
+    });
+
+    setCreatingQuest(false);
 
     await loadAdventure();
   };
@@ -122,6 +141,7 @@ export default function AdventureDetails() {
               title="Quests"
               large
               button={isOwner ? "add" : undefined}
+              onAdd={() => setCreatingQuest(true)}
             >
               <List>
                 {adventure &&
@@ -186,7 +206,12 @@ export default function AdventureDetails() {
           onSubmit={handleBackgroundEdit}
         />
       )}
-      <QuestPopup />
+      {adventure && creatingQuest && (
+        <QuestPopup
+          onClose={() => setCreatingQuest(false)}
+          onCreate={handleCreateQuest}
+        />
+      )}
     </div>
   );
 }
