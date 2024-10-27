@@ -11,7 +11,7 @@ import {
 } from "./adventure";
 import { handleGetImage, handleUploadImage } from "./image";
 import { handleCreateGameSession, handleGetMyGameSessions } from "./session";
-import { handleCreateQuest } from "./quest";
+import { handleCreateQuest, handleUpdateQuest } from "./quest";
 import { handleCreateNpc } from "./npc";
 import { handleCreateCreature } from "./creature";
 import { handleCreateItem } from "./item";
@@ -44,6 +44,7 @@ export default {
       handleUpdateAdventure(req, env),
     );
     router.post("/api/quest", (req) => handleCreateQuest(req, env));
+    router.patch("/api/quest/:id", (req) => handleUpdateQuest(req, env));
     router.post("/api/npc", (req) => handleCreateNpc(req, env));
     router.post("/api/creature", (req) => handleCreateCreature(req, env));
     router.post("/api/item", (req) => handleCreateItem(req, env));
