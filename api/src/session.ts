@@ -42,7 +42,7 @@ export async function handleCreateGameSession(
 
   return new Response(
     JSON.stringify({
-      id: newGameSession["adventure_id"],
+      id: newGameSession["session_id"],
       name: body.name,
       adventure_id: body.adventure_id,
     }),
