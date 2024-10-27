@@ -9,7 +9,7 @@ import CarouselAdventure from "@/components/carousel-adventure";
 import Header from "@/components/header";
 import List from "@/components/list";
 import ListItem from "@/components/list-item";
-import { Adventure } from "@/lib/models";
+import { Adventure, AdventureQuest } from "@/lib/models";
 import { IdentityContext } from "../lib/context/identity";
 import { getServerUrl } from "@/lib/constants/env";
 import TextEditPopup from "@/components/text-edit-popup";
@@ -26,6 +26,7 @@ export default function AdventureDetails() {
   const [editingDescription, setEditingDescription] = useState<boolean>(false);
   const [editingBackground, setEditingBackground] = useState<boolean>(false);
   const [creatingQuest, setCreatingQuest] = useState<boolean>(false);
+  const [activeQuest, setActiveQuest] = useState<AdventureQuest | undefined>();
 
   const isOwner = adventure ? adventure.is_owner : false;
 
@@ -75,6 +76,40 @@ export default function AdventureDetails() {
     });
 
     setCreatingQuest(false);
+
+    await loadAdventure();
+  };
+
+  const handleUpdateQuest = async (
+    id: number,
+    title: string,
+    description: string,
+  ) => {
+    await fetch(getServerUrl(`/api/quest/${id}`), {
+      method: "PATCH",
+      headers: {
+        Authorization: `Bearer ${identity.session!.token}`,
+      },
+      body: JSON.stringify({
+        title,
+        description,
+      }),
+    });
+
+    setActiveQuest(undefined);
+
+    await loadAdventure();
+  };
+
+  const handleDeleteQuest = async (id: number) => {
+    await fetch(getServerUrl(`/api/quest/${id}`), {
+      method: "DELETE",
+      headers: {
+        Authorization: `Bearer ${identity.session!.token}`,
+      },
+    });
+
+    setActiveQuest(undefined);
 
     await loadAdventure();
   };
@@ -146,7 +181,13 @@ export default function AdventureDetails() {
               <List>
                 {adventure &&
                   adventure.quests.map((quest) => (
-                    <ListItem key={quest.id} content={quest.title} />
+                    <ListItem
+                      key={quest.id}
+                      content={quest.title}
+                      onClick={() => {
+                        setActiveQuest(quest);
+                      }}
+                    />
                   ))}
               </List>
             </AdventurePartCard>
@@ -208,8 +249,20 @@ export default function AdventureDetails() {
       )}
       {adventure && creatingQuest && (
         <QuestPopup
+          mode="create"
           onClose={() => setCreatingQuest(false)}
-          onCreate={handleCreateQuest}
+          onSubmit={handleCreateQuest}
+        />
+      )}
+      {activeQuest && (
+        <QuestPopup
+          mode={isOwner ? "edit" : "view"}
+          quest={activeQuest}
+          onClose={() => setActiveQuest(undefined)}
+          onSubmit={(title: string, description: string) =>
+            handleUpdateQuest(activeQuest.id, title, description)
+          }
+          onDelete={() => handleDeleteQuest(activeQuest.id)}
         />
       )}
     </div>
