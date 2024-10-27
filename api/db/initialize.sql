@@ -66,6 +66,7 @@ CREATE TABLE npc (
   adventure_id INTEGER NOT NULL,
   name TEXT NOT NULL,
   create_time INTEGER NOT NULL,
+  deleted INTEGER NOT NULL,
   FOREIGN KEY(adventure_id) REFERENCES adventure(adventure_id)
 );
 
@@ -74,6 +75,7 @@ CREATE TABLE creature (
   adventure_id INTEGER NOT NULL,
   name TEXT NOT NULL,
   create_time INTEGER NOT NULL,
+  deleted INTEGER NOT NULL,
   FOREIGN KEY(adventure_id) REFERENCES adventure(adventure_id)
 );
 
@@ -82,6 +84,7 @@ CREATE TABLE item (
   adventure_id INTEGER NOT NULL,
   name TEXT NOT NULL,
   create_time INTEGER NOT NULL,
+  deleted INTEGER NOT NULL,
   FOREIGN KEY(adventure_id) REFERENCES adventure(adventure_id)
 );
 

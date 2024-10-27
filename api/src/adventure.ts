@@ -257,19 +257,19 @@ export async function handleGetAdventure(
     .all();
 
   const npcs = await env.DB.prepare(
-    `SELECT npc_id, name FROM npc WHERE adventure_id = ?`,
+    `SELECT npc_id, name FROM npc WHERE adventure_id = ? AND deleted = FALSE`,
   )
     .bind(adventureId)
     .all();
 
   const creatures = await env.DB.prepare(
-    `SELECT creature_id, name FROM creature WHERE adventure_id = ?`,
+    `SELECT creature_id, name FROM creature WHERE adventure_id = ? AND deleted = FALSE`,
   )
     .bind(adventureId)
     .all();
 
   const items = await env.DB.prepare(
-    `SELECT item_id, name FROM item WHERE adventure_id = ?`,
+    `SELECT item_id, name FROM item WHERE adventure_id = ? AND deleted = FALSE`,
   )
     .bind(adventureId)
     .all();

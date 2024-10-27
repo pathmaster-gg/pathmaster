@@ -16,9 +16,13 @@ import {
   handleDeleteQuest,
   handleUpdateQuest,
 } from "./quest";
-import { handleCreateNpc } from "./npc";
-import { handleCreateCreature } from "./creature";
-import { handleCreateItem } from "./item";
+import { handleCreateNpc, handleDeleteNpc, handleUpdateNpc } from "./npc";
+import {
+  handleCreateCreature,
+  handleDeleteCreature,
+  handleUpdateCreature,
+} from "./creature";
+import { handleCreateItem, handleDeleteItem, handleUpdateItem } from "./item";
 
 export default {
   async fetch(request, env, _ctx): Promise<Response> {
@@ -51,8 +55,14 @@ export default {
     router.patch("/api/quest/:id", (req) => handleUpdateQuest(req, env));
     router.delete("/api/quest/:id", (req) => handleDeleteQuest(req, env));
     router.post("/api/npc", (req) => handleCreateNpc(req, env));
+    router.patch("/api/npc/:id", (req) => handleUpdateNpc(req, env));
+    router.delete("/api/npc/:id", (req) => handleDeleteNpc(req, env));
     router.post("/api/creature", (req) => handleCreateCreature(req, env));
+    router.patch("/api/creature/:id", (req) => handleUpdateCreature(req, env));
+    router.delete("/api/creature/:id", (req) => handleDeleteCreature(req, env));
     router.post("/api/item", (req) => handleCreateItem(req, env));
+    router.patch("/api/item/:id", (req) => handleUpdateItem(req, env));
+    router.delete("/api/item/:id", (req) => handleDeleteItem(req, env));
     router.post("/api/session", (req) => handleCreateGameSession(req, env));
     router.get("/api/session/mine", (req) => handleGetMyGameSessions(req, env));
     router.post("/api/image/:type", (req) => handleUploadImage(req, env));
