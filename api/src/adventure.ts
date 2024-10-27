@@ -251,7 +251,7 @@ export async function handleGetAdventure(
   }
 
   const quests = await env.DB.prepare(
-    `SELECT quest_id, title, description FROM quest WHERE adventure_id = ?`,
+    `SELECT quest_id, title, description FROM quest WHERE adventure_id = ? AND deleted = FALSE`,
   )
     .bind(adventureId)
     .all();

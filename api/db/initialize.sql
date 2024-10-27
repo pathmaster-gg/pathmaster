@@ -57,6 +57,7 @@ CREATE TABLE quest (
   title TEXT NOT NULL,
   create_time INTEGER NOT NULL,
   description TEXT NOT NULL,
+  deleted INTEGER NOT NULL,
   FOREIGN KEY(adventure_id) REFERENCES adventure(adventure_id)
 );
 

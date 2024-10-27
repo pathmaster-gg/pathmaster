@@ -11,7 +11,11 @@ import {
 } from "./adventure";
 import { handleGetImage, handleUploadImage } from "./image";
 import { handleCreateGameSession, handleGetMyGameSessions } from "./session";
-import { handleCreateQuest, handleUpdateQuest } from "./quest";
+import {
+  handleCreateQuest,
+  handleDeleteQuest,
+  handleUpdateQuest,
+} from "./quest";
 import { handleCreateNpc } from "./npc";
 import { handleCreateCreature } from "./creature";
 import { handleCreateItem } from "./item";
@@ -28,7 +32,7 @@ export default {
           headers: {
             "Access-Control-Allow-Origin": "*",
             "Access-Control-Allow-Headers": "Authorization",
-            "Access-Control-Allow-Methods": "POST,PATCH",
+            "Access-Control-Allow-Methods": "POST,PATCH,DELETE",
           },
         }),
     );
@@ -45,6 +49,7 @@ export default {
     );
     router.post("/api/quest", (req) => handleCreateQuest(req, env));
     router.patch("/api/quest/:id", (req) => handleUpdateQuest(req, env));
+    router.delete("/api/quest/:id", (req) => handleDeleteQuest(req, env));
     router.post("/api/npc", (req) => handleCreateNpc(req, env));
     router.post("/api/creature", (req) => handleCreateCreature(req, env));
     router.post("/api/item", (req) => handleCreateItem(req, env));
