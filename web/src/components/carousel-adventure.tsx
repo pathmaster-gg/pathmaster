@@ -10,6 +10,7 @@ interface IProps {
   name: string;
   cover: string | StaticImport;
   description?: string | null;
+  startAdventureLink?: string;
   detailsLink?: string;
   onEdit?: Function;
 }
@@ -41,7 +42,7 @@ export default function CarouselAdventure(props: IProps) {
           </div>
         </div>
         <div className="flex gap-6">
-          <Button text="Start Adventure" onClick={() => {}} />
+          <Button text="Start Adventure" link={props.startAdventureLink} />
           {props.detailsLink && (
             <Button text="View Details" link={props.detailsLink} />
           )}

@@ -44,6 +44,7 @@ export default function AdventureHub() {
                         name={item.name}
                         cover={getServerUrl(`/api/image/${item.cover_image}`)}
                         description={item.description}
+                        startAdventureLink={`/session/new?adventure=${item.id}`}
                         detailsLink={`/adventure?id=${item.id}`}
                       />
                     ))

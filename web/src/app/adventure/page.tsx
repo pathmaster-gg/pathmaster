@@ -309,6 +309,7 @@ export default function AdventureDetails() {
                     : ""
                 }
                 description={adventure?.description}
+                startAdventureLink={`/session/new?adventure=${id}`}
                 onEdit={isOwner ? () => setEditingDescription(true) : undefined}
               />
             </div>
