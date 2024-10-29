@@ -49,7 +49,7 @@ export default function NewAdventure() {
                 <div className="flex flex-col gap-2">
                   <p className="text-sm">Name</p>
                   <input
-                    className="flex-grow px-3 py-2 rounded text-black text-base bg-grayscale-200"
+                    className="flex-grow px-3 py-2 rounded text-white text-base bg-grayscale-900 focus:outline focus:outline-highlight"
                     type="text"
                     placeholder="Name of the new adventure"
                     value={name}
