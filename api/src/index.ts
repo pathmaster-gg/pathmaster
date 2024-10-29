@@ -10,7 +10,15 @@ import {
   handleUpdateAdventure,
 } from "./adventure";
 import { handleGetImage, handleUploadImage } from "./image";
-import { handleCreateGameSession, handleGetMyGameSessions } from "./session";
+import {
+  handleCreateGameSession,
+  handleFinishQuest,
+  handleGetGameSession,
+  handleGetMyGameSessions,
+  handleSetNpcNote,
+  handleUnfinishQuest,
+  handleUpdateGameSession,
+} from "./session";
 import {
   handleCreateQuest,
   handleDeleteQuest,
@@ -23,6 +31,8 @@ import {
   handleUpdateCreature,
 } from "./creature";
 import { handleCreateItem, handleDeleteItem, handleUpdateItem } from "./item";
+import { handleCreateGameSessionEvent } from "./session_event";
+import { handleCreatePlayer } from "./player";
 
 export default {
   async fetch(request, env, _ctx): Promise<Response> {
@@ -36,7 +46,7 @@ export default {
           headers: {
             "Access-Control-Allow-Origin": "*",
             "Access-Control-Allow-Headers": "Authorization",
-            "Access-Control-Allow-Methods": "POST,PATCH,DELETE",
+            "Access-Control-Allow-Methods": "POST,PATCH,DELETE,PUT",
           },
         }),
     );
@@ -65,6 +75,23 @@ export default {
     router.delete("/api/item/:id", (req) => handleDeleteItem(req, env));
     router.post("/api/session", (req) => handleCreateGameSession(req, env));
     router.get("/api/session/mine", (req) => handleGetMyGameSessions(req, env));
+    router.get("/api/session/:id", (req) => handleGetGameSession(req, env));
+    router.patch("/api/session/:id", (req) =>
+      handleUpdateGameSession(req, env),
+    );
+    router.put("/api/session/:id/finished_quest/:quest_id", (req) =>
+      handleFinishQuest(req, env),
+    );
+    router.delete("/api/session/:id/finished_quest/:quest_id", (req) =>
+      handleUnfinishQuest(req, env),
+    );
+    router.post("/api/session_event", (req) =>
+      handleCreateGameSessionEvent(req, env),
+    );
+    router.put("/api/session/:id/npc_note/:npc_id", (req) =>
+      handleSetNpcNote(req, env),
+    );
+    router.post("/api/player", (req) => handleCreatePlayer(req, env));
     router.post("/api/image/:type", (req) => handleUploadImage(req, env));
     router.get("/api/image/:id", (req) => handleGetImage(req, env));
 

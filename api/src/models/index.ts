@@ -38,6 +38,14 @@ export interface GameSessionMetadata {
   adventure: AdventureMetadata;
 }
 
+export interface GameSession extends GameSessionMetadata {
+  players: GameSessionPlayer[];
+  notes: string | null;
+  events: GameSessionEvent[];
+  finished_quests: number[];
+  npc_notes: GameSessionNpcNote[];
+}
+
 export interface NewImage {
   id: number;
 }
@@ -67,4 +75,24 @@ export interface AdventureHub {
   featured: AdventureMetadata[];
   popular: AdventureMetadata[];
   latest: AdventureMetadata[];
+}
+
+export interface GameSessionPlayer {
+  id: number;
+  name: string;
+  ancestry: string;
+  level: number;
+  hp: number;
+  hp_max: number;
+}
+
+export interface GameSessionEvent {
+  id: number;
+  name: string;
+  timestamp: number;
+}
+
+export interface GameSessionNpcNote {
+  npc_id: number;
+  note: string;
 }

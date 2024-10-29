@@ -3,6 +3,11 @@
 -- https://developers.cloudflare.com/d1/reference/migrations/
 
 DROP TABLE IF EXISTS session;
+DROP TABLE IF EXISTS game_session_finished_quest;
+DROP TABLE IF EXISTS game_session_npc_note;
+DROP TABLE IF EXISTS game_session_event;
+DROP TABLE IF EXISTS game_session_used_npc;
+DROP TABLE IF EXISTS player;
 DROP TABLE IF EXISTS game_session;
 DROP TABLE IF EXISTS quest;
 DROP TABLE IF EXISTS npc;
@@ -94,6 +99,44 @@ CREATE TABLE game_session (
   create_time INTEGER NOT NULL,
   creator INTEGER NOT NULL,
   adventure INTEGER NOT NULL,
+  notes TEXT,
   FOREIGN KEY(creator) REFERENCES account(account_id),
   FOREIGN KEY(adventure) REFERENCES adventure(adventure_id)
+);
+
+CREATE TABLE player (
+  player_id INTEGER PRIMARY KEY,
+  name TEXT NOT NULL,
+  ancestry TEXT NOT NULL,
+  level INTEGER NOT NULL,
+  hp INTEGER NOT NULL,
+  hp_max INTEGER NOT NULL,
+  create_time INTEGER NOT NULL,
+  session_id INTEGER NOT NULL,
+  FOREIGN KEY(session_id) REFERENCES game_session(session_id)
+);
+
+CREATE TABLE game_session_event (
+  event_id INTEGER PRIMARY KEY,
+  name TEXT NOT NULL,
+  create_time INTEGER NOT NULL,
+  session_id INTEGER NOT NULL,
+  FOREIGN KEY(session_id) REFERENCES game_session(session_id)
+);
+
+CREATE TABLE game_session_npc_note (
+  session_id INTEGER NOT NULL,
+  npc_id INTEGER NOT NULL,
+  note TEXT NOT NULL,
+  PRIMARY KEY (session_id, npc_id),
+  FOREIGN KEY(session_id) REFERENCES game_session(session_id),
+  FOREIGN KEY(npc_id) REFERENCES npc(npc_id)
+);
+
+CREATE TABLE game_session_finished_quest (
+  session_id INTEGER NOT NULL,
+  quest_id INTEGER NOT NULL,
+  PRIMARY KEY (session_id, quest_id),
+  FOREIGN KEY(session_id) REFERENCES game_session(session_id),
+  FOREIGN KEY(quest_id) REFERENCES quest(quest_id)
 );
