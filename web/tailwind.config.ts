@@ -15,8 +15,10 @@ const config: Config = {
         disabled: "#666666",
         button: "#5e0000",
         error: "#df2e2e",
+        hp: "#aa0000",
         "grayscale-200": "#dfdfdf",
         "grayscale-500": "#878787",
+        "grayscale-600": "#6d6d6d",
         "grayscale-700": "#5f5f5f",
         "grayscale-900": "#3d3d3d",
         "grayscale-999": "#161616",
@@ -24,6 +26,7 @@ const config: Config = {
       },
       spacing: {
         "5.4": "1.35rem",
+        "26": "6.5rem",
         "68": "17rem",
         "120": "30rem",
         "156": "39rem",
