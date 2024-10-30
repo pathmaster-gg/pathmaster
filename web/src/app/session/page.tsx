@@ -13,6 +13,7 @@ import PartyBox from "@/components/party-box";
 import { Adventure, GameSession } from "@/lib/models";
 import { IdentityContext } from "../lib/context/identity";
 import { getServerUrl } from "@/lib/constants/env";
+import TextEditPopup from "@/components/text-edit-popup";
 
 export default function LiveSession() {
   const identity = useContext(IdentityContext);
@@ -23,6 +24,7 @@ export default function LiveSession() {
 
   const [session, setSession] = useState<GameSession | undefined>();
   const [adventure, setAdventure] = useState<Adventure | undefined>();
+  const [editingGmNotes, setEditingGmNotes] = useState<boolean>(false);
 
   const handleSetQuestFinished = async (questId: number, finished: boolean) => {
     await fetch(getServerUrl(`/api/session/${id}/finished_quest/${questId}`), {
@@ -31,6 +33,22 @@ export default function LiveSession() {
         Authorization: `Bearer ${identity.session!.token}`,
       },
     });
+
+    await loadSession();
+  };
+
+  const handleGmNotesEdit = async (value: string) => {
+    await fetch(getServerUrl(`/api/session/${id}`), {
+      method: "PATCH",
+      headers: {
+        Authorization: `Bearer ${identity.session!.token}`,
+      },
+      body: JSON.stringify({
+        notes: value,
+      }),
+    });
+
+    setEditingGmNotes(false);
 
     await loadSession();
   };
@@ -95,6 +113,7 @@ export default function LiveSession() {
               title="GM Notes"
               large
               button="edit"
+              onEdit={() => setEditingGmNotes(true)}
             >
               {notesPars &&
                 notesPars.map((p) => (
@@ -158,6 +177,15 @@ export default function LiveSession() {
           </div>
         </div>
       </div>
+      {session && editingGmNotes && (
+        <TextEditPopup
+          title="Edit GM Notes"
+          prompt="Make some notes about the session:"
+          onClose={() => setEditingGmNotes(false)}
+          initValue={session.notes ?? ""}
+          onSubmit={handleGmNotesEdit}
+        />
+      )}
     </div>
   );
 }
