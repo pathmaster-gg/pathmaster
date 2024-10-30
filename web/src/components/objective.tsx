@@ -7,6 +7,7 @@ interface IProps {
   title: string;
   description: string;
   checked?: boolean;
+  onClick?: Function;
 }
 
 export default function Objective(props: IProps) {
@@ -18,6 +19,11 @@ export default function Objective(props: IProps) {
         src={props.checked ? CheckboxCheckedSvg : CheckboxDefaultSvg}
         alt="Checkbox status"
         width={28}
+        onClick={() => {
+          if (props.onClick) {
+            props.onClick();
+          }
+        }}
       />
       <div
         className={`flex flex-col gap-2 ${props.checked ? "line-through text-grayscale-600" : ""}`}

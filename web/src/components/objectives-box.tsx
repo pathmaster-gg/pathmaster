@@ -5,6 +5,8 @@ import Objective from "./objective";
 interface IProps {
   quests?: AdventureQuest[];
   finished: number[];
+  onFinish?: Function;
+  onUnfinish?: Function;
 }
 
 export default function ObjectivesBox(props: IProps) {
@@ -22,6 +24,17 @@ export default function ObjectivesBox(props: IProps) {
                 title={quest.title}
                 description={quest.description}
                 checked={props.finished.indexOf(quest.id) >= 0}
+                onClick={() => {
+                  if (props.finished.indexOf(quest.id) >= 0) {
+                    if (props.onUnfinish) {
+                      props.onUnfinish(quest.id);
+                    }
+                  } else {
+                    if (props.onFinish) {
+                      props.onFinish(quest.id);
+                    }
+                  }
+                }}
               />
             ))}
         </div>

@@ -24,6 +24,17 @@ export default function LiveSession() {
   const [session, setSession] = useState<GameSession | undefined>();
   const [adventure, setAdventure] = useState<Adventure | undefined>();
 
+  const handleSetQuestFinished = async (questId: number, finished: boolean) => {
+    await fetch(getServerUrl(`/api/session/${id}/finished_quest/${questId}`), {
+      method: finished ? "PUT" : "DELETE",
+      headers: {
+        Authorization: `Bearer ${identity.session!.token}`,
+      },
+    });
+
+    await loadSession();
+  };
+
   const loadSession = async () => {
     if (identity.session) {
       const sessionResponse = await fetch(getServerUrl(`/api/session/${id}`), {
@@ -74,6 +85,8 @@ export default function LiveSession() {
             <ObjectivesBox
               quests={adventure?.quests}
               finished={session?.finished_quests ?? []}
+              onFinish={(id: number) => handleSetQuestFinished(id, true)}
+              onUnfinish={(id: number) => handleSetQuestFinished(id, false)}
             />
           </div>
           <div className="grid grid-cols-3 gap-x-4">
