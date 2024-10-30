@@ -4,6 +4,8 @@ import CheckboxDefaultSvg from "@/images/icons/checkbox_default.svg";
 import CheckboxCheckedSvg from "@/images/icons/checkbox_checked.svg";
 
 interface IProps {
+  title: string;
+  description: string;
   checked?: boolean;
 }
 
@@ -20,13 +22,8 @@ export default function Objective(props: IProps) {
       <div
         className={`flex flex-col gap-2 ${props.checked ? "line-through text-grayscale-600" : ""}`}
       >
-        <h4 className="text-xl">
-          Investigate the strange lights and magical disturbances
-        </h4>
-        <p className="text-base pl-4 pr-2">
-          Investigate the strange lights and magical disturbances emanating from
-          the Gauntlight lighthouses.
-        </p>
+        <h4 className="text-xl">{props.title}</h4>
+        <p className="text-base pl-4 pr-2">{props.description}</p>
       </div>
     </div>
   );

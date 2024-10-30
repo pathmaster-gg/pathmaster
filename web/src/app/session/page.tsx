@@ -1,5 +1,8 @@
 "use client";
 
+import { useContext, useEffect, useState } from "react";
+import { useSearchParams } from "next/navigation";
+
 import AdventurePartCard from "@/components/adventure-part-card";
 import DualListItem from "@/components/dual-list-item";
 import Header from "@/components/header";
@@ -7,22 +10,71 @@ import List from "@/components/list";
 import ListItem from "@/components/list-item";
 import ObjectivesBox from "@/components/objectives-box";
 import PartyBox from "@/components/party-box";
+import { Adventure, GameSession } from "@/lib/models";
+import { IdentityContext } from "../lib/context/identity";
+import { getServerUrl } from "@/lib/constants/env";
 
 export default function LiveSession() {
+  const identity = useContext(IdentityContext);
+
+  const searchParams = useSearchParams();
+
+  const id = parseInt(searchParams.get("id") as string);
+
+  const [session, setSession] = useState<GameSession | undefined>();
+  const [adventure, setAdventure] = useState<Adventure | undefined>();
+
+  const loadSession = async () => {
+    if (identity.session) {
+      const sessionResponse = await fetch(getServerUrl(`/api/session/${id}`), {
+        headers: {
+          Authorization: `Bearer ${identity.session.token}`,
+        },
+      });
+      const sessionBody = (await sessionResponse.json()) as GameSession;
+
+      setSession(sessionBody);
+    }
+  };
+
+  const loadAdventure = async (id: number) => {
+    const adventureResponse = await fetch(getServerUrl(`/api/adventure/${id}`));
+    const adventureBody = (await adventureResponse.json()) as Adventure;
+
+    setAdventure(adventureBody);
+  };
+
+  const notesPars: string[] | undefined = session
+    ? session.notes
+      ? session.notes.split("\n")
+      : []
+    : undefined;
+
+  useEffect(() => {
+    loadSession();
+  }, [identity.session]);
+
+  useEffect(() => {
+    if (session && !adventure) {
+      loadAdventure(session.adventure.id);
+    }
+  }, [session]);
+
   return (
     <div className="flex flex-col gap-4 pb-16">
       <Header pageName="Game Session" />
       <div className="flex justify-center">
         <div className="flex flex-col grow max-w-screen-xl gap-4">
           <div className="flex items-center justify-between">
-            <h2 className="text-3xl">Session 3</h2>
-            <p className="text-lg">
-              [Abomination Vaults - Ruins of Gauntlight]
-            </p>
+            <h2 className="text-3xl">{session?.name ?? ""}</h2>
+            <p className="text-lg">[{session?.adventure.name ?? ""}]</p>
           </div>
           <div className="grid grid-cols-4 gap-x-4">
-            <PartyBox />
-            <ObjectivesBox />
+            <PartyBox players={session?.players} />
+            <ObjectivesBox
+              quests={adventure?.quests}
+              finished={session?.finished_quests ?? []}
+            />
           </div>
           <div className="grid grid-cols-3 gap-x-4">
             <AdventurePartCard
@@ -31,35 +83,63 @@ export default function LiveSession() {
               large
               button="edit"
             >
-              <p className="px-6">Content</p>
-              <p className="px-6">Content</p>
-              <p className="px-6">Content</p>
-              <p className="px-6">Content</p>
+              {notesPars &&
+                notesPars.map((p) => (
+                  <p key={p} className="px-6">
+                    {p}
+                  </p>
+                ))}
             </AdventurePartCard>
             <AdventurePartCard title="Events" large button="add">
               <List>
-                <DualListItem left="10:34" right="Game started" />
-                <DualListItem left="10:56" right="Game ended" />
+                {session &&
+                  session.events.map((item) => {
+                    const time = new Date(item.timestamp * 1000);
+                    const minute = time.getMinutes().toString();
+
+                    return (
+                      <DualListItem
+                        key={item.id}
+                        left={`${time.getHours()}:${minute.length === 1 ? `0${minute}` : minute}`}
+                        right={item.name}
+                      />
+                    );
+                  })}
               </List>
             </AdventurePartCard>
           </div>
           <div className="grid grid-cols-3 gap-x-4">
             <AdventurePartCard title="NPCs">
               <List>
-                <ListItem content="NPC 1" asterisk />
-                <ListItem content="NPC 2" />
+                {session &&
+                  adventure &&
+                  adventure.npcs.map((npc) => (
+                    <ListItem
+                      key={npc.id}
+                      content={npc.name}
+                      asterisk={
+                        !!session.npc_notes.find(
+                          (note) => note.npc_id === npc.id,
+                        )
+                      }
+                    />
+                  ))}
               </List>
             </AdventurePartCard>
             <AdventurePartCard title="Creatures">
               <List>
-                <ListItem content="Creature 1" />
-                <ListItem content="Creature 2" />
+                {adventure &&
+                  adventure.creatures.map((creature) => (
+                    <ListItem key={creature.id} content={creature.name} />
+                  ))}
               </List>
             </AdventurePartCard>
             <AdventurePartCard title="Items">
               <List>
-                <ListItem content="Item 1" />
-                <ListItem content="Item 2" />
+                {adventure &&
+                  adventure.items.map((item) => (
+                    <ListItem key={item.id} content={item.name} />
+                  ))}
               </List>
             </AdventurePartCard>
           </div>

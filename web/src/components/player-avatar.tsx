@@ -4,7 +4,11 @@ import AvatarFrameSvg from "@/images/avatar_frame.svg";
 import BgLevelSvg from "@/images/icons/bg_level.svg";
 import ExamplePlayer from "@/images/example_player.jpg";
 
-export default function PlayerAvatar() {
+interface IProps {
+  level: number;
+}
+
+export default function PlayerAvatar(props: IProps) {
   return (
     <div className="relative flex items-center justify-center w-16 h-16">
       <Image
@@ -28,7 +32,7 @@ export default function PlayerAvatar() {
         width={20}
         height={20}
       />
-      <p className="absolute text-white right-1.5 bottom-px">1</p>
+      <p className="absolute text-white right-1.5 bottom-px">{props.level}</p>
     </div>
   );
 }
