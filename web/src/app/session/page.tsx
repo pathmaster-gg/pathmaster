@@ -10,10 +10,17 @@ import List from "@/components/list";
 import ListItem from "@/components/list-item";
 import ObjectivesBox from "@/components/objectives-box";
 import PartyBox from "@/components/party-box";
-import { Adventure, GameSession } from "@/lib/models";
+import {
+  Adventure,
+  AdventureCreature,
+  AdventureItem,
+  GameSession,
+} from "@/lib/models";
 import { IdentityContext } from "../lib/context/identity";
 import { getServerUrl } from "@/lib/constants/env";
 import TextEditPopup from "@/components/text-edit-popup";
+import CreaturePopup from "@/components/creature-popup";
+import ItemPopup from "@/components/item-popup";
 
 export default function LiveSession() {
   const identity = useContext(IdentityContext);
@@ -25,6 +32,10 @@ export default function LiveSession() {
   const [session, setSession] = useState<GameSession | undefined>();
   const [adventure, setAdventure] = useState<Adventure | undefined>();
   const [editingGmNotes, setEditingGmNotes] = useState<boolean>(false);
+  const [activeCreature, setActiveCreature] = useState<
+    AdventureCreature | undefined
+  >();
+  const [activeItem, setActiveItem] = useState<AdventureItem | undefined>();
 
   const handleSetQuestFinished = async (questId: number, finished: boolean) => {
     await fetch(getServerUrl(`/api/session/${id}/finished_quest/${questId}`), {
@@ -162,7 +173,11 @@ export default function LiveSession() {
               <List>
                 {adventure &&
                   adventure.creatures.map((creature) => (
-                    <ListItem key={creature.id} content={creature.name} />
+                    <ListItem
+                      key={creature.id}
+                      content={creature.name}
+                      onClick={() => setActiveCreature(creature)}
+                    />
                   ))}
               </List>
             </AdventurePartCard>
@@ -170,7 +185,11 @@ export default function LiveSession() {
               <List>
                 {adventure &&
                   adventure.items.map((item) => (
-                    <ListItem key={item.id} content={item.name} />
+                    <ListItem
+                      key={item.id}
+                      content={item.name}
+                      onClick={() => setActiveItem(item)}
+                    />
                   ))}
               </List>
             </AdventurePartCard>
@@ -184,6 +203,20 @@ export default function LiveSession() {
           onClose={() => setEditingGmNotes(false)}
           initValue={session.notes ?? ""}
           onSubmit={handleGmNotesEdit}
+        />
+      )}
+      {activeCreature && (
+        <CreaturePopup
+          mode="view"
+          creature={activeCreature}
+          onClose={() => setActiveCreature(undefined)}
+        />
+      )}
+      {activeItem && (
+        <ItemPopup
+          mode="view"
+          item={activeItem}
+          onClose={() => setActiveItem(undefined)}
         />
       )}
     </div>
