@@ -4,6 +4,7 @@ import PlayerCard from "./player-card";
 
 interface IProps {
   players?: GameSessionPlayer[];
+  onAdd?: Function;
 }
 
 export default function PartyBox(props: IProps) {
@@ -19,7 +20,7 @@ export default function PartyBox(props: IProps) {
               {props.players.map((player) => (
                 <PlayerCard key={player.id} player={player} />
               ))}
-              <PlayerCard />
+              <PlayerCard onClick={props.onAdd} />
             </>
           )}
         </div>

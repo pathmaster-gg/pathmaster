@@ -32,11 +32,39 @@ export default function LiveSession() {
 
   const [session, setSession] = useState<GameSession | undefined>();
   const [adventure, setAdventure] = useState<Adventure | undefined>();
+  const [creatingPlayer, setCreatingPlayer] = useState<boolean>(false);
   const [editingGmNotes, setEditingGmNotes] = useState<boolean>(false);
   const [activeCreature, setActiveCreature] = useState<
     AdventureCreature | undefined
   >();
   const [activeItem, setActiveItem] = useState<AdventureItem | undefined>();
+
+  const handleCreatePlayer = async (
+    name: string,
+    ancestry: string,
+    level: string,
+    hp: string,
+    maxHp: string,
+  ) => {
+    await fetch(getServerUrl("/api/player"), {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${identity.session!.token}`,
+      },
+      body: JSON.stringify({
+        name,
+        ancestry,
+        level: parseInt(level),
+        hp: parseInt(hp),
+        hp_max: parseInt(maxHp),
+        session_id: id,
+      }),
+    });
+
+    setCreatingPlayer(false);
+
+    await loadSession();
+  };
 
   const handleSetQuestFinished = async (questId: number, finished: boolean) => {
     await fetch(getServerUrl(`/api/session/${id}/finished_quest/${questId}`), {
@@ -111,7 +139,10 @@ export default function LiveSession() {
             <p className="text-lg">[{session?.adventure.name ?? ""}]</p>
           </div>
           <div className="grid grid-cols-4 gap-x-4">
-            <PartyBox players={session?.players} />
+            <PartyBox
+              players={session?.players}
+              onAdd={() => setCreatingPlayer(true)}
+            />
             <ObjectivesBox
               quests={adventure?.quests}
               finished={session?.finished_quests ?? []}
@@ -197,6 +228,12 @@ export default function LiveSession() {
           </div>
         </div>
       </div>
+      {creatingPlayer && (
+        <PlayerPopup
+          onClose={() => setCreatingPlayer(false)}
+          onSubmit={handleCreatePlayer}
+        />
+      )}
       {session && editingGmNotes && (
         <TextEditPopup
           title="Edit GM Notes"
@@ -220,7 +257,6 @@ export default function LiveSession() {
           onClose={() => setActiveItem(undefined)}
         />
       )}
-      <PlayerPopup />
     </div>
   );
 }
