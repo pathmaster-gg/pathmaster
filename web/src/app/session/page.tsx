@@ -21,6 +21,7 @@ import { getServerUrl } from "@/lib/constants/env";
 import TextEditPopup from "@/components/text-edit-popup";
 import CreaturePopup from "@/components/creature-popup";
 import ItemPopup from "@/components/item-popup";
+import PlayerPopup from "@/components/player-popup";
 
 export default function LiveSession() {
   const identity = useContext(IdentityContext);
@@ -219,6 +220,7 @@ export default function LiveSession() {
           onClose={() => setActiveItem(undefined)}
         />
       )}
+      <PlayerPopup />
     </div>
   );
 }
