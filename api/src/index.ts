@@ -31,8 +31,11 @@ import {
   handleUpdateCreature,
 } from "./creature";
 import { handleCreateItem, handleDeleteItem, handleUpdateItem } from "./item";
-import { handleCreateGameSessionEvent } from "./session_event";
-import { handleCreatePlayer } from "./player";
+import {
+  handleCreateGameSessionEvent,
+  handleUpdateGameSessionEvent,
+} from "./session_event";
+import { handleCreatePlayer, handleUpdatePlayer } from "./player";
 
 export default {
   async fetch(request, env, _ctx): Promise<Response> {
@@ -88,10 +91,14 @@ export default {
     router.post("/api/session_event", (req) =>
       handleCreateGameSessionEvent(req, env),
     );
+    router.patch("/api/session_event/:id", (req) =>
+      handleUpdateGameSessionEvent(req, env),
+    );
     router.put("/api/session/:id/npc_note/:npc_id", (req) =>
       handleSetNpcNote(req, env),
     );
     router.post("/api/player", (req) => handleCreatePlayer(req, env));
+    router.patch("/api/player/:id", (req) => handleUpdatePlayer(req, env));
     router.post("/api/image/:type", (req) => handleUploadImage(req, env));
     router.get("/api/image/:id", (req) => handleGetImage(req, env));
 

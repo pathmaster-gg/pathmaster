@@ -7,6 +7,10 @@ interface CreateGameSessionEventRequest {
   session_id: number;
 }
 
+interface UpdateGameSessionEventRequest {
+  name: string | null;
+}
+
 export async function handleCreateGameSessionEvent(
   request: IRequest,
   env: Env,
@@ -74,4 +78,83 @@ export async function handleCreateGameSessionEvent(
       },
     },
   );
+}
+
+export async function handleUpdateGameSessionEvent(
+  request: IRequest,
+  env: Env,
+): Promise<Response> {
+  let accountId: number;
+  try {
+    accountId = await assertNormal(request, env);
+  } catch (ex) {
+    return (ex as AuthError).response;
+  }
+
+  if (!request.params.id || !parseInt(request.params.id)) {
+    return new Response("missing `id`", {
+      headers: {
+        "Access-Control-Allow-Origin": "*",
+      },
+      status: 400,
+    });
+  }
+
+  const body = (await request.json()) as UpdateGameSessionEventRequest;
+
+  const updatingName = body.name !== undefined && body.name !== null;
+
+  if (!updatingName) {
+    return new Response("invalid request", {
+      headers: {
+        "Access-Control-Allow-Origin": "*",
+      },
+      status: 400,
+    });
+  }
+
+  const sessionOwner = await env.DB.prepare(
+    "SELECT creator FROM game_session_event JOIN game_session ON (game_session_event.session_id=game_session.session_id) WHERE event_id = ?",
+  )
+    .bind(parseInt(request.params.id))
+    .first();
+  if (!sessionOwner) {
+    return new Response("session not found", {
+      headers: {
+        "Access-Control-Allow-Origin": "*",
+      },
+      status: 404,
+    });
+  }
+  if (accountId !== sessionOwner["creator"]) {
+    return new Response("not session owner", {
+      headers: {
+        "Access-Control-Allow-Origin": "*",
+      },
+      status: 403,
+    });
+  }
+
+  const setters = [];
+  const params = [];
+
+  if (updatingName) {
+    setters.push("name=?");
+    params.push(body.name);
+  }
+
+  const result = await env.DB.prepare(
+    `UPDATE game_session_event SET ${setters.join(",")} WHERE event_id=?`,
+  )
+    .bind(...params, parseInt(request.params.id))
+    .run();
+  if (!result.meta.rows_written) {
+    throw new Error("failed to update session event");
+  }
+
+  return new Response(null, {
+    headers: {
+      "Access-Control-Allow-Origin": "*",
+    },
+  });
 }
