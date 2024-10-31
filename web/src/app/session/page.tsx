@@ -15,6 +15,7 @@ import {
   AdventureCreature,
   AdventureItem,
   GameSession,
+  GameSessionEvent,
   GameSessionPlayer,
 } from "@/lib/models";
 import { IdentityContext } from "../lib/context/identity";
@@ -23,6 +24,7 @@ import TextEditPopup from "@/components/text-edit-popup";
 import CreaturePopup from "@/components/creature-popup";
 import ItemPopup from "@/components/item-popup";
 import PlayerPopup from "@/components/player-popup";
+import EventPopup from "@/components/event-popup";
 
 export default function LiveSession() {
   const identity = useContext(IdentityContext);
@@ -38,6 +40,10 @@ export default function LiveSession() {
     GameSessionPlayer | undefined
   >();
   const [editingGmNotes, setEditingGmNotes] = useState<boolean>(false);
+  const [creatingEvent, setCreatingEvent] = useState<boolean>(false);
+  const [activeEvent, setActiveEvent] = useState<
+    GameSessionEvent | undefined
+  >();
   const [activeCreature, setActiveCreature] = useState<
     AdventureCreature | undefined
   >();
@@ -124,6 +130,39 @@ export default function LiveSession() {
     await loadSession();
   };
 
+  const handleCreateEvent = async (name: string) => {
+    await fetch(getServerUrl("/api/session_event"), {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${identity.session!.token}`,
+      },
+      body: JSON.stringify({
+        name,
+        session_id: id,
+      }),
+    });
+
+    setCreatingEvent(false);
+
+    await loadSession();
+  };
+
+  const handleEditEvent = async (id: number, name: string) => {
+    await fetch(getServerUrl(`/api/session_event/${id}`), {
+      method: "PATCH",
+      headers: {
+        Authorization: `Bearer ${identity.session!.token}`,
+      },
+      body: JSON.stringify({
+        name,
+      }),
+    });
+
+    setActiveEvent(undefined);
+
+    await loadSession();
+  };
+
   const loadSession = async () => {
     if (identity.session) {
       const sessionResponse = await fetch(getServerUrl(`/api/session/${id}`), {
@@ -197,18 +236,25 @@ export default function LiveSession() {
                   </p>
                 ))}
             </AdventurePartCard>
-            <AdventurePartCard title="Events" large button="add">
+            <AdventurePartCard
+              title="Events"
+              large
+              button="add"
+              onAdd={() => setCreatingEvent(true)}
+            >
               <List>
                 {session &&
                   session.events.map((item) => {
                     const time = new Date(item.timestamp * 1000);
+                    const hour = time.getHours().toString();
                     const minute = time.getMinutes().toString();
 
                     return (
                       <DualListItem
                         key={item.id}
-                        left={`${time.getHours()}:${minute.length === 1 ? `0${minute}` : minute}`}
+                        left={`${hour.length === 1 ? `0${hour}` : hour}:${minute.length === 1 ? `0${minute}` : minute}`}
                         right={item.name}
+                        onClick={() => setActiveEvent(item)}
                       />
                     );
                   })}
@@ -288,6 +334,19 @@ export default function LiveSession() {
           onClose={() => setEditingGmNotes(false)}
           initValue={session.notes ?? ""}
           onSubmit={handleGmNotesEdit}
+        />
+      )}
+      {creatingEvent && (
+        <EventPopup
+          onClose={() => setCreatingEvent(false)}
+          onSubmit={(name: string) => handleCreateEvent(name)}
+        />
+      )}
+      {activeEvent && (
+        <EventPopup
+          event={activeEvent}
+          onClose={() => setActiveEvent(undefined)}
+          onSubmit={(name: string) => handleEditEvent(activeEvent.id, name)}
         />
       )}
       {activeCreature && (
