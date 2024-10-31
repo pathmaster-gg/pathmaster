@@ -96,3 +96,7 @@ export interface GameSessionNpcNote {
   npc_id: number;
   note: string;
 }
+
+export interface ChatAnswer {
+  answer: string;
+}
