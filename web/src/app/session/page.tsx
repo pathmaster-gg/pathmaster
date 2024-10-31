@@ -16,6 +16,7 @@ import {
   AdventureItem,
   GameSession,
   GameSessionEvent,
+  GameSessionNpcNote,
   GameSessionPlayer,
 } from "@/lib/models";
 import { IdentityContext } from "../lib/context/identity";
@@ -25,6 +26,12 @@ import CreaturePopup from "@/components/creature-popup";
 import ItemPopup from "@/components/item-popup";
 import PlayerPopup from "@/components/player-popup";
 import EventPopup from "@/components/event-popup";
+import NpcNotePopup from "@/components/npc-note-popup";
+
+interface NpcNoteWithName {
+  name: string;
+  note: GameSessionNpcNote;
+}
 
 export default function LiveSession() {
   const identity = useContext(IdentityContext);
@@ -43,6 +50,9 @@ export default function LiveSession() {
   const [creatingEvent, setCreatingEvent] = useState<boolean>(false);
   const [activeEvent, setActiveEvent] = useState<
     GameSessionEvent | undefined
+  >();
+  const [activeNpcNote, setActiveNpcNote] = useState<
+    NpcNoteWithName | undefined
   >();
   const [activeCreature, setActiveCreature] = useState<
     AdventureCreature | undefined
@@ -163,6 +173,22 @@ export default function LiveSession() {
     await loadSession();
   };
 
+  const handleEditNpcNote = async (npcId: number, note: string) => {
+    await fetch(getServerUrl(`/api/session/${id}/npc_note/${npcId}`), {
+      method: "PUT",
+      headers: {
+        Authorization: `Bearer ${identity.session!.token}`,
+      },
+      body: JSON.stringify({
+        note,
+      }),
+    });
+
+    setActiveNpcNote(undefined);
+
+    await loadSession();
+  };
+
   const loadSession = async () => {
     if (identity.session) {
       const sessionResponse = await fetch(getServerUrl(`/api/session/${id}`), {
@@ -266,17 +292,28 @@ export default function LiveSession() {
               <List>
                 {session &&
                   adventure &&
-                  adventure.npcs.map((npc) => (
-                    <ListItem
-                      key={npc.id}
-                      content={npc.name}
-                      asterisk={
-                        !!session.npc_notes.find(
-                          (note) => note.npc_id === npc.id,
-                        )
-                      }
-                    />
-                  ))}
+                  adventure.npcs.map((npc) => {
+                    const npcNote = session.npc_notes.find(
+                      (note) => note.npc_id === npc.id,
+                    ) ?? {
+                      npc_id: npc.id,
+                      note: "",
+                    };
+
+                    return (
+                      <ListItem
+                        key={npc.id}
+                        content={npc.name}
+                        asterisk={!!npcNote.note}
+                        onClick={() =>
+                          setActiveNpcNote({
+                            name: npc.name,
+                            note: npcNote,
+                          })
+                        }
+                      />
+                    );
+                  })}
               </List>
             </AdventurePartCard>
             <AdventurePartCard title="Creatures">
@@ -347,6 +384,16 @@ export default function LiveSession() {
           event={activeEvent}
           onClose={() => setActiveEvent(undefined)}
           onSubmit={(name: string) => handleEditEvent(activeEvent.id, name)}
+        />
+      )}
+      {activeNpcNote && (
+        <NpcNotePopup
+          name={activeNpcNote.name}
+          initNote={activeNpcNote.note.note}
+          onClose={() => setActiveNpcNote(undefined)}
+          onSubmit={(note: string) =>
+            handleEditNpcNote(activeNpcNote.note.npc_id, note)
+          }
         />
       )}
       {activeCreature && (
