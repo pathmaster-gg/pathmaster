@@ -15,6 +15,7 @@ import {
   AdventureCreature,
   AdventureItem,
   GameSession,
+  GameSessionPlayer,
 } from "@/lib/models";
 import { IdentityContext } from "../lib/context/identity";
 import { getServerUrl } from "@/lib/constants/env";
@@ -33,6 +34,9 @@ export default function LiveSession() {
   const [session, setSession] = useState<GameSession | undefined>();
   const [adventure, setAdventure] = useState<Adventure | undefined>();
   const [creatingPlayer, setCreatingPlayer] = useState<boolean>(false);
+  const [activePlayer, setActivePlayer] = useState<
+    GameSessionPlayer | undefined
+  >();
   const [editingGmNotes, setEditingGmNotes] = useState<boolean>(false);
   const [activeCreature, setActiveCreature] = useState<
     AdventureCreature | undefined
@@ -62,6 +66,33 @@ export default function LiveSession() {
     });
 
     setCreatingPlayer(false);
+
+    await loadSession();
+  };
+
+  const handleEditPlayer = async (
+    id: number,
+    name: string,
+    ancestry: string,
+    level: string,
+    hp: string,
+    maxHp: string,
+  ) => {
+    await fetch(getServerUrl(`/api/player/${id}`), {
+      method: "PATCH",
+      headers: {
+        Authorization: `Bearer ${identity.session!.token}`,
+      },
+      body: JSON.stringify({
+        name,
+        ancestry,
+        level: parseInt(level),
+        hp: parseInt(hp),
+        hp_max: parseInt(maxHp),
+      }),
+    });
+
+    setActivePlayer(undefined);
 
     await loadSession();
   };
@@ -142,6 +173,7 @@ export default function LiveSession() {
             <PartyBox
               players={session?.players}
               onAdd={() => setCreatingPlayer(true)}
+              onEdit={(player: GameSessionPlayer) => setActivePlayer(player)}
             />
             <ObjectivesBox
               quests={adventure?.quests}
@@ -232,6 +264,21 @@ export default function LiveSession() {
         <PlayerPopup
           onClose={() => setCreatingPlayer(false)}
           onSubmit={handleCreatePlayer}
+        />
+      )}
+      {activePlayer && (
+        <PlayerPopup
+          player={activePlayer}
+          onClose={() => setActivePlayer(undefined)}
+          onSubmit={(
+            name: string,
+            ancestry: string,
+            level: string,
+            hp: string,
+            maxHp: string,
+          ) =>
+            handleEditPlayer(activePlayer.id, name, ancestry, level, hp, maxHp)
+          }
         />
       )}
       {session && editingGmNotes && (

@@ -1,9 +1,11 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import Button from "./button";
 import Popup from "./popup";
+import { GameSessionPlayer } from "@/lib/models";
 
 interface IProps {
+  player?: GameSessionPlayer;
   onClose?: Function;
   onSubmit?: Function;
 }
@@ -15,8 +17,27 @@ export default function PlayerPopup(props: IProps) {
   const [hp, setHp] = useState<string>("");
   const [maxHp, setMaxHp] = useState<string>("");
 
+  useEffect(() => {
+    if (props.player) {
+      setName(props.player.name);
+      setAncestry(props.player.ancestry);
+      setLevel(props.player.level.toString());
+      setHp(props.player.hp.toString());
+      setMaxHp(props.player.hp_max.toString());
+    } else {
+      setName("");
+      setAncestry("");
+      setLevel("");
+      setHp("");
+      setMaxHp("");
+    }
+  }, [props.player]);
+
   return (
-    <Popup title="Add New Player" onClose={props.onClose}>
+    <Popup
+      title={props.player ? "Edit Player" : "Add New Player"}
+      onClose={props.onClose}
+    >
       <div className="flex flex-col p-8 gap-6">
         <div className="flex flex-col gap-4">
           <div className="grid grid-cols-2 gap-x-4">
@@ -76,7 +97,7 @@ export default function PlayerPopup(props: IProps) {
         </div>
         <div className="flex justify-center gap-4">
           <Button
-            text="Create"
+            text={props.player ? "Save" : "Create"}
             onClick={() => {
               if (props.onSubmit) {
                 props.onSubmit(name, ancestry, level, hp, maxHp);
