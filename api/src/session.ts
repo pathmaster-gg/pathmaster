@@ -438,7 +438,8 @@ export async function handleSetNpcNote(
     !parseInt(request.params.id) ||
     !request.params.npc_id ||
     !parseInt(request.params.npc_id) ||
-    !body.note
+    body.note === undefined ||
+    body.note === null
   ) {
     return new Response("invalid request", {
       headers: {
@@ -495,13 +496,17 @@ export async function handleSetNpcNote(
     });
   }
 
-  const insert = await env.DB.prepare(
-    "INSERT INTO game_session_npc_note (session_id, npc_id, note) VALUES (?, ?, ?)",
-  )
-    .bind(sessionId, npcId, body.note)
-    .run();
-  if (!insert.meta.rows_written) {
-    throw new Error("failed to insert finished quest");
+  const command = await (
+    body.note
+      ? env.DB.prepare(
+          "INSERT OR REPLACE INTO game_session_npc_note (session_id, npc_id, note) VALUES (?, ?, ?)",
+        ).bind(sessionId, npcId, body.note)
+      : env.DB.prepare(
+          "DELETE FROM game_session_npc_note WHERE session_id = ? AND npc_id = ?",
+        ).bind(sessionId, npcId)
+  ).run();
+  if (!command.success) {
+    throw new Error("failed to set npc note");
   }
 
   return new Response(null, {
