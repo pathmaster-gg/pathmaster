@@ -11,7 +11,7 @@ import DiscordSvg from "@/images/icons/discord.svg";
 import FacebookSvg from "@/images/icons/facebook.svg";
 import TwitterSvg from "@/images/icons/twitter.svg";
 import GithubSvg from "@/images/icons/github.svg";
-import ListSvg from "@/images/icons/list.svg";
+import Link from "next/link";
 
 interface IProps {
   pageName: string;
@@ -23,8 +23,9 @@ export default function Header(props: IProps) {
   return (
     <div className="flex items-stretch justify-between h-24 bg-grayscale-999">
       <div className="flex items-center gap-6 pl-6">
-        <Image src={ListSvg} width={28} alt="List icon" />
-        <LogoHero width={190} />
+        <Link href="/">
+          <LogoHero width={190} />
+        </Link>
         <span className="text-2xl">{props.pageName}</span>
       </div>
       <div className="flex gap-8">

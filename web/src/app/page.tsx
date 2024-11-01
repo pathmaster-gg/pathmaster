@@ -28,7 +28,7 @@ export default function Home() {
         <p className="text-xl">Your trusted companion app for managing</p>
         <Image priority src={LogoPf2e} width={430} alt="Pathfinder 2e logo" />
         <div className="flex mt-16 gap-x-16">
-          <LinkButton href="/wiki" icon={JournalSvg} text="Rules & Guides" />
+          <LinkButton href="/chat" icon={JournalSvg} text="Rules & Guides" />
           <LinkButton
             href="/adventure/hub"
             icon={BoxesSvg}

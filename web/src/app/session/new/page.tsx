@@ -42,7 +42,7 @@ export default function NewSession() {
       });
       const createBody = (await createResponse.json()) as GameSessionMetadata;
 
-      router.push(`/session/${createBody.id}`);
+      router.push(`/session?id=${createBody.id}`);
     }
   };
 

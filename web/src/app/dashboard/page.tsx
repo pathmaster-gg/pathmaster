@@ -94,6 +94,7 @@ export default function Dashboard() {
                     sessions.map((session) => (
                       <SessionRow
                         key={session.id}
+                        sessionId={session.id}
                         sessionName={session.name}
                         adventureName={session.adventure.name}
                       />

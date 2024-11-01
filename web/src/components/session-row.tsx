@@ -1,6 +1,7 @@
 import Button from "./button";
 
 interface IProps {
+  sessionId: number;
   sessionName: string;
   adventureName: string;
 }
@@ -11,7 +12,7 @@ export default function SessionRow(props: IProps) {
       <p className="text-sm">
         {props.sessionName} [{props.adventureName}]
       </p>
-      <Button text="Continue" onClick={() => {}} />
+      <Button text="Continue" link={`/session?id=${props.sessionId}`} />
     </div>
   );
 }

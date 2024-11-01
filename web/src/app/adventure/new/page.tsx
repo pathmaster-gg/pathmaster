@@ -31,7 +31,7 @@ export default function NewAdventure() {
       });
       const createBody = (await createResponse.json()) as AdventureMetadata;
 
-      router.push(`/adventure/${createBody.id}`);
+      router.push(`/adventure?id=${createBody.id}`);
     }
   };
 
