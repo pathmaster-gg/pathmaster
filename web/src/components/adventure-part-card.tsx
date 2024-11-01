@@ -27,9 +27,16 @@ export default function AdventurePartCard(props: IProps) {
           {props.button === "add" && <AddButton onClick={props.onAdd} />}
         </div>
         <Divider />
-        <div className="h-full flex flex-col items-stretch gap-4 overflow-scroll">
-          {props.children}
-        </div>
+        {props.children === undefined ||
+        (props.children as ReactNode[]).length === 0 ? (
+          <div className="h-full flex flex-col items-center justify-center">
+            <p className="text-2xl text-grayscale-500 select-none">Empty</p>
+          </div>
+        ) : (
+          <div className="h-full flex flex-col items-stretch gap-4 overflow-scroll">
+            {props.children}
+          </div>
+        )}
       </div>
     </Box>
   );
