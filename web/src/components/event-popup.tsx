@@ -35,7 +35,7 @@ export default function EventPopup(props: IProps) {
                 type="text"
                 placeholder="Time of the event"
                 readOnly
-                value="2024-01-01 00:00:00"
+                value={new Date(props.event.timestamp * 1000).toLocaleString()}
               />
             </>
           )}
