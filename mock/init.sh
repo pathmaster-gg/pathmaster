@@ -553,3 +553,157 @@ curl "https://pathmaster.gg/api/session/5/finished_quest/14" \
   --fail \
   -X PUT \
   -H "Authorization: Bearer $TOKEN"
+
+curl "https://pathmaster.gg/api/player" \
+  --fail \
+  -X POST \
+  -H "Authorization: Bearer $TOKEN" \
+  -H "Content-Type: application/json" \
+  --data '{
+  "name": "Eira",
+  "ancestry": "Half-Elf",
+  "level": 1,
+  "hp": 100,
+  "hp_max": 100,
+  "session_id": 1
+}'
+
+curl "https://pathmaster.gg/api/player" \
+  --fail \
+  -X POST \
+  -H "Authorization: Bearer $TOKEN" \
+  -H "Content-Type: application/json" \
+  --data '{
+  "name": "Thorne",
+  "ancestry": "Dwarf",
+  "level": 3,
+  "hp": 40,
+  "hp_max": 50,
+  "session_id": 1
+}'
+
+curl "https://pathmaster.gg/api/player" \
+  --fail \
+  -X POST \
+  -H "Authorization: Bearer $TOKEN" \
+  -H "Content-Type: application/json" \
+  --data '{
+  "name": "Kael",
+  "ancestry": "Human",
+  "level": 2,
+  "hp": 120,
+  "hp_max": 180,
+  "session_id": 1
+}'
+
+curl "https://pathmaster.gg/api/player" \
+  --fail \
+  -X POST \
+  -H "Authorization: Bearer $TOKEN" \
+  -H "Content-Type: application/json" \
+  --data '{
+  "name": "Eira",
+  "ancestry": "Half-Elf",
+  "level": 1,
+  "hp": 100,
+  "hp_max": 100,
+  "session_id": 2
+}'
+
+curl "https://pathmaster.gg/api/player" \
+  --fail \
+  -X POST \
+  -H "Authorization: Bearer $TOKEN" \
+  -H "Content-Type: application/json" \
+  --data '{
+  "name": "Arin",
+  "ancestry": "Dwarf",
+  "level": 3,
+  "hp": 40,
+  "hp_max": 50,
+  "session_id": 2
+}'
+
+curl "https://pathmaster.gg/api/player" \
+  --fail \
+  -X POST \
+  -H "Authorization: Bearer $TOKEN" \
+  -H "Content-Type: application/json" \
+  --data '{
+  "name": "Elara",
+  "ancestry": "Half-Elf",
+  "level": 1,
+  "hp": 100,
+  "hp_max": 100,
+  "session_id": 3
+}'
+
+curl "https://pathmaster.gg/api/player" \
+  --fail \
+  -X POST \
+  -H "Authorization: Bearer $TOKEN" \
+  -H "Content-Type: application/json" \
+  --data '{
+  "name": "Eira",
+  "ancestry": "Dwarf",
+  "level": 3,
+  "hp": 40,
+  "hp_max": 50,
+  "session_id": 3
+}'
+
+curl "https://pathmaster.gg/api/player" \
+  --fail \
+  -X POST \
+  -H "Authorization: Bearer $TOKEN" \
+  -H "Content-Type: application/json" \
+  --data '{
+  "name": "Eira",
+  "ancestry": "Half-Elf",
+  "level": 1,
+  "hp": 100,
+  "hp_max": 100,
+  "session_id": 4
+}'
+
+curl "https://pathmaster.gg/api/player" \
+  --fail \
+  -X POST \
+  -H "Authorization: Bearer $TOKEN" \
+  -H "Content-Type: application/json" \
+  --data '{
+  "name": "Thrain",
+  "ancestry": "Dwarf",
+  "level": 3,
+  "hp": 40,
+  "hp_max": 50,
+  "session_id": 4
+}'
+
+curl "https://pathmaster.gg/api/player" \
+  --fail \
+  -X POST \
+  -H "Authorization: Bearer $TOKEN" \
+  -H "Content-Type: application/json" \
+  --data '{
+  "name": "Eira",
+  "ancestry": "Half-Elf",
+  "level": 1,
+  "hp": 100,
+  "hp_max": 100,
+  "session_id": 5
+}'
+
+curl "https://pathmaster.gg/api/player" \
+  --fail \
+  -X POST \
+  -H "Authorization: Bearer $TOKEN" \
+  -H "Content-Type: application/json" \
+  --data '{
+  "name": "Zephyr",
+  "ancestry": "Dwarf",
+  "level": 3,
+  "hp": 40,
+  "hp_max": 50,
+  "session_id": 5
+}'
