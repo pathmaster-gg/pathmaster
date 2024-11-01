@@ -72,3 +72,31 @@ jobs:
           yarn wrangler deploy \
             --env production \
             --route "${{ vars.WORKER_ROUTE }}"
+
+      - name: "Create mock account and session"
+        run: |
+          export CLOUDFLARE_ACCOUNT_ID="${{ secrets.CLOUDFLARE_ACCOUNT_ID }}"
+          export CLOUDFLARE_API_TOKEN="${{ secrets.CLOUDFLARE_API_TOKEN }}"
+
+          cd ./api/
+
+          yarn wrangler d1 execute \
+            --env production \
+            --remote \
+            --command "INSERT INTO account (account_id, username, email) VALUES (1, 'pathmaster', 'info@pathmaster.gg');" \
+            pathmaster-dev
+
+          CURRENT_TIME=$(date +%s)
+          EXPIRATION_TIME=$((CURRENT_TIME + 3600))
+
+          yarn wrangler d1 execute \
+            --env production \
+            --remote \
+            --command "INSERT INTO session (session_id, type, token, create_time, expiration, account_id) VALUES (1, 2, '${{ secrets.MOCK_SESSION_TOKEN }}', $CURRENT_TIME, $EXPIRATION_TIME, 1);" \
+            pathmaster-dev
+
+      - name: "Send data initialization requests"
+        run: |
+          cd ./mock/
+
+          ./init.sh "${{ secrets.MOCK_SESSION_TOKEN }}"
