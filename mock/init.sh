@@ -354,6 +354,176 @@ curl "https://pathmaster.gg/api/quest" \
   "description": "The players must face the Toy Baron and his minions in a final showdown within the heart of the Superstar'"'"'s Playroom. The players must use all their skills and abilities to defeat the Toy Baron and his minions, and save the city of New Alexandria from his evil plans. The fate of the city rests in their hands."
 }'
 
+curl "https://pathmaster.gg/api/npc" \
+  --fail \
+  -X POST \
+  -H "Authorization: Bearer $TOKEN" \
+  -H "Content-Type: application/json" \
+  --data '{
+  "adventure_id": 1,
+  "name": "Elara Moonwhisper"
+}'
+
+curl "https://pathmaster.gg/api/npc" \
+  --fail \
+  -X POST \
+  -H "Authorization: Bearer $TOKEN" \
+  -H "Content-Type: application/json" \
+  --data '{
+  "adventure_id": 1,
+  "name": "Kaelith Sunshadow"
+}'
+
+curl "https://pathmaster.gg/api/npc" \
+  --fail \
+  -X POST \
+  -H "Authorization: Bearer $TOKEN" \
+  -H "Content-Type: application/json" \
+  --data '{
+  "adventure_id": 1,
+  "name": "Thorne Shadowstep"
+}'
+
+curl "https://pathmaster.gg/api/npc" \
+  --fail \
+  -X POST \
+  -H "Authorization: Bearer $TOKEN" \
+  -H "Content-Type: application/json" \
+  --data '{
+  "adventure_id": 1,
+  "name": "Eira Starweaver"
+}'
+
+curl "https://pathmaster.gg/api/npc" \
+  --fail \
+  -X POST \
+  -H "Authorization: Bearer $TOKEN" \
+  -H "Content-Type: application/json" \
+  --data '{
+  "adventure_id": 1,
+  "name": "Thrain Ironfist"
+}'
+
+curl "https://pathmaster.gg/api/npc" \
+  --fail \
+  -X POST \
+  -H "Authorization: Bearer $TOKEN" \
+  -H "Content-Type: application/json" \
+  --data '{
+  "adventure_id": 2,
+  "name": "Lord Arcturus"
+}'
+
+curl "https://pathmaster.gg/api/npc" \
+  --fail \
+  -X POST \
+  -H "Authorization: Bearer $TOKEN" \
+  -H "Content-Type: application/json" \
+  --data '{
+  "adventure_id": 2,
+  "name": "Lady Elara"
+}'
+
+curl "https://pathmaster.gg/api/npc" \
+  --fail \
+  -X POST \
+  -H "Authorization: Bearer $TOKEN" \
+  -H "Content-Type: application/json" \
+  --data '{
+  "adventure_id": 2,
+  "name": "Brother Erebus"
+}'
+
+curl "https://pathmaster.gg/api/npc" \
+  --fail \
+  -X POST \
+  -H "Authorization: Bearer $TOKEN" \
+  -H "Content-Type: application/json" \
+  --data '{
+  "adventure_id": 3,
+  "name": "Elara Nightshade"
+}'
+
+curl "https://pathmaster.gg/api/npc" \
+  --fail \
+  -X POST \
+  -H "Authorization: Bearer $TOKEN" \
+  -H "Content-Type: application/json" \
+  --data '{
+  "adventure_id": 3,
+  "name": "Thorne Blackwood"
+}'
+
+curl "https://pathmaster.gg/api/npc" \
+  --fail \
+  -X POST \
+  -H "Authorization: Bearer $TOKEN" \
+  -H "Content-Type: application/json" \
+  --data '{
+  "adventure_id": 3,
+  "name": "Lyra Moonwhisper"
+}'
+
+curl "https://pathmaster.gg/api/npc" \
+  --fail \
+  -X POST \
+  -H "Authorization: Bearer $TOKEN" \
+  -H "Content-Type: application/json" \
+  --data '{
+  "adventure_id": 4,
+  "name": "Zorath the Unyielding"
+}'
+
+curl "https://pathmaster.gg/api/npc" \
+  --fail \
+  -X POST \
+  -H "Authorization: Bearer $TOKEN" \
+  -H "Content-Type: application/json" \
+  --data '{
+  "adventure_id": 4,
+  "name": "Lyra the Devoted"
+}'
+
+curl "https://pathmaster.gg/api/npc" \
+  --fail \
+  -X POST \
+  -H "Authorization: Bearer $TOKEN" \
+  -H "Content-Type: application/json" \
+  --data '{
+  "adventure_id": 4,
+  "name": "Kael the Unhinged"
+}'
+
+curl "https://pathmaster.gg/api/npc" \
+  --fail \
+  -X POST \
+  -H "Authorization: Bearer $TOKEN" \
+  -H "Content-Type: application/json" \
+  --data '{
+  "adventure_id": 5,
+  "name": "The Toy Baron"
+}'
+
+curl "https://pathmaster.gg/api/npc" \
+  --fail \
+  -X POST \
+  -H "Authorization: Bearer $TOKEN" \
+  -H "Content-Type: application/json" \
+  --data '{
+  "adventure_id": 5,
+  "name": "Lila Starlight"
+}'
+
+curl "https://pathmaster.gg/api/npc" \
+  --fail \
+  -X POST \
+  -H "Authorization: Bearer $TOKEN" \
+  -H "Content-Type: application/json" \
+  --data '{
+  "adventure_id": 5,
+  "name": "Professor Archimedes Pockets"
+}'
+
 curl "https://pathmaster.gg/api/session/1/finished_quest/2" \
   --fail \
   -X PUT \
