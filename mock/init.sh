@@ -188,3 +188,168 @@ curl "https://pathmaster.gg/api/adventure/5" \
   "description": "In the prestigious Great Museum of Wonder, the world'"'"'s most valuable and rare magical toys have been pilfered in a daring heist. The thief, a cunning mastermind known only as \"The Toy Baron,\" has set a challenge to the players: steal five specific, highly sought-after toys from the invertible collection of the Superstar'"'"'s Playroom, a network of intricately layered and chronomantically locked exhibits within the museum. The Toy Baron has an ulterior motive, however, and the players are invited to participate in this grand caper - but as double agents, for the added reward: infiltrate the heist, recover the stolen treasures, and claim the priceless Leaders trophy for themselves.\nThe players will navigate a cat-and-mouse game with museum security, rival art thieves, and the enigmatic Toy Baron, using their wits, skill, and guile to gather information, evade danger, and claim their spoils. As they dive deeper into the puzzle, they'"'"'ll uncover hidden getaway routes, clue-filled problem boxes, and secret rooms, all linked by cryptic cryptograms. With time magic unraveling and smells of transdimensional funny factory propellers, The Great Toys Heist sets the stage for an adventure that combines physical fun and frizz with matrix wrangling and quantum mechanisms, exquisitely re-infusing the PST texts with an element of beauty lost in classic Replay logic.",
   "background": "In the bustling city of New Alexandria, the Great Museum of Wonder has long been a beacon of learning and wonder. Its vast collection of magical artifacts and enchanted toys has drawn visitors from all corners of the world, and its hallowed halls have been graced by the presence of some of the greatest wizards and adventurers of all time. But behind the scenes, a shadowy figure known only as the Toy Baron has been secretly amassing a collection of his own, one that he intends to use to gain control over the city and its magical artifacts.\nThe Toy Baron'"'"'s true identity is a mystery, but his reputation as a master thief and cunning strategist is well-known. He has been quietly acquiring rare and powerful toys, using his vast network of contacts and resources to obtain them. Some say he has even made deals with dark forces from beyond the mortal realm, trading valuable artifacts for forbidden knowledge and power. As the Toy Baron'"'"'s power grows, the people of New Alexandria begin to feel the effects of his influence, and the once-peaceful city is plunged into chaos and uncertainty.\nWith the Toy Baron'"'"'s plan for domination nearing its culmination, the players are hired by the museum'"'"'s curator to infiltrate the Superstar'"'"'s Playroom and recover the stolen toys. The players must navigate the treacherous maze of the museum'"'"'s exhibits, avoiding deadly traps and cunning security measures to reach the heart of the Playroom. There, they will face the Toy Baron and his minions in a final showdown, with the fate of New Alexandria hanging in the balance. Can the players stop the Toy Baron and save the city from his evil plans, or will they fall victim to his cunning and his power? The fate of the city rests in their hands."
 }'
+
+curl "https://pathmaster.gg/api/quest" \
+  --fail \
+  -X POST \
+  -H "Authorization: Bearer $TOKEN" \
+  -H "Content-Type: application/json" \
+  --data '{
+  "adventure_id": 1,
+  "title": "The Vanished Caravan of Vale",
+  "description": "A group of merchants from the town of Vale has gone missing while traveling through the mountains. The players are hired by the town'"'"'s mayor to investigate their disappearance and find out what happened to them. The merchants were carrying a valuable shipment of goods, including rare spices and luxury fabrics, and the mayor fears that they may have been stolen or hijacked by bandits or worse. The players must track down the missing caravan and bring back any survivors or information about their fate."
+}'
+
+curl "https://pathmaster.gg/api/quest" \
+  --fail \
+  -X POST \
+  -H "Authorization: Bearer $TOKEN" \
+  -H "Content-Type: application/json" \
+  --data '{
+  "adventure_id": 1,
+  "title": "The Enigmatic Sorceress of Storvalde",
+  "description": "The players are approached by a mysterious sorceress who claims to have information about the Eye of the Beast. She is willing to share her knowledge with the players, but only if they agree to complete a task for her first. The sorceress has a rival who is trying to steal her secrets, and she needs the players to retrieve a powerful magical artifact that has been stolen from her. The artifact is a rare crystal that enhances the power of magic, and the players must retrieve it before the rival sorceress can use it against her."
+}'
+
+curl "https://pathmaster.gg/api/quest" \
+  --fail \
+  -X POST \
+  -H "Authorization: Bearer $TOKEN" \
+  -H "Content-Type: application/json" \
+  --data '{
+  "adventure_id": 1,
+  "title": "The Den of the Beast",
+  "description": "The players have uncovered a map that leads to the lair of the Beast, a fearsome creature that is rumored to be the source of the Eye'"'"'s power. The players must journey to the heart of the realm to find the Beast'"'"'s lair and defeat the creature before it can wreak any more havoc on the land. The lair is said to be filled with traps and guarded by powerful minions, and the players will need to use all their skills and abilities to survive the journey and defeat the Beast."
+}'
+
+curl "https://pathmaster.gg/api/quest" \
+  --fail \
+  -X POST \
+  -H "Authorization: Bearer $TOKEN" \
+  -H "Content-Type: application/json" \
+  --data '{
+  "adventure_id": 2,
+  "title": "The Missing Livestock",
+  "description": "The townspeople have reported that several head of livestock have gone missing over the past week, including cows, pigs, and chickens. The animals were last seen grazing in the fields near Hellknight Hill. The townspeople believe that the Hellknights may be involved in the disappearances, and they have asked the players to investigate and find out what is happening to the animals."
+}'
+
+curl "https://pathmaster.gg/api/quest" \
+  --fail \
+  -X POST \
+  -H "Authorization: Bearer $TOKEN" \
+  -H "Content-Type: application/json" \
+  --data '{
+  "adventure_id": 2,
+  "title": "The Haunted Tools",
+  "description": "Several tools have turned against their owners in the past few days, causing injuries and damage to property. The townspeople believe that the tools have been possessed by some kind of malevolent spirit, and they have asked the players to investigate and put an end to the hauntings. The players must search the town for the possessed tools and find a way to exorcise the spirits."
+}'
+
+curl "https://pathmaster.gg/api/quest" \
+  --fail \
+  -X POST \
+  -H "Authorization: Bearer $TOKEN" \
+  -H "Content-Type: application/json" \
+  --data '{
+  "adventure_id": 2,
+  "title": "The Strange Manifestations",
+  "description": "Strange manifestations have appeared throughout the town, including glowing symbols, eerie lights, and unsettling sounds. The townspeople believe that these manifestations are connected to the disturbances on Hellknight Hill, and they have asked the players to investigate and find out what is causing them. The players must search the town and gather information about the manifestations in order to put an end to them."
+}'
+
+curl "https://pathmaster.gg/api/quest" \
+  --fail \
+  -X POST \
+  -H "Authorization: Bearer $TOKEN" \
+  -H "Content-Type: application/json" \
+  --data '{
+  "adventure_id": 3,
+  "title": "Find the Missing Children",
+  "description": "The townspeople of Oakwood are frantic about the disappearance of their children. The adventurers are tasked with searching the town and its surroundings to find any clues that might lead them to the missing youths. They will need to speak with the townspeople, search for any signs of struggle or abduction, and follow any leads that might point them towards the whereabouts of the missing children."
+}'
+
+curl "https://pathmaster.gg/api/quest" \
+  --fail \
+  -X POST \
+  -H "Authorization: Bearer $TOKEN" \
+  -H "Content-Type: application/json" \
+  --data '{
+  "adventure_id": 3,
+  "title": "Uncover the Founders'"'"' Secrets",
+  "description": "The adventurers discover a hidden chamber deep within the town'"'"'s library, filled with ancient tomes and artifacts related to the founders of Oakwood. They must study these texts and artifacts to uncover the secrets of the founders and their binding of the Devourer. They will need to decipher ancient texts, solve puzzles, and unlock magical artifacts to uncover the truth behind the founders'"'"' binding."
+}'
+
+curl "https://pathmaster.gg/api/quest" \
+  --fail \
+  -X POST \
+  -H "Authorization: Bearer $TOKEN" \
+  -H "Content-Type: application/json" \
+  --data '{
+  "adventure_id": 3,
+  "title": "Confront the Dark Forces",
+  "description": "The adventurers have discovered that a group of dark forces, seeking to claim the Devourer'"'"'s power for their own gain, have been stirring up trouble in Oakwood. They must confront these dark forces, defeat their minions, and uncover their true intentions. The adventurers will need to use their skills and abilities to overcome the challenges posed by these dark forces and stop them from unleashing the Devourer'"'"'s power."
+}'
+
+curl "https://pathmaster.gg/api/quest" \
+  --fail \
+  -X POST \
+  -H "Authorization: Bearer $TOKEN" \
+  -H "Content-Type: application/json" \
+  --data '{
+  "adventure_id": 4,
+  "title": "Rescue the Kidnapped Travelers",
+  "description": "The local community has reported several travelers and locals missing, believed to have been abducted by the cultists. The adventurers must infiltrate the cult'"'"'s stronghold within the Spire of Gauntlight and rescue the missing individuals before they are sacrificed to the ancient ones."
+}'
+
+curl "https://pathmaster.gg/api/quest" \
+  --fail \
+  -X POST \
+  -H "Authorization: Bearer $TOKEN" \
+  -H "Content-Type: application/json" \
+  --data '{
+  "adventure_id": 4,
+  "title": "Purify the Water Source",
+  "description": "The cultists have poisoned the local water source, spreading disease and madness among the community. The adventurers must find the source of the tainted water and purify it using their skills and magic. This will not only improve the health of the community but also weaken the cult'"'"'s grip on the area."
+}'
+
+curl "https://pathmaster.gg/api/quest" \
+  --fail \
+  -X POST \
+  -H "Authorization: Bearer $TOKEN" \
+  -H "Content-Type: application/json" \
+  --data '{
+  "adventure_id": 4,
+  "title": "Uncover the Secrets of the Ancient Relic",
+  "description": "The adventurers have discovered an ancient relic hidden deep within the Spire. The relic is said to hold the key to defeating the cult and lifting the curse of the Spire. However, the relic is guarded by powerful undead creatures and deadly traps. The adventurers must navigate these challenges and unlock the secrets of the relic to save the community and the world."
+}'
+
+curl "https://pathmaster.gg/api/quest" \
+  --fail \
+  -X POST \
+  -H "Authorization: Bearer $TOKEN" \
+  -H "Content-Type: application/json" \
+  --data '{
+  "adventure_id": 5,
+  "title": "The Missing Toys of the Superstar'"'"'s Playroom",
+  "description": "The players are tasked with retrieving a collection of stolen toys from the Superstar'"'"'s Playroom, a secret exhibit within the Great Museum of Wonder. The toys are said to have been taken by the Toy Baron'"'"'s minions, and the players must navigate the treacherous maze of the museum'"'"'s exhibits to reach the Playroom and retrieve the stolen toys."
+}'
+
+curl "https://pathmaster.gg/api/quest" \
+  --fail \
+  -X POST \
+  -H "Authorization: Bearer $TOKEN" \
+  -H "Content-Type: application/json" \
+  --data '{
+  "adventure_id": 5,
+  "title": "Uncovering the Toy Baron'"'"'s Dark Deals",
+  "description": "The players are tasked with infiltrating the Toy Baron'"'"'s hideout and uncovering the dark deals he has made with dark forces from beyond the mortal realm. The players must navigate the traps and security measures of the hideout to find evidence of the Toy Baron'"'"'s forbidden knowledge and power."
+}'
+
+curl "https://pathmaster.gg/api/quest" \
+  --fail \
+  -X POST \
+  -H "Authorization: Bearer $TOKEN" \
+  -H "Content-Type: application/json" \
+  --data '{
+  "adventure_id": 5,
+  "title": "The Showdown in the Heart of the Playroom",
+  "description": "The players must face the Toy Baron and his minions in a final showdown within the heart of the Superstar'"'"'s Playroom. The players must use all their skills and abilities to defeat the Toy Baron and his minions, and save the city of New Alexandria from his evil plans. The fate of the city rests in their hands."
+}'
