@@ -6,6 +6,9 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { getServerUrl } from "@/lib/constants/env";
 import { Session, SessionType } from "@/lib/models";
 import { IdentityContext } from "@/app/lib/context/identity";
+import Divider from "@/components/divider";
+import Box from "@/components/box";
+import LogoHero from "@/components/logo-hero";
 
 export default function Google() {
   const router = useRouter();
@@ -36,9 +39,16 @@ export default function Google() {
   }, []);
 
   return (
-    <div className="w-full min-h-full bg-mask-background">
-      <div>
-        <p>Logging in with Google</p>
+    <div className="w-full h-full flex flex-col items-center justify-center gap-4 px-12 py-8">
+      <LogoHero width={400} />
+      <div className="flex flex-col gap-8 w-156 my-8">
+        <Divider />
+        <Box extraMargin>
+          <div className="w-full h-full flex items-center justify-center py-16">
+            <p className="text-lg">Logging in with Google... </p>
+          </div>
+        </Box>
+        <Divider />
       </div>
     </div>
   );
