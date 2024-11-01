@@ -524,6 +524,116 @@ curl "https://pathmaster.gg/api/npc" \
   "name": "Professor Archimedes Pockets"
 }'
 
+curl "https://pathmaster.gg/api/creature" \
+  --fail \
+  -X POST \
+  -H "Authorization: Bearer $TOKEN" \
+  -H "Content-Type: application/json" \
+  --data '{
+  "adventure_id": 1,
+  "name": "Shadowwraiths"
+}'
+
+curl "https://pathmaster.gg/api/creature" \
+  --fail \
+  -X POST \
+  -H "Authorization: Bearer $TOKEN" \
+  -H "Content-Type: application/json" \
+  --data '{
+  "adventure_id": 1,
+  "name": "Frostbite Fiends"
+}'
+
+curl "https://pathmaster.gg/api/creature" \
+  --fail \
+  -X POST \
+  -H "Authorization: Bearer $TOKEN" \
+  -H "Content-Type: application/json" \
+  --data '{
+  "adventure_id": 1,
+  "name": "Darkfell Beasts"
+}'
+
+curl "https://pathmaster.gg/api/creature" \
+  --fail \
+  -X POST \
+  -H "Authorization: Bearer $TOKEN" \
+  -H "Content-Type: application/json" \
+  --data '{
+  "adventure_id": 2,
+  "name": "Hellhound"
+}'
+
+curl "https://pathmaster.gg/api/creature" \
+  --fail \
+  -X POST \
+  -H "Authorization: Bearer $TOKEN" \
+  -H "Content-Type: application/json" \
+  --data '{
+  "adventure_id": 2,
+  "name": "Ironclad Guardian"
+}'
+
+curl "https://pathmaster.gg/api/creature" \
+  --fail \
+  -X POST \
+  -H "Authorization: Bearer $TOKEN" \
+  -H "Content-Type: application/json" \
+  --data '{
+  "adventure_id": 3,
+  "name": "Soulstealer"
+}'
+
+curl "https://pathmaster.gg/api/creature" \
+  --fail \
+  -X POST \
+  -H "Authorization: Bearer $TOKEN" \
+  -H "Content-Type: application/json" \
+  --data '{
+  "adventure_id": 3,
+  "name": "Darkforger"
+}'
+
+curl "https://pathmaster.gg/api/creature" \
+  --fail \
+  -X POST \
+  -H "Authorization: Bearer $TOKEN" \
+  -H "Content-Type: application/json" \
+  --data '{
+  "adventure_id": 4,
+  "name": "Cursed Guardian"
+}'
+
+curl "https://pathmaster.gg/api/creature" \
+  --fail \
+  -X POST \
+  -H "Authorization: Bearer $TOKEN" \
+  -H "Content-Type: application/json" \
+  --data '{
+  "adventure_id": 4,
+  "name": "Corrupted Cultists"
+}'
+
+curl "https://pathmaster.gg/api/creature" \
+  --fail \
+  -X POST \
+  -H "Authorization: Bearer $TOKEN" \
+  -H "Content-Type: application/json" \
+  --data '{
+  "adventure_id": 5,
+  "name": "Clockwork Creeper"
+}'
+
+curl "https://pathmaster.gg/api/creature" \
+  --fail \
+  -X POST \
+  -H "Authorization: Bearer $TOKEN" \
+  -H "Content-Type: application/json" \
+  --data '{
+  "adventure_id": 5,
+  "name": "Shadow Shrike"
+}'
+
 curl "https://pathmaster.gg/api/session/1/finished_quest/2" \
   --fail \
   -X PUT \
