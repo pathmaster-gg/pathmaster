@@ -88,3 +88,53 @@ curl "https://pathmaster.gg/api/adventure" \
   "name": "The Great Toys Heist",
   "cover_image_id": 5
 }'
+
+curl "https://pathmaster.gg/api/session" \
+  --fail \
+  -X POST \
+  -H "Authorization: Bearer $TOKEN" \
+  -H "Content-Type: application/json" \
+  --data '{
+  "name": "Session 64",
+  "adventure_id": 1
+}'
+
+curl "https://pathmaster.gg/api/session" \
+  --fail \
+  -X POST \
+  -H "Authorization: Bearer $TOKEN" \
+  -H "Content-Type: application/json" \
+  --data '{
+  "name": "The Iron Path",
+  "adventure_id": 2
+}'
+
+curl "https://pathmaster.gg/api/session" \
+  --fail \
+  -X POST \
+  -H "Authorization: Bearer $TOKEN" \
+  -H "Content-Type: application/json" \
+  --data '{
+  "name": "Echoes of Eternity",
+  "adventure_id": 3
+}'
+
+curl "https://pathmaster.gg/api/session" \
+  --fail \
+  -X POST \
+  -H "Authorization: Bearer $TOKEN" \
+  -H "Content-Type: application/json" \
+  --data '{
+  "name": "Session 3",
+  "adventure_id": 4
+}'
+
+curl "https://pathmaster.gg/api/session" \
+  --fail \
+  -X POST \
+  -H "Authorization: Bearer $TOKEN" \
+  -H "Content-Type: application/json" \
+  --data '{
+  "name": "Session 5",
+  "adventure_id": 5
+}'
