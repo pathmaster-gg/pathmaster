@@ -634,6 +634,126 @@ curl "https://pathmaster.gg/api/creature" \
   "name": "Shadow Shrike"
 }'
 
+curl "https://pathmaster.gg/api/item" \
+  --fail \
+  -X POST \
+  -H "Authorization: Bearer $TOKEN" \
+  -H "Content-Type: application/json" \
+  --data '{
+  "adventure_id": 1,
+  "name": "Eye of the Beast'"'"'s Fury"
+}'
+
+curl "https://pathmaster.gg/api/item" \
+  --fail \
+  -X POST \
+  -H "Authorization: Bearer $TOKEN" \
+  -H "Content-Type: application/json" \
+  --data '{
+  "adventure_id": 1,
+  "name": "Sorcerer'"'"'s Scepter of the Ancients"
+}'
+
+curl "https://pathmaster.gg/api/item" \
+  --fail \
+  -X POST \
+  -H "Authorization: Bearer $TOKEN" \
+  -H "Content-Type: application/json" \
+  --data '{
+  "adventure_id": 1,
+  "name": "Reliquary of the Lost"
+}'
+
+curl "https://pathmaster.gg/api/item" \
+  --fail \
+  -X POST \
+  -H "Authorization: Bearer $TOKEN" \
+  -H "Content-Type: application/json" \
+  --data '{
+  "adventure_id": 1,
+  "name": "Tome of the Beast'"'"'s Knowledge"
+}'
+
+curl "https://pathmaster.gg/api/item" \
+  --fail \
+  -X POST \
+  -H "Authorization: Bearer $TOKEN" \
+  -H "Content-Type: application/json" \
+  --data '{
+  "adventure_id": 2,
+  "name": "Hellknight'"'"'s Fang"
+}'
+
+curl "https://pathmaster.gg/api/item" \
+  --fail \
+  -X POST \
+  -H "Authorization: Bearer $TOKEN" \
+  -H "Content-Type: application/json" \
+  --data '{
+  "adventure_id": 2,
+  "name": "Raven'"'"'s Claw"
+}'
+
+curl "https://pathmaster.gg/api/item" \
+  --fail \
+  -X POST \
+  -H "Authorization: Bearer $TOKEN" \
+  -H "Content-Type: application/json" \
+  --data '{
+  "adventure_id": 3,
+  "name": "The Founders'"'"' Focus"
+}'
+
+curl "https://pathmaster.gg/api/item" \
+  --fail \
+  -X POST \
+  -H "Authorization: Bearer $TOKEN" \
+  -H "Content-Type: application/json" \
+  --data '{
+  "adventure_id": 3,
+  "name": "The Devourer'"'"'s Tome"
+}'
+
+curl "https://pathmaster.gg/api/item" \
+  --fail \
+  -X POST \
+  -H "Authorization: Bearer $TOKEN" \
+  -H "Content-Type: application/json" \
+  --data '{
+  "adventure_id": 4,
+  "name": "Tome of the Ancient Ones"
+}'
+
+curl "https://pathmaster.gg/api/item" \
+  --fail \
+  -X POST \
+  -H "Authorization: Bearer $TOKEN" \
+  -H "Content-Type: application/json" \
+  --data '{
+  "adventure_id": 4,
+  "name": "Crystal of the Spire"
+}'
+
+curl "https://pathmaster.gg/api/item" \
+  --fail \
+  -X POST \
+  -H "Authorization: Bearer $TOKEN" \
+  -H "Content-Type: application/json" \
+  --data '{
+  "adventure_id": 5,
+  "name": "Mystic'"'"'s Mirth"
+}'
+
+curl "https://pathmaster.gg/api/item" \
+  --fail \
+  -X POST \
+  -H "Authorization: Bearer $TOKEN" \
+  -H "Content-Type: application/json" \
+  --data '{
+  "adventure_id": 5,
+  "name": "Shadow'"'"'s Shard"
+}'
+
 curl "https://pathmaster.gg/api/session/1/finished_quest/2" \
   --fail \
   -X PUT \
