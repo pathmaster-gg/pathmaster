@@ -2,6 +2,7 @@
 
 import { useContext, useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
+import Link from "next/link";
 
 import AdventurePartCard from "@/components/adventure-part-card";
 import DualListItem from "@/components/dual-list-item";
@@ -233,7 +234,11 @@ export default function LiveSession() {
           <div className="flex flex-col grow max-w-screen-xl gap-4">
             <div className="flex items-center justify-between">
               <h2 className="text-3xl">{session?.name ?? ""}</h2>
-              <p className="text-lg">[{session?.adventure.name ?? ""}]</p>
+              {session && (
+                <Link href={`/adventure?id=${session.adventure.id}`}>
+                  <p className="text-lg">[{session.adventure.name}]</p>
+                </Link>
+              )}
             </div>
             <div className="grid grid-cols-4 gap-x-4">
               <PartyBox
