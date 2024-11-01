@@ -353,3 +353,33 @@ curl "https://pathmaster.gg/api/quest" \
   "title": "The Showdown in the Heart of the Playroom",
   "description": "The players must face the Toy Baron and his minions in a final showdown within the heart of the Superstar'"'"'s Playroom. The players must use all their skills and abilities to defeat the Toy Baron and his minions, and save the city of New Alexandria from his evil plans. The fate of the city rests in their hands."
 }'
+
+curl "https://pathmaster.gg/api/session/1/finished_quest/2" \
+  --fail \
+  -X PUT \
+  -H "Authorization: Bearer $TOKEN"
+
+curl "https://pathmaster.gg/api/session/2/finished_quest/4" \
+  --fail \
+  -X PUT \
+  -H "Authorization: Bearer $TOKEN"
+
+curl "https://pathmaster.gg/api/session/3/finished_quest/9" \
+  --fail \
+  -X PUT \
+  -H "Authorization: Bearer $TOKEN"
+
+curl "https://pathmaster.gg/api/session/4/finished_quest/10" \
+  --fail \
+  -X PUT \
+  -H "Authorization: Bearer $TOKEN"
+
+curl "https://pathmaster.gg/api/session/4/finished_quest/11" \
+  --fail \
+  -X PUT \
+  -H "Authorization: Bearer $TOKEN"
+
+curl "https://pathmaster.gg/api/session/5/finished_quest/14" \
+  --fail \
+  -X PUT \
+  -H "Authorization: Bearer $TOKEN"
