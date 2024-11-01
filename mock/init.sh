@@ -937,3 +937,57 @@ curl "https://pathmaster.gg/api/player" \
   "hp_max": 50,
   "session_id": 5
 }'
+
+curl "https://pathmaster.gg/api/session/1/npc_note/2" \
+  --fail \
+  -X PUT \
+  -H "Authorization: Bearer $TOKEN" \
+  -H "Content-Type: application/json" \
+  --data '{
+  "note": "Used as wizard"
+}'
+
+curl "https://pathmaster.gg/api/session/1/npc_note/4" \
+  --fail \
+  -X PUT \
+  -H "Authorization: Bearer $TOKEN" \
+  -H "Content-Type: application/json" \
+  --data '{
+  "note": "Used as gatekeeper"
+}'
+
+curl "https://pathmaster.gg/api/session/2/npc_note/7" \
+  --fail \
+  -X PUT \
+  -H "Authorization: Bearer $TOKEN" \
+  -H "Content-Type: application/json" \
+  --data '{
+  "note": "Used"
+}'
+
+curl "https://pathmaster.gg/api/session/3/npc_note/10" \
+  --fail \
+  -X PUT \
+  -H "Authorization: Bearer $TOKEN" \
+  -H "Content-Type: application/json" \
+  --data '{
+  "note": "Used"
+}'
+
+curl "https://pathmaster.gg/api/session/4/npc_note/13" \
+  --fail \
+  -X PUT \
+  -H "Authorization: Bearer $TOKEN" \
+  -H "Content-Type: application/json" \
+  --data '{
+  "note": "Used"
+}'
+
+curl "https://pathmaster.gg/api/session/5/npc_note/16" \
+  --fail \
+  -X PUT \
+  -H "Authorization: Bearer $TOKEN" \
+  -H "Content-Type: application/json" \
+  --data '{
+  "note": "Used"
+}'
