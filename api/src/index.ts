@@ -4,6 +4,7 @@ import { handleGetInfo, handleOnboard } from "./account";
 import { handleGoogle } from "./oauth";
 import {
   handleCreateAdventure,
+  handleGenerateNpcName,
   handleGetAdventure,
   handleGetAdventureHub,
   handleGetMyAdventures,
@@ -64,6 +65,9 @@ export default {
     router.get("/api/adventure/:id", (req) => handleGetAdventure(req, env));
     router.patch("/api/adventure/:id", (req) =>
       handleUpdateAdventure(req, env),
+    );
+    router.post("/api/adventure/:id/ai/npc", (req) =>
+      handleGenerateNpcName(req, env),
     );
     router.post("/api/quest", (req) => handleCreateQuest(req, env));
     router.patch("/api/quest/:id", (req) => handleUpdateQuest(req, env));

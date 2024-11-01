@@ -315,3 +315,20 @@ export async function handleGetAdventure(
     },
   );
 }
+
+export async function handleGenerateNpcName(
+  _request: IRequest,
+  _env: Env,
+): Promise<Response> {
+  // Mock AI response
+  return new Response(
+    JSON.stringify({
+      name: "Lady Kethrillich",
+    }),
+    {
+      headers: {
+        "Access-Control-Allow-Origin": "*",
+      },
+    },
+  );
+}
