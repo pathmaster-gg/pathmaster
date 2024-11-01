@@ -991,3 +991,48 @@ curl "https://pathmaster.gg/api/session/5/npc_note/16" \
   --data '{
   "note": "Used"
 }'
+
+curl "https://pathmaster.gg/api/session/1" \
+  --fail \
+  -X PATCH \
+  -H "Authorization: Bearer $TOKEN" \
+  -H "Content-Type: application/json" \
+  --data '{
+  "notes": "* The party found a map that hinted at the location of a powerful artifact hidden deep within the forest.\n* They also discovered a series of strange symbols etched into the walls of the goblins'"'"' lair, which seem to be connected to the artifact'"'"'s location.\n* Elara found a note in the goblins'"'"' lair that mentioned a \"dark presence\" lurking in the forest, and a feeling of \"impending doom.\""
+}'
+
+curl "https://pathmaster.gg/api/session/2" \
+  --fail \
+  -X PATCH \
+  -H "Authorization: Bearer $TOKEN" \
+  -H "Content-Type: application/json" \
+  --data '{
+  "notes": "* The party encountered a group of goblins in the forest, and Alistair and Eryndor took them down with ease.\n* Elara discovered a hidden cache of treasure in the goblins'"'"' lair, including a magical potion that increased her speed for 10 minutes.\n* Galen used his performance skill to distract the goblins and make them more vulnerable to the party'"'"'s attacks.\n* Thrain used his sorcery to summon a swarm of fire bees to attack the goblins, but they ended up attacking the party instead! Oops!"
+}'
+
+curl "https://pathmaster.gg/api/session/3" \
+  --fail \
+  -X PATCH \
+  -H "Authorization: Bearer $TOKEN" \
+  -H "Content-Type: application/json" \
+  --data '{
+  "notes": "* The party has successfully navigated the treacherous swampy terrain and made it to the ancient ruins of the long-lost civilization.\n* Our brave warrior, Eilif, has proven to be a master of the battlefield, taking down multiple foes with ease.\n* Our cunning rogue, Lila, has managed to sneak  Ah, my dear adventurers!"
+}'
+
+curl "https://pathmaster.gg/api/session/4" \
+  --fail \
+  -X PATCH \
+  -H "Authorization: Bearer $TOKEN" \
+  -H "Content-Type: application/json" \
+  --data '{
+  "notes": "* The party encountered a group of goblins in the forest, and Alistair and Eryndor took them down with ease.\n* Elara discovered a hidden cache of treasure in the goblins'"'"' lair, including a magical potion that increased her speed for 10 minutes.\n* Galen used his performance skill to distract the goblins and make them more vulnerable to the party'"'"'s attacks.\n* Thrain used his sorcery to summon a swarm of fire bees to attack the goblins, but they ended up attacking the party instead! Oops!"
+}'
+
+curl "https://pathmaster.gg/api/session/5" \
+  --fail \
+  -X PATCH \
+  -H "Authorization: Bearer $TOKEN" \
+  -H "Content-Type: application/json" \
+  --data '{
+  "notes": "* The party has successfully navigated the treacherous swampy terrain and made it to the ancient ruins of the long-lost civilization.\n* Our brave warrior, Eilif, has proven to be a master of the battlefield, taking down multiple foes with ease.\n* Our cunning rogue, Lila, has managed to sneak  Ah, my dear adventurers!"
+}'
