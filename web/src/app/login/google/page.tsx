@@ -36,8 +36,10 @@ export default function Google() {
   }, []);
 
   return (
-    <div>
-      <p>Logging in with Google</p>
+    <div className="w-full min-h-full bg-mask-background">
+      <div>
+        <p>Logging in with Google</p>
+      </div>
     </div>
   );
 }

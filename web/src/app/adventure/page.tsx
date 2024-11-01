@@ -295,204 +295,208 @@ export default function AdventureDetails() {
   }, [identity.session]);
 
   return (
-    <div className="flex flex-col gap-8 pb-16">
-      <Header pageName="Adventure" />
-      <div className="flex justify-center">
-        <div className="flex flex-col grow max-w-screen-xl gap-6">
-          <Box>
-            <div className="p-8">
-              <CarouselAdventure
-                name={adventure?.name ?? ""}
-                cover={
-                  adventure
-                    ? getServerUrl(`/api/image/${adventure.cover_image}`)
-                    : ""
-                }
-                description={adventure?.description}
-                startAdventureLink={`/session/new?adventure=${id}`}
-                onEdit={isOwner ? () => setEditingDescription(true) : undefined}
-              />
+    <div className="w-full min-h-full bg-mask-background">
+      <div className="flex flex-col gap-8 pb-16">
+        <Header pageName="Adventure" />
+        <div className="flex justify-center">
+          <div className="flex flex-col grow max-w-screen-xl gap-6">
+            <Box>
+              <div className="p-8">
+                <CarouselAdventure
+                  name={adventure?.name ?? ""}
+                  cover={
+                    adventure
+                      ? getServerUrl(`/api/image/${adventure.cover_image}`)
+                      : ""
+                  }
+                  description={adventure?.description}
+                  startAdventureLink={`/session/new?adventure=${id}`}
+                  onEdit={
+                    isOwner ? () => setEditingDescription(true) : undefined
+                  }
+                />
+              </div>
+            </Box>
+            <div className="grid grid-cols-2 gap-x-6">
+              <AdventurePartCard
+                title="Background"
+                large
+                button={isOwner ? "edit" : undefined}
+                onEdit={() => setEditingBackground(true)}
+              >
+                {backgroundPars &&
+                  backgroundPars.map((p) => (
+                    <p key={p} className="px-6">
+                      {p}
+                    </p>
+                  ))}
+              </AdventurePartCard>
+              <AdventurePartCard
+                title="Quests"
+                large
+                button={isOwner ? "add" : undefined}
+                onAdd={() => setCreatingQuest(true)}
+              >
+                <List>
+                  {adventure &&
+                    adventure.quests.map((quest) => (
+                      <ListItem
+                        key={quest.id}
+                        content={quest.title}
+                        onClick={() => {
+                          setActiveQuest(quest);
+                        }}
+                      />
+                    ))}
+                </List>
+              </AdventurePartCard>
             </div>
-          </Box>
-          <div className="grid grid-cols-2 gap-x-6">
-            <AdventurePartCard
-              title="Background"
-              large
-              button={isOwner ? "edit" : undefined}
-              onEdit={() => setEditingBackground(true)}
-            >
-              {backgroundPars &&
-                backgroundPars.map((p) => (
-                  <p key={p} className="px-6">
-                    {p}
-                  </p>
-                ))}
-            </AdventurePartCard>
-            <AdventurePartCard
-              title="Quests"
-              large
-              button={isOwner ? "add" : undefined}
-              onAdd={() => setCreatingQuest(true)}
-            >
-              <List>
-                {adventure &&
-                  adventure.quests.map((quest) => (
-                    <ListItem
-                      key={quest.id}
-                      content={quest.title}
-                      onClick={() => {
-                        setActiveQuest(quest);
-                      }}
-                    />
-                  ))}
-              </List>
-            </AdventurePartCard>
-          </div>
-          <div className="grid grid-cols-3 gap-x-6">
-            <AdventurePartCard
-              title="NPCs"
-              button={isOwner ? "add" : undefined}
-              onAdd={() => setCreatingNpc(true)}
-            >
-              <List>
-                {adventure &&
-                  adventure.npcs.map((npc) => (
-                    <ListItem
-                      key={npc.id}
-                      content={npc.name}
-                      onClick={() => {
-                        setActiveNpc(npc);
-                      }}
-                    />
-                  ))}
-              </List>
-            </AdventurePartCard>
-            <AdventurePartCard
-              title="Creatures"
-              button={isOwner ? "add" : undefined}
-              onAdd={() => setCreatingCreature(true)}
-            >
-              <List>
-                {adventure &&
-                  adventure.creatures.map((creature) => (
-                    <ListItem
-                      key={creature.id}
-                      content={creature.name}
-                      onClick={() => {
-                        setActiveCreature(creature);
-                      }}
-                    />
-                  ))}
-              </List>
-            </AdventurePartCard>
-            <AdventurePartCard
-              title="Items"
-              button={isOwner ? "add" : undefined}
-              onAdd={() => setCreatingItem(true)}
-            >
-              <List>
-                {adventure &&
-                  adventure.items.map((item) => (
-                    <ListItem
-                      key={item.id}
-                      content={item.name}
-                      onClick={() => {
-                        setActiveItem(item);
-                      }}
-                    />
-                  ))}
-              </List>
-            </AdventurePartCard>
+            <div className="grid grid-cols-3 gap-x-6">
+              <AdventurePartCard
+                title="NPCs"
+                button={isOwner ? "add" : undefined}
+                onAdd={() => setCreatingNpc(true)}
+              >
+                <List>
+                  {adventure &&
+                    adventure.npcs.map((npc) => (
+                      <ListItem
+                        key={npc.id}
+                        content={npc.name}
+                        onClick={() => {
+                          setActiveNpc(npc);
+                        }}
+                      />
+                    ))}
+                </List>
+              </AdventurePartCard>
+              <AdventurePartCard
+                title="Creatures"
+                button={isOwner ? "add" : undefined}
+                onAdd={() => setCreatingCreature(true)}
+              >
+                <List>
+                  {adventure &&
+                    adventure.creatures.map((creature) => (
+                      <ListItem
+                        key={creature.id}
+                        content={creature.name}
+                        onClick={() => {
+                          setActiveCreature(creature);
+                        }}
+                      />
+                    ))}
+                </List>
+              </AdventurePartCard>
+              <AdventurePartCard
+                title="Items"
+                button={isOwner ? "add" : undefined}
+                onAdd={() => setCreatingItem(true)}
+              >
+                <List>
+                  {adventure &&
+                    adventure.items.map((item) => (
+                      <ListItem
+                        key={item.id}
+                        content={item.name}
+                        onClick={() => {
+                          setActiveItem(item);
+                        }}
+                      />
+                    ))}
+                </List>
+              </AdventurePartCard>
+            </div>
           </div>
         </div>
+        {adventure && editingDescription && (
+          <TextEditPopup
+            title="Edit Description"
+            prompt="Set a new description for your adventure:"
+            onClose={() => setEditingDescription(false)}
+            initValue={adventure.description ?? ""}
+            onSubmit={handleDescriptionEdit}
+          />
+        )}
+        {adventure && editingBackground && (
+          <TextEditPopup
+            title="Edit Background"
+            prompt="Set a new background story for your adventure:"
+            onClose={() => setEditingBackground(false)}
+            initValue={adventure.background ?? ""}
+            onSubmit={handleBackgroundEdit}
+          />
+        )}
+        {creatingQuest && (
+          <QuestPopup
+            mode="create"
+            onClose={() => setCreatingQuest(false)}
+            onSubmit={handleCreateQuest}
+          />
+        )}
+        {activeQuest && (
+          <QuestPopup
+            mode={isOwner ? "edit" : "view"}
+            quest={activeQuest}
+            onClose={() => setActiveQuest(undefined)}
+            onSubmit={(title: string, description: string) =>
+              handleUpdateQuest(activeQuest.id, title, description)
+            }
+            onDelete={() => handleDeleteQuest(activeQuest.id)}
+          />
+        )}
+        {creatingNpc && (
+          <NpcPopup
+            mode="create"
+            adventureId={id}
+            onClose={() => setCreatingNpc(false)}
+            onSubmit={handleCreateNpc}
+          />
+        )}
+        {activeNpc && (
+          <NpcPopup
+            mode={isOwner ? "edit" : "view"}
+            npc={activeNpc}
+            onClose={() => setActiveNpc(undefined)}
+            onSubmit={(name: string) => handleUpdateNpc(activeNpc.id, name)}
+            onDelete={() => handleDeleteNpc(activeNpc.id)}
+          />
+        )}
+        {creatingCreature && (
+          <CreaturePopup
+            mode="create"
+            onClose={() => setCreatingCreature(false)}
+            onSubmit={handleCreateCreature}
+          />
+        )}
+        {activeCreature && (
+          <CreaturePopup
+            mode={isOwner ? "edit" : "view"}
+            creature={activeCreature}
+            onClose={() => setActiveCreature(undefined)}
+            onSubmit={(name: string) =>
+              handleUpdateCreature(activeCreature.id, name)
+            }
+            onDelete={() => handleDeleteCreature(activeCreature.id)}
+          />
+        )}
+        {creatingItem && (
+          <ItemPopup
+            mode="create"
+            onClose={() => setCreatingItem(false)}
+            onSubmit={handleCreateItem}
+          />
+        )}
+        {activeItem && (
+          <ItemPopup
+            mode={isOwner ? "edit" : "view"}
+            item={activeItem}
+            onClose={() => setActiveItem(undefined)}
+            onSubmit={(name: string) => handleUpdateItem(activeItem.id, name)}
+            onDelete={() => handleDeleteItem(activeItem.id)}
+          />
+        )}
       </div>
-      {adventure && editingDescription && (
-        <TextEditPopup
-          title="Edit Description"
-          prompt="Set a new description for your adventure:"
-          onClose={() => setEditingDescription(false)}
-          initValue={adventure.description ?? ""}
-          onSubmit={handleDescriptionEdit}
-        />
-      )}
-      {adventure && editingBackground && (
-        <TextEditPopup
-          title="Edit Background"
-          prompt="Set a new background story for your adventure:"
-          onClose={() => setEditingBackground(false)}
-          initValue={adventure.background ?? ""}
-          onSubmit={handleBackgroundEdit}
-        />
-      )}
-      {creatingQuest && (
-        <QuestPopup
-          mode="create"
-          onClose={() => setCreatingQuest(false)}
-          onSubmit={handleCreateQuest}
-        />
-      )}
-      {activeQuest && (
-        <QuestPopup
-          mode={isOwner ? "edit" : "view"}
-          quest={activeQuest}
-          onClose={() => setActiveQuest(undefined)}
-          onSubmit={(title: string, description: string) =>
-            handleUpdateQuest(activeQuest.id, title, description)
-          }
-          onDelete={() => handleDeleteQuest(activeQuest.id)}
-        />
-      )}
-      {creatingNpc && (
-        <NpcPopup
-          mode="create"
-          adventureId={id}
-          onClose={() => setCreatingNpc(false)}
-          onSubmit={handleCreateNpc}
-        />
-      )}
-      {activeNpc && (
-        <NpcPopup
-          mode={isOwner ? "edit" : "view"}
-          npc={activeNpc}
-          onClose={() => setActiveNpc(undefined)}
-          onSubmit={(name: string) => handleUpdateNpc(activeNpc.id, name)}
-          onDelete={() => handleDeleteNpc(activeNpc.id)}
-        />
-      )}
-      {creatingCreature && (
-        <CreaturePopup
-          mode="create"
-          onClose={() => setCreatingCreature(false)}
-          onSubmit={handleCreateCreature}
-        />
-      )}
-      {activeCreature && (
-        <CreaturePopup
-          mode={isOwner ? "edit" : "view"}
-          creature={activeCreature}
-          onClose={() => setActiveCreature(undefined)}
-          onSubmit={(name: string) =>
-            handleUpdateCreature(activeCreature.id, name)
-          }
-          onDelete={() => handleDeleteCreature(activeCreature.id)}
-        />
-      )}
-      {creatingItem && (
-        <ItemPopup
-          mode="create"
-          onClose={() => setCreatingItem(false)}
-          onSubmit={handleCreateItem}
-        />
-      )}
-      {activeItem && (
-        <ItemPopup
-          mode={isOwner ? "edit" : "view"}
-          item={activeItem}
-          onClose={() => setActiveItem(undefined)}
-          onSubmit={(name: string) => handleUpdateItem(activeItem.id, name)}
-          onDelete={() => handleDeleteItem(activeItem.id)}
-        />
-      )}
     </div>
   );
 }

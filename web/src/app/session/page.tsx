@@ -226,190 +226,199 @@ export default function LiveSession() {
   }, [session]);
 
   return (
-    <div className="flex flex-col gap-4 pb-16">
-      <Header pageName="Game Session" />
-      <div className="flex justify-center">
-        <div className="flex flex-col grow max-w-screen-xl gap-4">
-          <div className="flex items-center justify-between">
-            <h2 className="text-3xl">{session?.name ?? ""}</h2>
-            <p className="text-lg">[{session?.adventure.name ?? ""}]</p>
-          </div>
-          <div className="grid grid-cols-4 gap-x-4">
-            <PartyBox
-              players={session?.players}
-              onAdd={() => setCreatingPlayer(true)}
-              onEdit={(player: GameSessionPlayer) => setActivePlayer(player)}
-            />
-            <ObjectivesBox
-              quests={adventure?.quests}
-              finished={session?.finished_quests ?? []}
-              onFinish={(id: number) => handleSetQuestFinished(id, true)}
-              onUnfinish={(id: number) => handleSetQuestFinished(id, false)}
-            />
-          </div>
-          <div className="grid grid-cols-3 gap-x-4">
-            <AdventurePartCard
-              className="col-span-2"
-              title="GM Notes"
-              large
-              button="edit"
-              onEdit={() => setEditingGmNotes(true)}
-            >
-              {notesPars &&
-                notesPars.map((p) => (
-                  <p key={p} className="px-6">
-                    {p}
-                  </p>
-                ))}
-            </AdventurePartCard>
-            <AdventurePartCard
-              title="Events"
-              large
-              button="add"
-              onAdd={() => setCreatingEvent(true)}
-            >
-              <List>
-                {session &&
-                  session.events.map((item) => {
-                    const time = new Date(item.timestamp * 1000);
-                    const hour = time.getHours().toString();
-                    const minute = time.getMinutes().toString();
+    <div className="w-full min-h-full bg-mask-background">
+      <div className="flex flex-col gap-4 pb-16">
+        <Header pageName="Game Session" />
+        <div className="flex justify-center">
+          <div className="flex flex-col grow max-w-screen-xl gap-4">
+            <div className="flex items-center justify-between">
+              <h2 className="text-3xl">{session?.name ?? ""}</h2>
+              <p className="text-lg">[{session?.adventure.name ?? ""}]</p>
+            </div>
+            <div className="grid grid-cols-4 gap-x-4">
+              <PartyBox
+                players={session?.players}
+                onAdd={() => setCreatingPlayer(true)}
+                onEdit={(player: GameSessionPlayer) => setActivePlayer(player)}
+              />
+              <ObjectivesBox
+                quests={adventure?.quests}
+                finished={session?.finished_quests ?? []}
+                onFinish={(id: number) => handleSetQuestFinished(id, true)}
+                onUnfinish={(id: number) => handleSetQuestFinished(id, false)}
+              />
+            </div>
+            <div className="grid grid-cols-3 gap-x-4">
+              <AdventurePartCard
+                className="col-span-2"
+                title="GM Notes"
+                large
+                button="edit"
+                onEdit={() => setEditingGmNotes(true)}
+              >
+                {notesPars &&
+                  notesPars.map((p) => (
+                    <p key={p} className="px-6">
+                      {p}
+                    </p>
+                  ))}
+              </AdventurePartCard>
+              <AdventurePartCard
+                title="Events"
+                large
+                button="add"
+                onAdd={() => setCreatingEvent(true)}
+              >
+                <List>
+                  {session &&
+                    session.events.map((item) => {
+                      const time = new Date(item.timestamp * 1000);
+                      const hour = time.getHours().toString();
+                      const minute = time.getMinutes().toString();
 
-                    return (
-                      <DualListItem
-                        key={item.id}
-                        left={`${hour.length === 1 ? `0${hour}` : hour}:${minute.length === 1 ? `0${minute}` : minute}`}
-                        right={item.name}
-                        onClick={() => setActiveEvent(item)}
-                      />
-                    );
-                  })}
-              </List>
-            </AdventurePartCard>
-          </div>
-          <div className="grid grid-cols-3 gap-x-4">
-            <AdventurePartCard title="NPCs">
-              <List>
-                {session &&
-                  adventure &&
-                  adventure.npcs.map((npc) => {
-                    const npcNote = session.npc_notes.find(
-                      (note) => note.npc_id === npc.id,
-                    ) ?? {
-                      npc_id: npc.id,
-                      note: "",
-                    };
+                      return (
+                        <DualListItem
+                          key={item.id}
+                          left={`${hour.length === 1 ? `0${hour}` : hour}:${minute.length === 1 ? `0${minute}` : minute}`}
+                          right={item.name}
+                          onClick={() => setActiveEvent(item)}
+                        />
+                      );
+                    })}
+                </List>
+              </AdventurePartCard>
+            </div>
+            <div className="grid grid-cols-3 gap-x-4">
+              <AdventurePartCard title="NPCs">
+                <List>
+                  {session &&
+                    adventure &&
+                    adventure.npcs.map((npc) => {
+                      const npcNote = session.npc_notes.find(
+                        (note) => note.npc_id === npc.id,
+                      ) ?? {
+                        npc_id: npc.id,
+                        note: "",
+                      };
 
-                    return (
+                      return (
+                        <ListItem
+                          key={npc.id}
+                          content={npc.name}
+                          asterisk={!!npcNote.note}
+                          onClick={() =>
+                            setActiveNpcNote({
+                              name: npc.name,
+                              note: npcNote,
+                            })
+                          }
+                        />
+                      );
+                    })}
+                </List>
+              </AdventurePartCard>
+              <AdventurePartCard title="Creatures">
+                <List>
+                  {adventure &&
+                    adventure.creatures.map((creature) => (
                       <ListItem
-                        key={npc.id}
-                        content={npc.name}
-                        asterisk={!!npcNote.note}
-                        onClick={() =>
-                          setActiveNpcNote({
-                            name: npc.name,
-                            note: npcNote,
-                          })
-                        }
+                        key={creature.id}
+                        content={creature.name}
+                        onClick={() => setActiveCreature(creature)}
                       />
-                    );
-                  })}
-              </List>
-            </AdventurePartCard>
-            <AdventurePartCard title="Creatures">
-              <List>
-                {adventure &&
-                  adventure.creatures.map((creature) => (
-                    <ListItem
-                      key={creature.id}
-                      content={creature.name}
-                      onClick={() => setActiveCreature(creature)}
-                    />
-                  ))}
-              </List>
-            </AdventurePartCard>
-            <AdventurePartCard title="Items">
-              <List>
-                {adventure &&
-                  adventure.items.map((item) => (
-                    <ListItem
-                      key={item.id}
-                      content={item.name}
-                      onClick={() => setActiveItem(item)}
-                    />
-                  ))}
-              </List>
-            </AdventurePartCard>
+                    ))}
+                </List>
+              </AdventurePartCard>
+              <AdventurePartCard title="Items">
+                <List>
+                  {adventure &&
+                    adventure.items.map((item) => (
+                      <ListItem
+                        key={item.id}
+                        content={item.name}
+                        onClick={() => setActiveItem(item)}
+                      />
+                    ))}
+                </List>
+              </AdventurePartCard>
+            </div>
           </div>
         </div>
+        {creatingPlayer && (
+          <PlayerPopup
+            onClose={() => setCreatingPlayer(false)}
+            onSubmit={handleCreatePlayer}
+          />
+        )}
+        {activePlayer && (
+          <PlayerPopup
+            player={activePlayer}
+            onClose={() => setActivePlayer(undefined)}
+            onSubmit={(
+              name: string,
+              ancestry: string,
+              level: string,
+              hp: string,
+              maxHp: string,
+            ) =>
+              handleEditPlayer(
+                activePlayer.id,
+                name,
+                ancestry,
+                level,
+                hp,
+                maxHp,
+              )
+            }
+          />
+        )}
+        {session && editingGmNotes && (
+          <TextEditPopup
+            title="Edit GM Notes"
+            prompt="Make some notes about the session:"
+            onClose={() => setEditingGmNotes(false)}
+            initValue={session.notes ?? ""}
+            onSubmit={handleGmNotesEdit}
+          />
+        )}
+        {creatingEvent && (
+          <EventPopup
+            onClose={() => setCreatingEvent(false)}
+            onSubmit={(name: string) => handleCreateEvent(name)}
+          />
+        )}
+        {activeEvent && (
+          <EventPopup
+            event={activeEvent}
+            onClose={() => setActiveEvent(undefined)}
+            onSubmit={(name: string) => handleEditEvent(activeEvent.id, name)}
+          />
+        )}
+        {activeNpcNote && (
+          <NpcNotePopup
+            name={activeNpcNote.name}
+            initNote={activeNpcNote.note.note}
+            onClose={() => setActiveNpcNote(undefined)}
+            onSubmit={(note: string) =>
+              handleEditNpcNote(activeNpcNote.note.npc_id, note)
+            }
+          />
+        )}
+        {activeCreature && (
+          <CreaturePopup
+            mode="view"
+            creature={activeCreature}
+            onClose={() => setActiveCreature(undefined)}
+          />
+        )}
+        {activeItem && (
+          <ItemPopup
+            mode="view"
+            item={activeItem}
+            onClose={() => setActiveItem(undefined)}
+          />
+        )}
       </div>
-      {creatingPlayer && (
-        <PlayerPopup
-          onClose={() => setCreatingPlayer(false)}
-          onSubmit={handleCreatePlayer}
-        />
-      )}
-      {activePlayer && (
-        <PlayerPopup
-          player={activePlayer}
-          onClose={() => setActivePlayer(undefined)}
-          onSubmit={(
-            name: string,
-            ancestry: string,
-            level: string,
-            hp: string,
-            maxHp: string,
-          ) =>
-            handleEditPlayer(activePlayer.id, name, ancestry, level, hp, maxHp)
-          }
-        />
-      )}
-      {session && editingGmNotes && (
-        <TextEditPopup
-          title="Edit GM Notes"
-          prompt="Make some notes about the session:"
-          onClose={() => setEditingGmNotes(false)}
-          initValue={session.notes ?? ""}
-          onSubmit={handleGmNotesEdit}
-        />
-      )}
-      {creatingEvent && (
-        <EventPopup
-          onClose={() => setCreatingEvent(false)}
-          onSubmit={(name: string) => handleCreateEvent(name)}
-        />
-      )}
-      {activeEvent && (
-        <EventPopup
-          event={activeEvent}
-          onClose={() => setActiveEvent(undefined)}
-          onSubmit={(name: string) => handleEditEvent(activeEvent.id, name)}
-        />
-      )}
-      {activeNpcNote && (
-        <NpcNotePopup
-          name={activeNpcNote.name}
-          initNote={activeNpcNote.note.note}
-          onClose={() => setActiveNpcNote(undefined)}
-          onSubmit={(note: string) =>
-            handleEditNpcNote(activeNpcNote.note.npc_id, note)
-          }
-        />
-      )}
-      {activeCreature && (
-        <CreaturePopup
-          mode="view"
-          creature={activeCreature}
-          onClose={() => setActiveCreature(undefined)}
-        />
-      )}
-      {activeItem && (
-        <ItemPopup
-          mode="view"
-          item={activeItem}
-          onClose={() => setActiveItem(undefined)}
-        />
-      )}
     </div>
   );
 }
