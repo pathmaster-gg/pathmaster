@@ -445,6 +445,7 @@ export default function AdventureDetails() {
       {creatingNpc && (
         <NpcPopup
           mode="create"
+          adventureId={id}
           onClose={() => setCreatingNpc(false)}
           onSubmit={handleCreateNpc}
         />

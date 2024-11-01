@@ -96,3 +96,7 @@ export interface GameSessionNpcNote {
 export interface ChatAnswer {
   answer: string;
 }
+
+export interface GeneratedNpc {
+  name: string;
+}
