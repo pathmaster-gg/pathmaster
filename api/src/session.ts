@@ -48,6 +48,15 @@ export async function handleCreateGameSession(
     throw new Error("failed to insert game session");
   }
 
+  const newGameEvent = await env.DB.prepare(
+    "INSERT INTO game_session_event (name, create_time, session_id) VALUES (?, ?, ?) RETURNING event_id",
+  )
+    .bind("Game started", currentTime, newGameSession["session_id"])
+    .first();
+  if (!newGameEvent) {
+    throw new Error("failed to insert session event");
+  }
+
   return new Response(
     JSON.stringify({
       id: newGameSession["session_id"],
