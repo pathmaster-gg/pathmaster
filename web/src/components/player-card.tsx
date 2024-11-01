@@ -3,6 +3,7 @@ import HpBar from "./hp_bar";
 import PlayerAvatar from "./player-avatar";
 
 interface IProps {
+  ind: number;
   player?: GameSessionPlayer;
   onClick?: Function;
 }
@@ -19,7 +20,7 @@ export default function PlayerCard(props: IProps) {
     >
       {props.player ? (
         <div className="flex grow items-center gap-3 pl-1">
-          <PlayerAvatar level={props.player.level} />
+          <PlayerAvatar ind={props.ind} level={props.player.level} />
           <div className="grow flex flex-col">
             <p className="text-lg">{props.player.name}</p>
             <p className="text-sm">{props.player.ancestry}</p>

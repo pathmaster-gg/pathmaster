@@ -9,6 +9,8 @@ interface IProps {
 }
 
 export default function PartyBox(props: IProps) {
+  let indPlayer = 0;
+
   return (
     <Box className="min-h-120">
       <div className="flex flex-col h-full gap-6">
@@ -20,6 +22,7 @@ export default function PartyBox(props: IProps) {
             <>
               {props.players.map((player) => (
                 <PlayerCard
+                  ind={indPlayer++}
                   key={player.id}
                   player={player}
                   onClick={() => {
@@ -29,7 +32,7 @@ export default function PartyBox(props: IProps) {
                   }}
                 />
               ))}
-              <PlayerCard onClick={props.onAdd} />
+              <PlayerCard ind={-1} onClick={props.onAdd} />
             </>
           )}
         </div>

@@ -2,9 +2,13 @@ import Image from "next/image";
 
 import AvatarFrameSvg from "@/images/avatar_frame.svg";
 import BgLevelSvg from "@/images/icons/bg_level.svg";
-import ExamplePlayer from "@/images/example_player.jpg";
+import ExamplePlayer1 from "@/images/example_player_1.jpg";
+import ExamplePlayer2 from "@/images/example_player_2.jpg";
+import ExamplePlayer3 from "@/images/example_player_3.jpg";
+import ExamplePlayer4 from "@/images/example_player_4.jpg";
 
 interface IProps {
+  ind: number;
   level: number;
 }
 
@@ -20,7 +24,15 @@ export default function PlayerAvatar(props: IProps) {
       />
       <Image
         className="absolute rounded-full"
-        src={ExamplePlayer}
+        src={
+          props.ind % 4 === 0
+            ? ExamplePlayer1
+            : props.ind % 4 === 1
+              ? ExamplePlayer2
+              : props.ind % 4 === 2
+                ? ExamplePlayer3
+                : ExamplePlayer4
+        }
         alt="Player avatar"
         width={51}
         height={51}
