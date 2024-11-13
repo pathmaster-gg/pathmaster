@@ -5,4 +5,5 @@ interface Env {
   OAUTH_GOOGLE_CLIENT_SECRET: "";
   OAUTH_GOOGLE_REDIRECT_URL: "http://localhost:3000/login/google";
   DB: D1Database;
+  AI: Ai;
 }
