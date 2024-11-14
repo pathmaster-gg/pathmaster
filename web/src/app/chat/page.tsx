@@ -12,10 +12,14 @@ import { ChatAnswer } from "@/lib/models";
 export default function ChatPage() {
   const [question, setQuestion] = useState<string>("");
   const [answer, setAnswer] = useState<string | undefined>();
+  const [streaming, setStreaming] = useState<boolean>(false);
 
   const answerPars = answer ? answer.split("\n") : [];
 
   const handleSubmit = async () => {
+    setStreaming(true);
+    setAnswer("");
+
     const response = await fetch(getServerUrl("/api/chat/ask"), {
       method: "POST",
       body: JSON.stringify({
@@ -23,7 +27,23 @@ export default function ChatPage() {
       }),
     });
     const body = (await response.json()) as ChatAnswer;
-    setAnswer(body.answer);
+
+    let completeAnswer = "";
+
+    const stream = new EventSource(
+      getServerUrl(`/api/chat/answer/${body.sessionId}`),
+    );
+    stream.onmessage = (event) => {
+      if (event.data == "[DONE]") {
+        setStreaming(false);
+        stream.close();
+        return;
+      }
+      const data = JSON.parse(event.data);
+
+      completeAnswer += data.response;
+      setAnswer(completeAnswer);
+    };
   };
 
   return (
@@ -43,7 +63,11 @@ export default function ChatPage() {
                     value={question}
                     onChange={(e) => setQuestion(e.target.value)}
                   />
-                  <Button text="Ask" onClick={handleSubmit} />
+                  <Button
+                    text={streaming ? "..." : "Ask"}
+                    onClick={handleSubmit}
+                    disabled={streaming}
+                  />
                 </div>
                 <Divider />
                 <div className="w-full h-120 overflow-scroll px-6 flex flex-col gap-2 text-lg text-grayscale-200">

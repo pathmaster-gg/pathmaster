@@ -3,6 +3,7 @@
 -- https://developers.cloudflare.com/d1/reference/migrations/
 
 DROP TABLE IF EXISTS session;
+DROP TABLE IF EXISTS chat_prompt;
 DROP TABLE IF EXISTS game_session_finished_quest;
 DROP TABLE IF EXISTS game_session_npc_note;
 DROP TABLE IF EXISTS game_session_event;
@@ -139,4 +140,9 @@ CREATE TABLE game_session_finished_quest (
   PRIMARY KEY (session_id, quest_id),
   FOREIGN KEY(session_id) REFERENCES game_session(session_id),
   FOREIGN KEY(quest_id) REFERENCES quest(quest_id)
+);
+
+CREATE TABLE chat_prompt (
+  prompt_id INTEGER PRIMARY KEY,
+  content TEXT NOT NULL
 );

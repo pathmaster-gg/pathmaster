@@ -37,7 +37,7 @@ import {
   handleUpdateGameSessionEvent,
 } from "./session_event";
 import { handleCreatePlayer, handleUpdatePlayer } from "./player";
-import { handleChatAsk } from "./chat";
+import { handleChatAsk, handleChatGetAnswer } from "./chat";
 
 export default {
   async fetch(request, env, _ctx): Promise<Response> {
@@ -107,6 +107,7 @@ export default {
     router.post("/api/image/:type", (req) => handleUploadImage(req, env));
     router.get("/api/image/:id", (req) => handleGetImage(req, env));
     router.post("/api/chat/ask", (req) => handleChatAsk(req, env));
+    router.get("/api/chat/answer/:id", (req) => handleChatGetAnswer(req, env));
 
     // 404 fallback
     router.all("*", () => new Response("404, not found!", { status: 404 }));
