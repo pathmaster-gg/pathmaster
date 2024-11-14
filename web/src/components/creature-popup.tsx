@@ -3,6 +3,8 @@ import { useEffect, useState } from "react";
 import { AdventureCreature } from "@/lib/models";
 import Button from "./button";
 import Popup from "./popup";
+import AiButton from "./ai-button";
+import ImageUploader from "./image-uploader";
 
 interface IProps {
   mode: "create" | "edit" | "view";
@@ -45,6 +47,15 @@ export default function CreaturePopup(props: IProps) {
             onChange={(e) => setName(e.target.value)}
             readOnly={props.mode === "view"}
           />
+          <p className="text-sm">Avatar</p>
+          <div className="flex items-center justify-center gap-6">
+            <ImageUploader
+              width={200}
+              height={200}
+              onImageIdChange={() => {}}
+            />
+            <AiButton className="absolute ml-72" onClick={() => {}} />
+          </div>
         </div>
         {props.mode !== "view" && (
           <div className="flex justify-center gap-4">

@@ -5,6 +5,8 @@ import { getServerUrl } from "@/lib/constants/env";
 import { NewImage } from "@/lib/models";
 
 interface IProps {
+  width?: number;
+  height?: number;
   onImageIdChange: (id: number) => void;
 }
 
@@ -39,7 +41,13 @@ export default function ImageUploader(props: IProps) {
   };
 
   return (
-    <div className="relative flex justify-center items-center w-52 h-64 border-2 border-dashed border-highlight hover:bg-grayscale-900">
+    <div
+      className="relative flex justify-center items-center border-2 border-dashed border-highlight hover:bg-grayscale-900"
+      style={{
+        width: props.width ? `${props.width}px` : "13rem",
+        height: props.height ? `${props.height}px` : "16rem",
+      }}
+    >
       {imageId ? (
         <div
           className="w-full h-full"
