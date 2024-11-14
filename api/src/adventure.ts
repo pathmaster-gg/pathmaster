@@ -317,13 +317,123 @@ export async function handleGetAdventure(
 }
 
 export async function handleGenerateNpcName(
-  _request: IRequest,
-  _env: Env,
+  request: IRequest,
+  env: Env,
 ): Promise<Response> {
+  let accountId: number;
+  try {
+    accountId = await assertNormal(request, env);
+  } catch (ex) {
+    return (ex as AuthError).response;
+  }
+
+  if (!request.params.id || !parseInt(request.params.id)) {
+    return new Response("missing `id`", {
+      headers: {
+        "Access-Control-Allow-Origin": "*",
+      },
+      status: 400,
+    });
+  }
+
+  const adventureId = parseInt(request.params.id);
+
+  const adventure = await env.DB.prepare(
+    "SELECT name, creator, background FROM adventure WHERE adventure_id = ?",
+  )
+    .bind(adventureId)
+    .first();
+  if (!adventure) {
+    return new Response("adventure not found", {
+      headers: {
+        "Access-Control-Allow-Origin": "*",
+      },
+      status: 404,
+    });
+  }
+  if (accountId !== adventure["creator"]) {
+    return new Response("not adventure owner", {
+      headers: {
+        "Access-Control-Allow-Origin": "*",
+      },
+      status: 403,
+    });
+  }
+
+  const npcs = await env.DB.prepare(
+    `SELECT name FROM npc WHERE adventure_id = ? AND deleted = FALSE`,
+  )
+    .bind(adventureId)
+    .all();
+
+  const background = adventure["background"] as string | null;
+  const npcNames = npcs.results.map((row) => {
+    return { name: row["name"] as string };
+  });
+
+  const prompt =
+    "Perfect. Please make sure the next response follows the exact same FORMAT." +
+    (npcNames.length
+      ? " Note that to avoid repetition, please also make sure your suggestion is sufficiently different from existing NPC names:\n" +
+        npcNames.map((npc) => `\n- ${npc.name}`).join("")
+      : "") +
+    `\n\nNow the title of the module is "${adventure["name"]}"` +
+    (background
+      ? ", with a background of:\n\n" +
+        "==== START OF WORLD BACKGROUND ===\n\n" +
+        background +
+        "\n\n==== END OF WORLD BACKGROUND ==="
+      : ". I haven't drafted a background for the story yet.") +
+    "\n\nNow please suggest a name. Remember to follow the same format as your last response.";
+
+  const result = (await env.AI.run(
+    "@hf/meta-llama/meta-llama-3-8b-instruct" as BaseAiTextGenerationModels,
+    {
+      messages: [
+        {
+          role: "system",
+          content:
+            "You're an experienced game master in game mastering the tabletop role playing game Pathfinder 2e.",
+        },
+        {
+          role: "user",
+          content:
+            "I'm creating a game module. As part of the world-building process, I need help coming up with NPC names that fit right into the background story's vibe. Can you help with that?",
+        },
+        {
+          role: "assistant",
+          content: "Of course. I'm happy to help.",
+        },
+        {
+          role: "user",
+          content:
+            "Great! I will provide the name of the module and the background story of the world, after which you will come up with ONE name. But before that, let's practice the format for your response. I need you to respond with JUST THE NPC NAME and nothing else. No punctuation whatsoever. Can you try that now?",
+        },
+        {
+          role: "assistant",
+          content: "Elara Moonwhisper",
+        },
+        {
+          role: "user",
+          content: prompt,
+        },
+      ],
+    },
+  )) as { response?: string };
+
+  if (!result.response) {
+    return new Response("failed to run AI model", {
+      headers: {
+        "Access-Control-Allow-Origin": "*",
+      },
+      status: 500,
+    });
+  }
+
   // Mock AI response
   return new Response(
     JSON.stringify({
-      name: "Lady Kethrillich",
+      name: result.response,
     }),
     {
       headers: {

@@ -1,5 +1,6 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 
+import { IdentityContext } from "@/app/lib/context/identity";
 import { AdventureNpc, GeneratedNpc } from "@/lib/models";
 import Button from "./button";
 import Popup from "./popup";
@@ -16,6 +17,8 @@ interface IProps {
 }
 
 export default function NpcPopup(props: IProps) {
+  const identity = useContext(IdentityContext);
+
   const [name, setName] = useState<string>("");
 
   const handleGenerateName = async () => {
@@ -23,6 +26,9 @@ export default function NpcPopup(props: IProps) {
       getServerUrl(`/api/adventure/${props.adventureId}/ai/npc`),
       {
         method: "POST",
+        headers: {
+          Authorization: `Bearer ${identity.session!.token}`,
+        },
       },
     );
     const body = (await response.json()) as GeneratedNpc;
