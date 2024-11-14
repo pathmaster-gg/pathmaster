@@ -245,7 +245,11 @@ export default function AdventureDetails() {
     await loadAdventure();
   };
 
-  const handleUpdateItem = async (id: number, name: string) => {
+  const handleUpdateItem = async (
+    id: number,
+    name: string,
+    imageId: number | null,
+  ) => {
     await fetch(getServerUrl(`/api/item/${id}`), {
       method: "PATCH",
       headers: {
@@ -253,6 +257,7 @@ export default function AdventureDetails() {
       },
       body: JSON.stringify({
         name,
+        image: imageId,
       }),
     });
 
@@ -497,7 +502,9 @@ export default function AdventureDetails() {
             mode={isOwner ? "edit" : "view"}
             item={activeItem}
             onClose={() => setActiveItem(undefined)}
-            onSubmit={(name: string) => handleUpdateItem(activeItem.id, name)}
+            onSubmit={(name: string, imageId: number | null) =>
+              handleUpdateItem(activeItem.id, name, imageId)
+            }
             onDelete={() => handleDeleteItem(activeItem.id)}
           />
         )}

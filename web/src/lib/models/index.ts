@@ -66,6 +66,7 @@ export interface AdventureCreature {
 export interface AdventureItem {
   id: number;
   name: string;
+  image: number | null;
 }
 
 export interface AdventureHub {
