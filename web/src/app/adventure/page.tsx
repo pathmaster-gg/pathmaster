@@ -194,7 +194,11 @@ export default function AdventureDetails() {
     await loadAdventure();
   };
 
-  const handleUpdateCreature = async (id: number, name: string) => {
+  const handleUpdateCreature = async (
+    id: number,
+    name: string,
+    avatarImageId: number | null,
+  ) => {
     await fetch(getServerUrl(`/api/creature/${id}`), {
       method: "PATCH",
       headers: {
@@ -202,6 +206,7 @@ export default function AdventureDetails() {
       },
       body: JSON.stringify({
         name,
+        avatar_image: avatarImageId,
       }),
     });
 
@@ -474,8 +479,8 @@ export default function AdventureDetails() {
             mode={isOwner ? "edit" : "view"}
             creature={activeCreature}
             onClose={() => setActiveCreature(undefined)}
-            onSubmit={(name: string) =>
-              handleUpdateCreature(activeCreature.id, name)
+            onSubmit={(name: string, avatarImageId: number | null) =>
+              handleUpdateCreature(activeCreature.id, name, avatarImageId)
             }
             onDelete={() => handleDeleteCreature(activeCreature.id)}
           />

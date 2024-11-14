@@ -60,6 +60,7 @@ export interface AdventureNpc {
 export interface AdventureCreature {
   id: number;
   name: string;
+  avatar_image: number | null;
 }
 
 export interface AdventureItem {

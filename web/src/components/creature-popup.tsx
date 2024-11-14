@@ -1,10 +1,12 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 
-import { AdventureCreature } from "@/lib/models";
+import { AdventureCreature, NewImage } from "@/lib/models";
 import Button from "./button";
 import Popup from "./popup";
 import AiButton from "./ai-button";
 import ImageUploader from "./image-uploader";
+import { getServerUrl } from "@/lib/constants/env";
+import { IdentityContext } from "@/app/lib/context/identity";
 
 interface IProps {
   mode: "create" | "edit" | "view";
@@ -15,13 +17,38 @@ interface IProps {
 }
 
 export default function CreaturePopup(props: IProps) {
+  const identity = useContext(IdentityContext);
+
   const [name, setName] = useState<string>("");
+  const [avatarImageId, setAvatarImageId] = useState<number | undefined>(
+    undefined,
+  );
+  const [generating, setGenerating] = useState<boolean>(false);
+
+  const handleGenerateImage = async () => {
+    setGenerating(true);
+
+    const response = await fetch(
+      getServerUrl(`/api/creature/${props.creature?.id}/ai/avatar`),
+      {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${identity.session!.token}`,
+        },
+      },
+    );
+    const body = (await response.json()) as NewImage;
+    setAvatarImageId(body.id);
+    setGenerating(false);
+  };
 
   useEffect(() => {
     if (props.creature) {
       setName(props.creature.name);
+      setAvatarImageId(props.creature.avatar_image ?? undefined);
     } else {
       setName("");
+      setAvatarImageId(undefined);
     }
   }, [props.creature]);
 
@@ -47,15 +74,28 @@ export default function CreaturePopup(props: IProps) {
             onChange={(e) => setName(e.target.value)}
             readOnly={props.mode === "view"}
           />
-          <p className="text-sm">Avatar</p>
-          <div className="flex items-center justify-center gap-6">
-            <ImageUploader
-              width={200}
-              height={200}
-              onImageIdChange={() => {}}
-            />
-            <AiButton className="absolute ml-72" onClick={() => {}} />
-          </div>
+          {props.mode !== "create" && (
+            <>
+              <p className="text-sm">Avatar</p>
+              <div className="flex items-center justify-center gap-6">
+                <ImageUploader
+                  width={256}
+                  height={256}
+                  imageId={avatarImageId}
+                  disabled={props.mode !== "edit" || generating}
+                  gray={generating}
+                  onImageIdChange={setAvatarImageId}
+                />
+                {props.mode === "edit" && (
+                  <AiButton
+                    disabled={generating}
+                    className="absolute ml-96"
+                    onClick={handleGenerateImage}
+                  />
+                )}
+              </div>
+            </>
+          )}
         </div>
         {props.mode !== "view" && (
           <div className="flex justify-center gap-4">
@@ -63,7 +103,7 @@ export default function CreaturePopup(props: IProps) {
               text={props.mode === "create" ? "Create" : "Save"}
               onClick={() => {
                 if (props.onSubmit) {
-                  props.onSubmit(name);
+                  props.onSubmit(name, avatarImageId ?? null);
                 }
               }}
             />

@@ -60,7 +60,10 @@ export default function NewAdventure() {
                   <div className="flex flex-col gap-6">
                     <p className="text-sm">Cover Image</p>
                     <div className="flex justify-center">
-                      <ImageUploader onImageIdChange={setCoverImageId} />
+                      <ImageUploader
+                        imageId={coverImageId}
+                        onImageIdChange={setCoverImageId}
+                      />
                     </div>
                   </div>
                 </div>
