@@ -20,8 +20,11 @@ export default function NpcPopup(props: IProps) {
   const identity = useContext(IdentityContext);
 
   const [name, setName] = useState<string>("");
+  const [generating, setGenerating] = useState<boolean>(false);
 
   const handleGenerateName = async () => {
+    setGenerating(true);
+
     const response = await fetch(
       getServerUrl(`/api/adventure/${props.adventureId}/ai/npc`),
       {
@@ -33,6 +36,7 @@ export default function NpcPopup(props: IProps) {
     );
     const body = (await response.json()) as GeneratedNpc;
     setName(body.name);
+    setGenerating(false);
   };
 
   useEffect(() => {
@@ -67,7 +71,7 @@ export default function NpcPopup(props: IProps) {
               readOnly={props.mode === "view"}
             />
             {props.mode === "create" && (
-              <AiButton onClick={handleGenerateName} />
+              <AiButton disabled={generating} onClick={handleGenerateName} />
             )}
           </div>
         </div>
