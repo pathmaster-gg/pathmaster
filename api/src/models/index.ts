@@ -5,6 +5,7 @@ export enum SessionType {
 
 export enum ImageType {
   AdventureCover = "adventure_cover",
+  CreatureAvatar = "creature_avatar",
 }
 
 export interface Session {
@@ -64,6 +65,7 @@ export interface AdventureNpc {
 export interface AdventureCreature {
   id: number;
   name: string;
+  avatar_image: number | null;
 }
 
 export interface AdventureItem {

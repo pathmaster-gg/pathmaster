@@ -5,4 +5,5 @@ export enum SessionType {
 
 export enum ImageType {
   AdventureCover = 1,
+  CreatureAvatar = 2,
 }

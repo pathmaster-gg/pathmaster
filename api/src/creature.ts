@@ -1,6 +1,7 @@
 import { IRequest } from "itty-router";
 
 import { AuthError, assertNormal } from "./utils/auth";
+import { ImageType } from "./entities";
 
 interface CreateCreatureRequest {
   adventure_id: number;
@@ -9,6 +10,7 @@ interface CreateCreatureRequest {
 
 interface UpdateCreatureRequest {
   name: string | null;
+  avatar_image: number | null;
 }
 
 export async function handleCreateCreature(
@@ -102,6 +104,8 @@ export async function handleUpdateCreature(
   const body = (await request.json()) as UpdateCreatureRequest;
 
   const updatingName = body.name !== undefined && body.name !== null;
+  const updatingAvatarImage =
+    body.avatar_image !== undefined && body.avatar_image !== null;
 
   const adventureOwner = await env.DB.prepare(
     "SELECT adventure.creator FROM creature JOIN adventure ON (creature.adventure_id=adventure.adventure_id) WHERE creature_id = ?",
@@ -131,6 +135,10 @@ export async function handleUpdateCreature(
   if (updatingName) {
     setters.push("name=?");
     params.push(body.name);
+  }
+  if (updatingAvatarImage) {
+    setters.push("avatar=?");
+    params.push(body.avatar_image);
   }
 
   const result = await env.DB.prepare(
@@ -200,6 +208,88 @@ export async function handleDeleteCreature(
   }
 
   return new Response(null, {
+    headers: {
+      "Access-Control-Allow-Origin": "*",
+    },
+  });
+}
+
+export async function handleGenerateCreatureImage(
+  request: IRequest,
+  env: Env,
+): Promise<Response> {
+  let accountId: number;
+  try {
+    accountId = await assertNormal(request, env);
+  } catch (ex) {
+    return (ex as AuthError).response;
+  }
+
+  if (!request.params.id || !parseInt(request.params.id)) {
+    return new Response("missing `id`", {
+      headers: {
+        "Access-Control-Allow-Origin": "*",
+      },
+      status: 400,
+    });
+  }
+
+  const creatureId = parseInt(request.params.id);
+
+  const creature = await env.DB.prepare(
+    "SELECT creature.name, creator FROM creature JOIN adventure ON (creature.adventure_id=adventure.adventure_id) WHERE creature_id = ?",
+  )
+    .bind(creatureId)
+    .first();
+  if (!creature) {
+    return new Response("creature not found", {
+      headers: {
+        "Access-Control-Allow-Origin": "*",
+      },
+      status: 404,
+    });
+  }
+  if (accountId !== creature["creator"]) {
+    return new Response("not adventure owner", {
+      headers: {
+        "Access-Control-Allow-Origin": "*",
+      },
+      status: 403,
+    });
+  }
+
+  const creatureName = creature["name"] as string;
+
+  const prompt = `pathfinder 2e,hostile creature,fantasy background,${creatureName.toLowerCase()}`;
+
+  const result = await env.AI.run(
+    "@cf/stabilityai/stable-diffusion-xl-base-1.0" as BaseAiTextToImageModels,
+    { prompt } as any,
+  );
+
+  const reader = result.getReader();
+  let rawBytes = new Uint8Array(0);
+  while (true) {
+    const segment = await reader.read();
+    if (segment.value) {
+      rawBytes = new Uint8Array([...rawBytes, ...segment.value]);
+    }
+
+    if (segment.done) {
+      break;
+    }
+  }
+
+  const newImage = await env.DB.prepare(
+    "INSERT INTO image (owner, type, data) VALUES (?, ?, ?) RETURNING image_id",
+  )
+    .bind(accountId, ImageType.CreatureAvatar, rawBytes)
+    .first();
+  if (!newImage) {
+    throw new Error("failed to insert image");
+  }
+
+  return new Response(JSON.stringify({ id: newImage["image_id"] }), {
     headers: {
       "Access-Control-Allow-Origin": "*",
     },

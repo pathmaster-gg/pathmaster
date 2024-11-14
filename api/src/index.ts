@@ -29,6 +29,7 @@ import { handleCreateNpc, handleDeleteNpc, handleUpdateNpc } from "./npc";
 import {
   handleCreateCreature,
   handleDeleteCreature,
+  handleGenerateCreatureImage,
   handleUpdateCreature,
 } from "./creature";
 import { handleCreateItem, handleDeleteItem, handleUpdateItem } from "./item";
@@ -78,6 +79,9 @@ export default {
     router.post("/api/creature", (req) => handleCreateCreature(req, env));
     router.patch("/api/creature/:id", (req) => handleUpdateCreature(req, env));
     router.delete("/api/creature/:id", (req) => handleDeleteCreature(req, env));
+    router.post("/api/creature/:id/ai/avatar", (req) =>
+      handleGenerateCreatureImage(req, env),
+    );
     router.post("/api/item", (req) => handleCreateItem(req, env));
     router.patch("/api/item/:id", (req) => handleUpdateItem(req, env));
     router.delete("/api/item/:id", (req) => handleDeleteItem(req, env));

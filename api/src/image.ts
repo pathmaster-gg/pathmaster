@@ -50,6 +50,9 @@ export async function handleUploadImage(
   if (request.params.type === ImageType.AdventureCover) {
     imageType = imageType = DbImageType.AdventureCover;
     imageData = await request.bytes();
+  } else if (request.params.type === ImageType.CreatureAvatar) {
+    imageType = imageType = DbImageType.CreatureAvatar;
+    imageData = await request.bytes();
   } else {
     return new Response("unknown image type", {
       headers: {

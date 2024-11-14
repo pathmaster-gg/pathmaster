@@ -531,7 +531,7 @@ curl "https://pathmaster.gg/api/creature" \
   -H "Content-Type: application/json" \
   --data '{
   "adventure_id": 1,
-  "name": "Shadowwraiths"
+  "name": "Spiky Piggy"
 }'
 
 curl "https://pathmaster.gg/api/creature" \

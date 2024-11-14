@@ -263,7 +263,7 @@ export async function handleGetAdventure(
     .all();
 
   const creatures = await env.DB.prepare(
-    `SELECT creature_id, name FROM creature WHERE adventure_id = ? AND deleted = FALSE`,
+    `SELECT creature_id, name, avatar FROM creature WHERE adventure_id = ? AND deleted = FALSE`,
   )
     .bind(adventureId)
     .all();
@@ -299,6 +299,7 @@ export async function handleGetAdventure(
         return {
           id: row["creature_id"],
           name: row["name"],
+          avatar_image: row["avatar"],
         };
       }),
       items: items.results.map((row) => {
@@ -430,7 +431,6 @@ export async function handleGenerateNpcName(
     });
   }
 
-  // Mock AI response
   return new Response(
     JSON.stringify({
       name: result.response,
