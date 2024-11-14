@@ -92,8 +92,10 @@ CREATE TABLE item (
   adventure_id INTEGER NOT NULL,
   name TEXT NOT NULL,
   create_time INTEGER NOT NULL,
+  image INTEGER,
   deleted INTEGER NOT NULL,
-  FOREIGN KEY(adventure_id) REFERENCES adventure(adventure_id)
+  FOREIGN KEY(adventure_id) REFERENCES adventure(adventure_id),
+  FOREIGN KEY(image) REFERENCES image(image_id)
 );
 
 CREATE TABLE game_session (

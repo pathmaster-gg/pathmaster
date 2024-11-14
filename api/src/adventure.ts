@@ -269,7 +269,7 @@ export async function handleGetAdventure(
     .all();
 
   const items = await env.DB.prepare(
-    `SELECT item_id, name FROM item WHERE adventure_id = ? AND deleted = FALSE`,
+    `SELECT item_id, name, image FROM item WHERE adventure_id = ? AND deleted = FALSE`,
   )
     .bind(adventureId)
     .all();
@@ -306,6 +306,7 @@ export async function handleGetAdventure(
         return {
           id: row["item_id"],
           name: row["name"],
+          image: row["image"],
         };
       }),
     }),

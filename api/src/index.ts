@@ -32,7 +32,12 @@ import {
   handleGenerateCreatureImage,
   handleUpdateCreature,
 } from "./creature";
-import { handleCreateItem, handleDeleteItem, handleUpdateItem } from "./item";
+import {
+  handleCreateItem,
+  handleDeleteItem,
+  handleGenerateItemImage,
+  handleUpdateItem,
+} from "./item";
 import {
   handleCreateGameSessionEvent,
   handleUpdateGameSessionEvent,
@@ -85,6 +90,9 @@ export default {
     router.post("/api/item", (req) => handleCreateItem(req, env));
     router.patch("/api/item/:id", (req) => handleUpdateItem(req, env));
     router.delete("/api/item/:id", (req) => handleDeleteItem(req, env));
+    router.post("/api/item/:id/ai/image", (req) =>
+      handleGenerateItemImage(req, env),
+    );
     router.post("/api/session", (req) => handleCreateGameSession(req, env));
     router.get("/api/session/mine", (req) => handleGetMyGameSessions(req, env));
     router.get("/api/session/:id", (req) => handleGetGameSession(req, env));

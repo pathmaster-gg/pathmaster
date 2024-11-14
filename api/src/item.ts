@@ -1,6 +1,7 @@
 import { IRequest } from "itty-router";
 
 import { AuthError, assertNormal } from "./utils/auth";
+import { ImageType } from "./entities";
 
 interface CreateItemRequest {
   adventure_id: number;
@@ -9,6 +10,7 @@ interface CreateItemRequest {
 
 interface UpdateItemRequest {
   name: string | null;
+  image: number | null;
 }
 
 export async function handleCreateItem(
@@ -102,6 +104,7 @@ export async function handleUpdateItem(
   const body = (await request.json()) as UpdateItemRequest;
 
   const updatingName = body.name !== undefined && body.name !== null;
+  const updatingImage = body.image !== undefined && body.image !== null;
 
   const adventureOwner = await env.DB.prepare(
     "SELECT adventure.creator FROM item JOIN adventure ON (item.adventure_id=adventure.adventure_id) WHERE item_id = ?",
@@ -131,6 +134,10 @@ export async function handleUpdateItem(
   if (updatingName) {
     setters.push("name=?");
     params.push(body.name);
+  }
+  if (updatingImage) {
+    setters.push("image=?");
+    params.push(body.image);
   }
 
   const result = await env.DB.prepare(
@@ -200,6 +207,88 @@ export async function handleDeleteItem(
   }
 
   return new Response(null, {
+    headers: {
+      "Access-Control-Allow-Origin": "*",
+    },
+  });
+}
+
+export async function handleGenerateItemImage(
+  request: IRequest,
+  env: Env,
+): Promise<Response> {
+  let accountId: number;
+  try {
+    accountId = await assertNormal(request, env);
+  } catch (ex) {
+    return (ex as AuthError).response;
+  }
+
+  if (!request.params.id || !parseInt(request.params.id)) {
+    return new Response("missing `id`", {
+      headers: {
+        "Access-Control-Allow-Origin": "*",
+      },
+      status: 400,
+    });
+  }
+
+  const itemId = parseInt(request.params.id);
+
+  const item = await env.DB.prepare(
+    "SELECT item.name, creator FROM item JOIN adventure ON (item.adventure_id=adventure.adventure_id) WHERE item_id = ?",
+  )
+    .bind(itemId)
+    .first();
+  if (!item) {
+    return new Response("item not found", {
+      headers: {
+        "Access-Control-Allow-Origin": "*",
+      },
+      status: 404,
+    });
+  }
+  if (accountId !== item["creator"]) {
+    return new Response("not adventure owner", {
+      headers: {
+        "Access-Control-Allow-Origin": "*",
+      },
+      status: 403,
+    });
+  }
+
+  const itemName = item["name"] as string;
+
+  const prompt = `pathfinder 2e,loot item,fantasy background,${itemName.toLowerCase()}`;
+
+  const result = await env.AI.run(
+    "@cf/stabilityai/stable-diffusion-xl-base-1.0" as BaseAiTextToImageModels,
+    { prompt } as any,
+  );
+
+  const reader = result.getReader();
+  let rawBytes = new Uint8Array(0);
+  while (true) {
+    const segment = await reader.read();
+    if (segment.value) {
+      rawBytes = new Uint8Array([...rawBytes, ...segment.value]);
+    }
+
+    if (segment.done) {
+      break;
+    }
+  }
+
+  const newImage = await env.DB.prepare(
+    "INSERT INTO image (owner, type, data) VALUES (?, ?, ?) RETURNING image_id",
+  )
+    .bind(accountId, ImageType.ItemImage, rawBytes)
+    .first();
+  if (!newImage) {
+    throw new Error("failed to insert image");
+  }
+
+  return new Response(JSON.stringify({ id: newImage["image_id"] }), {
     headers: {
       "Access-Control-Allow-Origin": "*",
     },
