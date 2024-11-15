@@ -266,18 +266,7 @@ export async function handleGenerateItemImage(
     { prompt } as any,
   );
 
-  const reader = result.getReader();
-  let rawBytes = new Uint8Array(0);
-  while (true) {
-    const segment = await reader.read();
-    if (segment.value) {
-      rawBytes = new Uint8Array([...rawBytes, ...segment.value]);
-    }
-
-    if (segment.done) {
-      break;
-    }
-  }
+  const rawBytes = await new Response(result).bytes();
 
   const newImage = await env.DB.prepare(
     "INSERT INTO image (owner, type) VALUES (?, ?) RETURNING image_id",
