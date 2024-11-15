@@ -641,7 +641,7 @@ curl "https://pathmaster.gg/api/item" \
   -H "Content-Type: application/json" \
   --data '{
   "adventure_id": 1,
-  "name": "Eye of the Beast'"'"'s Fury"
+  "name": "Healing Potion"
 }'
 
 curl "https://pathmaster.gg/api/item" \
