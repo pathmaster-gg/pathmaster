@@ -280,13 +280,15 @@ export async function handleGenerateItemImage(
   }
 
   const newImage = await env.DB.prepare(
-    "INSERT INTO image (owner, type, data) VALUES (?, ?, ?) RETURNING image_id",
+    "INSERT INTO image (owner, type) VALUES (?, ?) RETURNING image_id",
   )
-    .bind(accountId, ImageType.ItemImage, rawBytes)
+    .bind(accountId, ImageType.ItemImage)
     .first();
   if (!newImage) {
     throw new Error("failed to insert image");
   }
+
+  await env.pathfinder_dev.put(`${newImage["image_id"]}.jpg`, rawBytes);
 
   return new Response(JSON.stringify({ id: newImage["image_id"] }), {
     headers: {

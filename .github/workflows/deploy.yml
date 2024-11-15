@@ -57,6 +57,15 @@ jobs:
           echo "database_name = \"pathmaster-dev\"" >> ./wrangler.toml
           echo "database_id = \"${{ vars.WORKER_D1_ID }}\"" >> ./wrangler.toml
 
+      - name: "Configure worker bucket"
+        run: |
+          cd ./api/
+
+          echo "" >> ./wrangler.toml
+          echo "[[env.production.r2_buckets]]" >> ./wrangler.toml
+          echo "bucket_name = \"pathfinder-dev\"" >> ./wrangler.toml
+          echo "binding = \"pathfinder_dev\"" >> ./wrangler.toml
+
       - name: "Execute SQL initialization script"
         run: |
           export CLOUDFLARE_ACCOUNT_ID="${{ secrets.CLOUDFLARE_ACCOUNT_ID }}"

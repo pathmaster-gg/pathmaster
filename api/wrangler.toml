@@ -15,3 +15,7 @@ binding = "AI"
 binding = "DB"
 database_name = "pathmaster-dev"
 database_id = "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
+
+[[r2_buckets]]
+bucket_name = "pathfinder-dev"
+binding = "pathfinder_dev"

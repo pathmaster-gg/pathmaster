@@ -17,16 +17,20 @@ export async function handleGetImage(
     });
   }
 
+  const imageId = parseInt(request.params.id);
+
   const image = await env.DB.prepare(
-    "SELECT data FROM image WHERE image_id = ?",
+    "SELECT image_id FROM image WHERE image_id = ?",
   )
-    .bind(parseInt(request.params.id))
+    .bind(imageId)
     .first();
   if (!image) {
     throw new Error("failed to fetch image");
   }
 
-  return new Response(new Uint8Array(image["data"] as any), {
+  const r2Object = await env.pathfinder_dev.get(`${imageId}.jpg`);
+
+  return new Response(await r2Object?.arrayBuffer(), {
     headers: {
       "Access-Control-Allow-Origin": "*",
       "Content-Type": "image/jpeg",
@@ -63,13 +67,15 @@ export async function handleUploadImage(
   }
 
   const newImage = await env.DB.prepare(
-    "INSERT INTO image (owner, type, data) VALUES (?, ?, ?) RETURNING image_id",
+    "INSERT INTO image (owner, type) VALUES (?, ?) RETURNING image_id",
   )
-    .bind(accountId, imageType, imageData)
+    .bind(accountId, imageType)
     .first();
   if (!newImage) {
     throw new Error("failed to insert image");
   }
+
+  await env.pathfinder_dev.put(`${newImage["image_id"]}.jpg`, imageData);
 
   return new Response(JSON.stringify({ id: newImage["image_id"] }), {
     headers: {

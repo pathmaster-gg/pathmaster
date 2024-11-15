@@ -41,7 +41,6 @@ CREATE TABLE image (
   image_id INTEGER PRIMARY KEY,
   owner INTEGER NOT NULL,
   type INTEGER NOT NULL,
-  data BLOB NOT NULL,
   FOREIGN KEY(owner) REFERENCES account(account_id)
 );
 
