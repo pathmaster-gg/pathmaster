@@ -46,7 +46,7 @@ import { handleCreatePlayer, handleUpdatePlayer } from "./player";
 import { handleChatAsk, handleChatGetAnswer } from "./chat";
 
 export default {
-  async fetch(request, env, _ctx): Promise<Response> {
+  async fetch(request, env, ctx): Promise<Response> {
     const router = Router();
 
     // CORS
@@ -62,7 +62,9 @@ export default {
         }),
     );
 
-    router.get("/api/oauth/google", (req) => handleGoogle(req, env));
+    router.get("/api/oauth/google", (req) =>
+      handleGoogle(req, env, !!(ctx as any).mocked),
+    );
     router.get("/api/account", (req) => handleGetInfo(req, env));
     router.post("/api/account/onboard", (req) => handleOnboard(req, env));
     router.post("/api/adventure", (req) => handleCreateAdventure(req, env));

@@ -19,6 +19,7 @@ interface GoogleUserInfo {
 export async function handleGoogle(
   request: IRequest,
   env: Env,
+  mocked: boolean,
 ): Promise<Response> {
   const code = request.query.code! as string;
 
@@ -29,7 +30,13 @@ export async function handleGoogle(
     },
     body: `code=${code}&client_id=${env.OAUTH_GOOGLE_CLIENT_ID}&client_secret=${env.OAUTH_GOOGLE_CLIENT_SECRET}&redirect_uri=${encodeURIComponent(env.OAUTH_GOOGLE_REDIRECT_URL)}&grant_type=authorization_code`,
   });
-  const tokenBody = (await tokenResponse.json()) as GoogleOAuthTokenResponse;
+  let tokenBody = (
+    mocked
+      ? {
+          access_token: "mocked",
+        }
+      : await tokenResponse.json()
+  ) as GoogleOAuthTokenResponse;
 
   const userInfoResponse = await fetch(
     "https://www.googleapis.com/oauth2/v3/userinfo",
@@ -39,7 +46,14 @@ export async function handleGoogle(
       },
     },
   );
-  const userInfoBody = (await userInfoResponse.json()) as GoogleUserInfo;
+  const userInfoBody = (
+    mocked
+      ? {
+          email: "info@pathmaster.gg",
+          email_verified: true,
+        }
+      : await userInfoResponse.json()
+  ) as GoogleUserInfo;
 
   const account = await env.DB.prepare(
     "SELECT account_id FROM account WHERE email = ?",

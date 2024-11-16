@@ -15,7 +15,17 @@ export default defineWorkersConfig({
             {
               name: "__WRANGLER_EXTERNAL_AI_WORKER",
               modules: true,
-              script: "export default function run() {}",
+              script: `
+export default function run() {
+  return {
+    run: () => {
+      return {
+        response: "123"
+      };
+    },
+  };
+}
+`,
             },
           ],
         },
