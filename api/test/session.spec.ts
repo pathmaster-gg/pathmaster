@@ -117,6 +117,17 @@ describe("Session API", () => {
       expect(body.length).toBe(1);
     });
 
+    it("rejects unauthorized user sessions request", async () => {
+      const ctx = createExecutionContext();
+      const request = new IncomingRequest(
+        "http://example.com/api/session/mine",
+      );
+      const response = await worker.fetch(request, env, ctx);
+
+      await waitOnExecutionContext(ctx);
+      expect(response.status).toBe(401);
+    });
+
     it("serves session", async () => {
       const ctx = createExecutionContext();
       const request = new IncomingRequest("http://example.com/api/session/1", {
@@ -129,6 +140,20 @@ describe("Session API", () => {
 
       const body = (await response.json()) as GameSession;
       expect(body.name).toBe("Test session");
+    });
+
+    it("rejects session request with invalid id", async () => {
+      const ctx = createExecutionContext();
+      const request = new IncomingRequest(
+        "http://example.com/api/session/abc",
+        {
+          headers: { Authorization: `Bearer ${TOKEN}` },
+        },
+      );
+      const response = await worker.fetch(request, env, ctx);
+
+      await waitOnExecutionContext(ctx);
+      expect(response.status).toBe(400);
     });
 
     it("serves udpate session requests", async () => {
@@ -262,6 +287,42 @@ describe("Session API", () => {
           ).first())!.note,
         ).toBe("Note");
       });
+    });
+
+    it("reject set NPC note requests with invalid npc id", async () => {
+      const ctx = createExecutionContext();
+      const request = new IncomingRequest(
+        "http://example.com/api/session/1/npc_note/abc",
+        {
+          method: "PUT",
+          headers: { Authorization: `Bearer ${TOKEN}` },
+          body: JSON.stringify({
+            note: "Note",
+          }),
+        },
+      );
+      const response = await worker.fetch(request, env, ctx);
+
+      await waitOnExecutionContext(ctx);
+      expect(response.status).toBe(400);
+    });
+
+    it("reject set NPC note requests with non-existent npc id", async () => {
+      const ctx = createExecutionContext();
+      const request = new IncomingRequest(
+        "http://example.com/api/session/1/npc_note/2",
+        {
+          method: "PUT",
+          headers: { Authorization: `Bearer ${TOKEN}` },
+          body: JSON.stringify({
+            note: "Note",
+          }),
+        },
+      );
+      const response = await worker.fetch(request, env, ctx);
+
+      await waitOnExecutionContext(ctx);
+      expect(response.status).toBe(404);
     });
   });
 });
